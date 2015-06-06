@@ -75,12 +75,25 @@ public abstract class Stream<T> implements Iterable<T> {
     /**
      * Returns a new stream that contains items that has been returned by a given function for each item in the current stream.
      *
-     * @param func a function that takes items of the current stream and returns corresponding values for the new stream.
+     * @param func a function that takes an item of the current stream and returns a corresponding value for the new stream.
      * @param <R>  a type of items new stream returns.
      * @return a new stream that contains items that has been returned by a given function for each item in the current stream.
      */
     public <R> Stream<R> map(SolidFunc1<T, R> func) {
         return new Map<>(this, func);
+    }
+
+    /**
+     * Returns a new stream that contains items that has been returned a given function for each item in the current stream.
+     * The difference from {@link #map(SolidFunc1)} is that a given function can return more than one item for
+     * each item of the current list.
+     *
+     * @param func a function that takes an item of the current stream and returns a stream of values for the new stream.
+     * @param <R>  a type of items new stream returns.
+     * @return a new stream that contains items that has been returned by a given function for each item in the current stream.
+     */
+    public <R> Stream<R> flatMap(SolidFunc1<T, Iterable<R>> func) {
+        return new FlatMap<>(this, func);
     }
 
     /**
@@ -121,6 +134,16 @@ public abstract class Stream<T> implements Iterable<T> {
      */
     public Stream<T> merge(Iterable<T> with) {
         return new Merge<>(this, with);
+    }
+
+    /**
+     * Creates a new stream that contains only the first given amount of items of the current stream.
+     *
+     * @param count a number of items to take.
+     * @return a new stream that contains only the first given amount of items of the current stream.
+     */
+    public Stream<T> take(int count) {
+        return new Take<>(this, count);
     }
 
     /**

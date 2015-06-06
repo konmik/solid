@@ -87,6 +87,17 @@ public class StreamTest {
     }
 
     @Test
+    public void testFlatMap() throws Exception {
+        assertTrue(Stream.stream(Arrays.asList(1, 2, 3)).flatMap(new SolidFunc1<Integer, Iterable<Object>>() {
+            @Override
+            public Iterable<Object> call(Integer value) {
+                return null;
+            }
+        }) instanceof FlatMap);
+        new FlatMapTest().testIterator();
+    }
+
+    @Test
     public void testFilter() throws Exception {
         assertIterableEquals(Arrays.asList(1, 2, 3), Stream.stream(Arrays.asList(1, 2, 3, 4)).filter(new SolidFunc1<Integer, Boolean>() {
             @Override
@@ -111,6 +122,12 @@ public class StreamTest {
     public void testMerge() throws Exception {
         assertIterableEquals(Arrays.asList(1, 2, 3, 4), Stream.stream(Arrays.asList(1, 2)).merge(Arrays.asList(3, 4)));
         new MergeTest().testIterator();
+    }
+
+    @Test
+    public void testTake() throws Exception {
+        assertTrue(Stream.stream(Arrays.asList(1, 2, 3)).take(2) instanceof Take);
+        new TakeTest().testIterator();
     }
 
     @Test
