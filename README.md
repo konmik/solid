@@ -5,11 +5,10 @@ Solid is an Android library for data handling.
 
 It provides:
 
-* `SolidList` - an immutable parcelable `List`.
+* `SolidList` and `SolidMultimap` - immutable, parcelable list and multimap. Multimap allows to build
+values that are grouped by some key.
 
-* `SolidMultimap` - an immutable parcelable multimap.
-
-* Lightweight and composable data **streams**.
+* Lightweight and composable **data streams**.
 
 * Primitive array / Wrapped array **converters**.
 
@@ -19,6 +18,14 @@ It provides:
 Just describe what you want with a real use case. I do not promise that I will implement
 *anything* you wish, but if your need fits into the library nicely, I will add it for sure.
 
+# Usage
+
+``` groovy
+dependencies {
+    compile 'info.android15.solid:solid:1.0.0'
+}
+```
+
 # `SolidList` and `SolidMultimap`
 
 If you're a big fan of immutable data structures like me then you also probably miss `Parcelable` interface
@@ -27,7 +34,7 @@ implementation in *Guava*'s `ImmutableList`.
 If you're not a big fan of immutability then you should be.
 
 I recommend reading this library description: [AutoValue](https://github.com/google/auto/tree/master/value).
-It has a very good Android port with `Parcelable` implementation: [AutoParcel](https://github.com/frankiesardo/auto-parcel).
+The library has a very good Android port with `Parcelable` implementation: [AutoParcel](https://github.com/frankiesardo/auto-parcel).
 
 There is also a library that makes a good combo with `SolidList` - [Icepick](https://github.com/frankiesardo/icepick).
 
@@ -40,6 +47,10 @@ My typical usage for `SolidList` is to pass around a list of objects that has be
 
 Usage of `SolidList` is mostly identical to `ArrayList`, so I do not think that any docs are needed.
 [SolidList](https://github.com/konmik/solid/blob/master/solid/src/main/java/solid/collections/SolidList.java)
+
+If you're familiar with Guava's `ImmutableList` - there is a difference that is good to know. `SolidList` does
+not have a support for *Builder* pattern - use an `ArrayList` or `Stream` to prepare it. `ImmutableList` uses
+array internally, so there is no reason to complicate stuff.
 
 `SolidMultimap` is a shortcut for `SolidList<Pair<K, SolidList<V>>>` with a set of handy construction methods.
 [SolidMultimap](https://github.com/konmik/solid/blob/master/solid/src/main/java/solid/collections/SolidMultimap.java)
@@ -57,9 +68,9 @@ You can take any `Iterable` or an array and turn it into a set of chained method
 (all examples are with IntelliJ IDEA code folding):
 
 ``` java
-stream(Arrays.asList(1, 2, 3))                    // Iterable<Integer>
-    .filter((it) -> {return it < 3})              // only 1 and 2 items are not filtered
-    .map((it) -> {return Integer.toString(it)}    // convert Integer values to String values
+stream(asList(1, 2, 3))                              // Iterable<Integer>
+    .filter((it) -> { return it < 3; })              // only 1 and 2 items are not filtered
+    .map((it) -> { return Integer.toString(it); })   // convert Integer values to String values
     .toList();
 ```
 
@@ -69,8 +80,8 @@ Here is another example. We need to sort some items by name and then return thei
 
 ``` java
 stream(namedEntities)
-    .sort((left, right) -> {return left.name.compareTo(right.name);})
-    .map((it) -> {return it.id;})
+    .sort((left, right) -> { return left.name.compareTo(right.name); })
+    .map((it) -> { return it.id; })
     .toSolidList();
 ```
 
@@ -87,13 +98,13 @@ that will not be used by anyone, this is why I need your help.
 
 ## Non-streaming usage
 
-All operators in the library can be used without streams.
+All features in this library can be used without streams.
 
 For example, you can merge two arrays and use them in one `for` statement using `Merge` class that is internally used
 to back `Stream.merge(...)` operator:
 
 ``` java
-for (int value : new Merge<>(Arrays.asList(1, 2, 3), Arrays.asList(4, 5, 6)))
+for (int value : new Merge<>(asList(1, 2, 3), asList(4, 5, 6)))
     ...
 ```
 
@@ -104,7 +115,7 @@ This way you can be an OOP purist and still be able to use all features of the l
 Converters are inspired by Java 8 data streams. Here is how they look like:
 
 ``` java
-int[] values = stream(Arrays.asList(1, 2, 3))   // Iterable<Integer> at this point
+int[] values = stream(asList(1, 2, 3))   // Iterable<Integer> at this point
     .collect(toPrimitiveIntegerArray())
 ```
 
@@ -114,7 +125,7 @@ To convert a primitive array into an iterable stream just call one method.
 Call two methods to convert them into an immutable parcelable list.
 
 ``` java
-SolidList<Byte> list = Bytes.bytes(new byte[]{1, 2, 3})     // Iterable<Byte>
+SolidList<Byte> list = bytes(new byte[]{1, 2, 3})     // Iterable<Byte>
     .toSolidList();
 ```
 
@@ -132,7 +143,7 @@ A piece of cake.
 Want to join two primitive arrays?
 
 ``` java
-byte[] joined = Bytes.bytes(new byte[]{1, 2, 3})
+byte[] joined = bytes(new byte[]{1, 2, 3})
     .merge(Bytes.bytes(new byte[]{4, 5, 6}))
     .collect(toPrimitiveByteArray());
 ```
@@ -140,7 +151,7 @@ byte[] joined = Bytes.bytes(new byte[]{1, 2, 3})
 Remove a value from a primitive array?
 
 ``` java
-byte[] array_1_3 = Bytes.bytes(new byte[]{1, 2, 3})
+byte[] array_1_3 = bytes(new byte[]{1, 2, 3})
     .without((byte)2)
     .collect(toPrimitiveByteArray());
 ```
@@ -161,7 +172,7 @@ and split the result into three parts: items that has been found in both lists, 
 and a stream of items that are only in the second list.
 
 ``` java
-StreamComparison<Integer> comparison = new StreamComparison<>(Arrays.asList(1, 2, 3), Arrays.asList(3, 4, 5));
+StreamComparison<Integer> comparison = new StreamComparison<>(asList(1, 2, 3), asList(3, 4, 5));
 comparison.both(); // 3
 comparison.first(); // 1, 2
 comparison.second(); // 4, 5

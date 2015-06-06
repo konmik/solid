@@ -12,7 +12,13 @@ android {
     }
 }
 
+configurations {
+    compileJavadoc
+}
+
 dependencies {
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.0.12-beta'
 }
+
+apply from: '../gradle/gradle-mvn-push.gradle'
