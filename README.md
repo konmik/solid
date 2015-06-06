@@ -89,11 +89,15 @@ that will not be used by anyone, this is why I need your help.
 
 All operators in the library can be used without streams.
 
-In example, you can merge two arrays and use them in one `for` statement:
+For example, you can merge two arrays and use them in one `for` statement using `Merge` class that is internally used
+to back `Stream.merge(...)` operator:
 
 ``` java
-for (int value : new Merge<>(Arrays.asList(1, 2, 3), Arrays.asList(4, 6, 6)))
+for (int value : new Merge<>(Arrays.asList(1, 2, 3), Arrays.asList(4, 5, 6)))
+    ...
 ```
+
+This way you can be an OOP purist and still be able to use all features of the library.
 
 # Data converters and primitive arrays
 
