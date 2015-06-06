@@ -12,5 +12,6 @@ public class IntegersTest {
     public void testIterator() throws Exception {
         assertIterableEquals(Arrays.asList(1, 2, 3), new Integers(new int[]{1, 2, 3}));
         assertIterableEquals(Collections.<Integer>emptyList(), new Integers(new int[0]));
+        assertIterableEquals(new Integers(new int[]{1, 2, 3}), Integers.integers(new int[]{1, 2, 3}));
     }
 }

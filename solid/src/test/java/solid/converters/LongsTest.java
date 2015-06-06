@@ -12,5 +12,6 @@ public class LongsTest {
     public void testIterator() throws Exception {
         assertIterableEquals(Arrays.asList(1l, 2l, 3l), new Longs(new long[]{1, 2, 3}));
         assertIterableEquals(Collections.<Long>emptyList(), new Longs(new long[0]));
+        assertIterableEquals(new Longs(new long[]{1, 2, 3}), Longs.longs(new long[]{1, 2, 3}));
     }
 }

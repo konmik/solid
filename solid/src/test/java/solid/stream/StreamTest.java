@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 
 import solid.filters.DistinctFilterTest;
 import solid.functions.SolidFunc1;
@@ -42,6 +43,36 @@ public class StreamTest {
         assertIterableEquals(Arrays.asList(1, 2, 3), Stream.stream(Arrays.asList(1, 2, 3)).toSolidList());
         assertIterableEquals(Collections.emptyList(), Stream.stream(Collections.emptyList()).toSolidList());
         assertIterableEquals(Arrays.asList(null, null), Stream.stream(Arrays.asList(null, null)).toSolidList());
+    }
+
+    @Test
+    public void testLift() throws Exception {
+        assertIterableEquals(Arrays.asList(1, 3, 6), Stream.stream(Arrays.asList(1, 2, 3))
+            .lift(new SolidFunc1<Stream<Integer>, Stream<Integer>>() {
+                @Override
+                public Stream<Integer> call(final Stream<Integer> value) {
+                    return new Stream<Integer>() {
+                        @Override
+                        public Iterator<Integer> iterator() {
+                            return new ReadOnlyIterator<Integer>() {
+
+                                Iterator<Integer> source = value.iterator();
+                                int count;
+
+                                @Override
+                                public boolean hasNext() {
+                                    return source.hasNext();
+                                }
+
+                                @Override
+                                public Integer next() {
+                                    return count += source.next();
+                                }
+                            };
+                        }
+                    };
+                }
+            }));
     }
 
     @Test

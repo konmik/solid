@@ -8,13 +8,17 @@ public class Longs extends Stream<Long> {
 
     private long[] longs;
 
+    public static Stream<Long> longs(long[] longs) {
+        return new Longs(longs);
+    }
+
     public Longs(long[] longs) {
         this.longs = longs;
     }
 
     @Override
     public Iterator<Long> iterator() {
-        return new Iterator<Long>() {
+        return new ReadOnlyIterator<Long>() {
 
             int i;
 
@@ -26,11 +30,6 @@ public class Longs extends Stream<Long> {
             @Override
             public Long next() {
                 return longs[i++];
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException();
             }
         };
     }

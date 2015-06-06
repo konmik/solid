@@ -11,7 +11,8 @@ import java.util.List;
 import java.util.ListIterator;
 
 /**
- * Represents an immutable parcelable list. This is basically a decorator.
+ * Represents an immutable parcelable list.
+ * This is basically a decorator around ArrayList.
  *
  * @param <T> A type of data in the list.
  */
@@ -22,10 +23,20 @@ public class SolidList<T> implements List<T>, Parcelable {
 
     private final List<T> array;
 
+    /**
+     * Creates and returns a new {@link SolidList} from an array.
+     *
+     * @param array a source of data for {@link SolidList}.
+     */
     public SolidList(T[] array) {
         this(Arrays.asList(array));
     }
 
+    /**
+     * Creates a new {@link SolidList} from an {@link Iterable}.
+     *
+     * @param iterable a source of data for the new {@link SolidList}.
+     */
     public SolidList(Iterable<T> iterable) {
         if (iterable instanceof Collection)
             array = new ArrayList<>((Collection<T>)iterable);
@@ -36,26 +47,48 @@ public class SolidList<T> implements List<T>, Parcelable {
         }
     }
 
-    protected SolidList(Parcel in) {
-        //noinspection unchecked,unchecked
-        array = in.readArrayList(CLASS_LOADER);
-    }
-
-    public static <E> SolidList<E> empty() {
+    /**
+     * Returns an empty {@link SolidList}.
+     *
+     * @param <T> a type of list to return.
+     * @return an empty {@link SolidList}.
+     */
+    public static <T> SolidList<T> empty() {
         //noinspection unchecked
-        return (SolidList<E>)EMPTY;
+        return (SolidList<T>)EMPTY;
     }
 
-    public static <E> SolidList<E> copyOf(Iterable<E> iterable) {
+    /**
+     * Creates and returns a new {@link SolidList} from an {@link Iterable}.
+     *
+     * @param iterable a source of data for {@link SolidList}.
+     * @param <T>      a type of list to return.
+     * @return a new {@link SolidList} that is initialized with data from given {@link Iterable}.
+     */
+    public static <T> SolidList<T> copyOf(Iterable<T> iterable) {
         return new SolidList<>(iterable);
     }
 
-    public static <E> SolidList<E> copyOf(E[] a) {
-        return new SolidList<>(a);
+    /**
+     * Creates and returns a new {@link SolidList} from an array.
+     *
+     * @param array a source of data for {@link SolidList}.
+     * @param <T>   a type of list to return.
+     * @return a new {@link SolidList} that is initialized with data from the given array.
+     */
+    public static <T> SolidList<T> copyOf(T[] array) {
+        return new SolidList<>(array);
     }
 
-    public static <E> SolidList<E> single(E item) {
-        ArrayList<E> builder = new ArrayList<>(1);
+    /**
+     * Creates and returns a new single-item {@link SolidList}.
+     *
+     * @param item an item for {@link SolidList} initialization.
+     * @param <T>  a type of list to return.
+     * @return a new {@link SolidList} that is initialized with the given item.
+     */
+    public static <T> SolidList<T> single(T item) {
+        ArrayList<T> builder = new ArrayList<>(1);
         builder.add(item);
         return new SolidList<>(builder);
     }
@@ -188,6 +221,11 @@ public class SolidList<T> implements List<T>, Parcelable {
     @Override
     public int describeContents() {
         return 0;
+    }
+
+    protected SolidList(Parcel in) {
+        //noinspection unchecked,unchecked
+        array = in.readArrayList(CLASS_LOADER);
     }
 
     @Override

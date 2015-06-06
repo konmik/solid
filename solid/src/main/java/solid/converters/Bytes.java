@@ -8,13 +8,17 @@ public class Bytes extends Stream<Byte> {
 
     private byte[] bytes;
 
+    public static Stream<Byte> bytes(byte[] bytes) {
+        return new Bytes(bytes);
+    }
+
     public Bytes(byte[] bytes) {
         this.bytes = bytes;
     }
 
     @Override
     public Iterator<Byte> iterator() {
-        return new Iterator<Byte>() {
+        return new ReadOnlyIterator<Byte>() {
 
             int i;
 
@@ -26,11 +30,6 @@ public class Bytes extends Stream<Byte> {
             @Override
             public Byte next() {
                 return bytes[i++];
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException();
             }
         };
     }

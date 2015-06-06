@@ -10,8 +10,8 @@ import java.util.Map;
 import solid.functions.SolidFunc1;
 
 /**
- * Represents an immutable parcelable ordered multimap. Nulls for keys are not allowed.
- * This class mostly acts as a shortcut for SolidList<Entry<K, V>>.
+ * Represents an immutable parcelable ordered multimap.
+ * This class mostly acts as a shortcut for SolidList<Pair<K, SolidList<V>>>.
  *
  * @param <K> a type of key
  * @param <V> a type of value
@@ -20,17 +20,42 @@ public class SolidMultimap<K, V> extends SolidList<SolidMultimap.Entry<K, V>> {
 
     private SolidList<K> keys;
 
+    /**
+     * Constructs a {@link SolidMultimap} from given items.
+     *
+     * @param iterable a source of items.
+     */
     public SolidMultimap(Iterable<Entry<K, V>> iterable) {
         super(iterable);
         createKeys();
     }
 
+    /**
+     * Constructs a {@link SolidMultimap} from given values, extracting keys for each value with given method.
+     * The order of items is not guaranteed during construction.
+     *
+     * @param values       a source of values.
+     * @param keyExtractor a method for keys extraction.
+     * @param <K>          a type of keys.
+     * @param <V>          a type of values.
+     * @return a multimap that is constructed of given values.
+     */
     public static <K, V> SolidMultimap<K, V> ofValues(Iterable<V> values, SolidFunc1<V, K> keyExtractor) {
         return ofMap(groupChildren(values, keyExtractor));
     }
 
     /**
+     * Constructs a {@link SolidMultimap} from given values, extracting keys for each value with given method.
+     * The order of items is not guaranteed during construction.
+     * <p/>
      * Includes all groups even though they nave no children.
+     *
+     * @param groups       a source of groups without children.
+     * @param values       a source of values.
+     * @param keyExtractor a method for keys extraction.
+     * @param <K>          a type of keys.
+     * @param <V>          a type of values.
+     * @return a multimap that is constructed of given values and groups.
      */
     public static <K, V> SolidMultimap<K, V> ofKeysValues(Iterable<K> groups, Iterable<V> values, SolidFunc1<V, K> keyExtractor) {
         HashMap<K, ArrayList<V>> map = groupChildren(values, keyExtractor);
@@ -41,6 +66,15 @@ public class SolidMultimap<K, V> extends SolidList<SolidMultimap.Entry<K, V>> {
         return ofMap(map);
     }
 
+    /**
+     * Constructs a {@link SolidMultimap} from given key-value pairs.
+     * The order of items is not guaranteed during construction.
+     *
+     * @param pairs a source of pairs.
+     * @param <K>   a type of keys.
+     * @param <V>   a type of values.
+     * @return a multimap that is constructed of given keys and values.
+     */
     public static <K, V> SolidMultimap<K, V> ofPairs(Iterable<Pair<K, V>> pairs) {
         HashMap<K, Collection<V>> map = new HashMap<>();
         for (Pair<K, V> v : pairs) {
@@ -53,6 +87,16 @@ public class SolidMultimap<K, V> extends SolidList<SolidMultimap.Entry<K, V>> {
         return ofMap(map);
     }
 
+    /**
+     * Constructs a {@link SolidMultimap} from a given map of key-Iterable(value) entries.
+     * The order of items is not guaranteed during construction.
+     *
+     * @param map a source of data
+     * @param <K> a type of keys.
+     * @param <V> a type of values.
+     * @param <I> a type of value iterator.
+     * @return a multimap that is constructed of a given map.
+     */
     public static <K, V, I extends Iterable<V>> SolidMultimap<K, V> ofMap(Map<K, I> map) {
         ArrayList<Entry<K, V>> builder = new ArrayList<>(map.size());
         for (Map.Entry<K, I> entry : map.entrySet())
