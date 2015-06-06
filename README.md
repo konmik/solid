@@ -57,10 +57,10 @@ You can take any `Iterable` or an array and turn it into a set of chained method
 (all examples are with IntelliJ IDEA code folding):
 
 ``` java
-    stream(Arrays.asList(1, 2, 3))                    // Iterable<Integer>
-        .filter((it) -> {return it < 3})              // only 1 and 2 items are not filtered
-        .map((it) -> {return Integer.toString(it)}    // convert Integer values to String values
-        .toList();
+stream(Arrays.asList(1, 2, 3))                    // Iterable<Integer>
+    .filter((it) -> {return it < 3})              // only 1 and 2 items are not filtered
+    .map((it) -> {return Integer.toString(it)}    // convert Integer values to String values
+    .toList();
 ```
 
 This code will result in a `List<String>` which contains `"1"` and `"2"` values.
@@ -68,10 +68,10 @@ This code will result in a `List<String>` which contains `"1"` and `"2"` values.
 Here is another example. We need to sort some items by name and then return their ids:
 
 ``` java
-    stream(namedEntities)
-        .sort((left, right) -> {return left.name.compareTo(right.name);})
-        .map((it) -> {return it.id;})
-        .toSolidList();
+stream(namedEntities)
+    .sort((left, right) -> {return left.name.compareTo(right.name);})
+    .map((it) -> {return it.id;})
+    .toSolidList();
 ```
 
 Easy, isn't it? I believe you already know about power of streaming operators,
@@ -85,13 +85,23 @@ For a list of stream operators see: [Stream.java](https://github.com/konmik/soli
 This list is not so big right now but, and as I already said, file an issue! :) I don't want to bloat this library with methods
 that will not be used by anyone, this is why I need your help.
 
+## Non-streaming usage
+
+All operators in the library can be used without streams.
+
+In example, you can merge two arrays and use them in one `for` statement:
+
+``` java
+for (int value : new Merge<>(Arrays.asList(1, 2, 3), Arrays.asList(4, 6, 6)))
+```
+
 # Data converters and primitive arrays
 
 Converters are inspired by Java 8 data streams. Here is how they look like:
 
 ``` java
-    int[] values = stream(Arrays.asList(1, 2, 3))               // Iterable<Integer> at this point
-        .collect(toPrimitiveIntegerArray())
+int[] values = stream(Arrays.asList(1, 2, 3))   // Iterable<Integer> at this point
+    .collect(toPrimitiveIntegerArray())
 ```
 
 You can write your own converters if you wish - just implement a converting function and pass it to `Stream.convert`.
@@ -100,8 +110,8 @@ To convert a primitive array into an iterable stream just call one method.
 Call two methods to convert them into an immutable parcelable list.
 
 ``` java
-    SolidList<Byte> list = Bytes.bytes(new byte[]{1, 2, 3})     // Iterable<Byte>
-        .toSolidList();
+SolidList<Byte> list = Bytes.bytes(new byte[]{1, 2, 3})     // Iterable<Byte>
+    .toSolidList();
 ```
 
 Easy.
@@ -109,8 +119,8 @@ Easy.
 Want to convert them back?
 
 ``` java
-    byte[] values = stream(list)            // Iterable<Byte>
-        .convert(toPrimitiveByteArray());
+byte[] values = stream(list)            // Iterable<Byte>
+    .convert(toPrimitiveByteArray());
 ```
 
 A piece of cake.
@@ -118,17 +128,17 @@ A piece of cake.
 Want to join two primitive arrays?
 
 ``` java
-    byte[] joined = Bytes.bytes(new byte[]{1, 2, 3})
-        .merge(Bytes.bytes(new byte[]{4, 5, 6}))
-        .collect(toPrimitiveByteArray());
+byte[] joined = Bytes.bytes(new byte[]{1, 2, 3})
+    .merge(Bytes.bytes(new byte[]{4, 5, 6}))
+    .collect(toPrimitiveByteArray());
 ```
 
 Remove a value from a primitive array?
 
 ``` java
-    byte[] array_1_3 = Bytes.bytes(new byte[]{1, 2, 3})
-        .without((byte)2)
-        .collect(toPrimitiveByteArray());
+byte[] array_1_3 = Bytes.bytes(new byte[]{1, 2, 3})
+    .without((byte)2)
+    .collect(toPrimitiveByteArray());
 ```
 
 And so on. The amount of flexibility that iterable streams provide is hard to get at the
@@ -147,17 +157,17 @@ and split the result into three parts: items that has been found in both lists, 
 and a stream of items that are only in the second list.
 
 ``` java
-    StreamComparison<Integer> comparison = new StreamComparison<>(Arrays.asList(1, 2, 3), Arrays.asList(3, 4, 5));
-    comparison.both(); // 3
-    comparison.first(); // 1, 2
-    comparison.second(); // 4, 5
+StreamComparison<Integer> comparison = new StreamComparison<>(Arrays.asList(1, 2, 3), Arrays.asList(3, 4, 5));
+comparison.both(); // 3
+comparison.first(); // 1, 2
+comparison.second(); // 4, 5
 ```
 
 And there is one tiny utility class that joins results into one iterable stream:
 
 ``` java
-    for (int i : new ListUpdate(comparison))
-        // 3, 4, 5
+for (int i : new ListUpdate(comparison))
+    // 3, 4, 5
 ```
 
 There is also a version of this algorithm that allows to compare two streams of different data types,
