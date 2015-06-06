@@ -5,7 +5,7 @@ Solid is an Android library for data handling.
 
 It provides:
 
-* `SolidList` and `SolidMultimap` - immutable, parcelable list and multimap. Multimap allows to build
+* `SolidList` and `SolidMultimap` - immutable, parcelable collections. Multimap allows to build
 values that are grouped by some key.
 
 * Lightweight and composable **data streams**.
@@ -18,7 +18,7 @@ values that are grouped by some key.
 Just describe what you want with a real use case. I do not promise that I will implement
 *anything* you wish, but if your need fits into the library nicely, I will add it for sure.
 
-# Usage
+### Usage
 
 ``` groovy
 dependencies {
@@ -43,7 +43,7 @@ and threads, and it can be automatically saved into an activity/fragment `Bundle
 
 My typical usage for `SolidList` is to pass around a list of objects that has been created with *AutoParcel*.
 
-## `SolidList` and `SolidMultimap` - details
+### `SolidList` and `SolidMultimap` - details
 
 Usage of `SolidList` is mostly identical to `ArrayList`, so I do not think that any docs are needed.
 [SolidList](https://github.com/konmik/solid/blob/master/solid/src/main/java/solid/collections/SolidList.java)
@@ -96,7 +96,7 @@ For a list of stream operators see: [Stream.java](https://github.com/konmik/soli
 This list is not so big right now but, and as I already said, file an issue! :) I don't want to bloat this library with methods
 that will not be used by anyone, this is why I need your help.
 
-## Non-streaming usage
+### Non-streaming usage
 
 All features in this library can be used without streams.
 
@@ -119,7 +119,7 @@ int[] values = stream(asList(1, 2, 3))   // Iterable<Integer> at this point
     .collect(toPrimitiveIntegerArray())
 ```
 
-You can write your own converters if you wish - just implement a converting function and pass it to `Stream.convert`.
+You can write your own converters if you wish - just implement a converting function and pass it to `Stream.collect`.
 
 To convert a primitive array into an iterable stream just call one method.
 Call two methods to convert them into an immutable parcelable list.
@@ -135,7 +135,7 @@ Want to convert them back?
 
 ``` java
 byte[] values = stream(list)            // Iterable<Byte>
-    .convert(toPrimitiveByteArray());
+    .collect(toPrimitiveByteArray());
 ```
 
 A piece of cake.
@@ -168,8 +168,10 @@ One of the most annoying problems for me was a convenient way to compare a list 
 with a new list of items that has been changed by a user.
 
 So, `StreamComparison` class provides a way to compare two `Iterable`s (lists, collections, iterable streams, etc)
-and split the result into three parts: items that has been found in both lists, items that are only in the old list
-and a stream of items that are only in the second list.
+and split the result into three streams of items that are:
+* in both lists,
+* only in the fist list,
+* only in the second list.
 
 ``` java
 StreamComparison<Integer> comparison = new StreamComparison<>(asList(1, 2, 3), asList(3, 4, 5));
@@ -178,7 +180,7 @@ comparison.first(); // 1, 2
 comparison.second(); // 4, 5
 ```
 
-And there is one tiny utility class that joins results into one iterable stream:
+And there is one tiny utility class that joins results of `both()` and `second()` into one iterable stream:
 
 ``` java
 for (int i : new ListUpdate(comparison))
