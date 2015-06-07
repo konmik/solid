@@ -1,6 +1,5 @@
 package solid.stream;
 
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -27,7 +26,7 @@ public abstract class Stream<T> implements Iterable<T> {
      * @return a {@link Stream} that represents source array's elements
      */
     public static <T> Stream<T> stream(T[] array) {
-        return new Copy<>(Arrays.asList(array));
+        return new CopyArray<>(array);
     }
 
     /**
