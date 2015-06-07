@@ -32,7 +32,7 @@ public class SolidList<T> extends Stream<T> implements List<T>, Parcelable {
      * @param array a source of data for {@link SolidList}.
      */
     public SolidList(T[] array) {
-        this(Arrays.asList(array));
+        this.array = Arrays.asList(array);
     }
 
     /**
