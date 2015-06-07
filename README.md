@@ -17,7 +17,7 @@ It provides:
 
 *Solid* library adheres to the philosophy: "transform it as a stream, keep it as immutable".
 Thus allowing to pass collections around without fear chat they can be changed by another part
-of an application, while keeping the ability to transform data in a convenient way.
+of the application, while keeping the ability to transform data in a convenient way.
 
 ### Include
 
@@ -43,14 +43,14 @@ If you're not a big fan of immutability then you should be.
 I recommend reading this library description to get started with immutability: [AutoValue](https://github.com/google/auto/tree/master/value).
 The library has a very good Android port with `Parcelable` implementation: [AutoParcel](https://github.com/frankiesardo/auto-parcel).
 
-There is a yet another library that makes a good combo with `SolidList` - [Icepick](https://github.com/frankiesardo/icepick).
+There is yet another library that makes a good combo with `SolidList` - [Icepick](https://github.com/frankiesardo/icepick).
 `SolidList` can be safely passed between activities, services, intents
 and threads, and it can be automatically saved into an activity/fragment `Bundle` with just one annotation. Amazing.
 
 ### Details
 
 `SolidList` is just a decorator around `ArrayList`, so I do not think that any docs are needed.
-It implements `List<T>` interface throwing `UnsupportedOperationException` on each method that tries to modify contents data.
+It just implements `List<T>` interface and throws `UnsupportedOperationException` on each method that tries to modify it.
 [SolidList](https://github.com/konmik/solid/blob/master/solid/src/main/java/solid/collections/SolidList.java)
 
 If you're familiar with Guava's `ImmutableList` - there is a difference that is good to know. `SolidList` does
@@ -117,11 +117,11 @@ Despite of there are some debates on *what* is OOP, the possibility of using ope
 
 # Data converters and primitive arrays
 
-Converters are inspired by Java 8 data streams. Here is how they look like:
+Here is how converters look like:
 
 ``` java
 int[] values = stream(asList(1, 2, 3))   // Iterable<Integer> at this point
-    .collect(toPrimitiveIntegerArray())
+    .collect(toPrimitiveIntegerArray())  // int[]
 ```
 
 Currently Solid supports conversion of these primitive types: `byte`, `double`, `float`, `int`, `long`.
@@ -134,7 +134,7 @@ To convert a primitive array into an iterable stream just call one method.
 Call two methods to convert them into an immutable parcelable list.
 
 ``` java
-SolidList<Byte> list = bytes(new byte[]{1, 2, 3})     // Iterable<Byte>
+SolidList<Byte> list = bytes(new byte[]{1, 2, 3})
     .toSolidList();
 ```
 
@@ -165,7 +165,7 @@ byte[] array_1_3 = bytes(new byte[]{1, 2, 3})
     .collect(toPrimitiveByteArray());
 ```
 
-And so on. The amount of flexibility that iterable streams provide is hard to get at the
+And so on. The amount of flexibility that iterable streams and converters provide is hard to get at the
 beginning but as long as you use them, more and more ideas come into mind.
 
 # Data analysis (experimental)
