@@ -39,13 +39,18 @@ public class SolidList<T> implements List<T>, Parcelable {
      * @param iterable a source of data for the new {@link SolidList}.
      */
     public SolidList(Iterable<T> iterable) {
-        if (iterable instanceof Collection)
-            array = new ArrayList<>((Collection<T>)iterable);
-        else {
-            array = new ArrayList<>();
-            for (T value : iterable)
-                array.add(value);
-        }
+        array = new ArrayList<>();
+        for (T value : iterable)
+            array.add(value);
+    }
+
+    /**
+     * Creates a new {@link SolidList} from a {@link Collection}.
+     *
+     * @param collection a source of data for the new {@link SolidList}.
+     */
+    public SolidList(Collection<T> collection) {
+        array = new ArrayList<>(collection);
     }
 
     /**

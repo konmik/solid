@@ -68,7 +68,7 @@ are much faster and take less memory. Unfortunately, we don't have high-performa
 so here is an alternative. My tests say that this implementation is about 5 times faster than *RxJava* and takes about
 5 times less memory the same time.
 
-These (*Iterable*) streams are passive and do not emit items, so they are greatly simplified.
+These (*Iterable*) streams are passive and do not emit items, they are also not thread-safe, so they are greatly simplified.
 If you're stuck with studying *RxJava* you may try to understand these iterable streams first.
 
 You can take any `Iterable` or an array and turn it into a set of chained methods
@@ -83,7 +83,7 @@ stream(asList(1, 3, 2))                              // Iterable<Integer>
 
 This code will result in a `List<String>` which contains `"1"` and `"2"` values.
 
-Another example: we need to sort some items by name and then return their ids.
+Another example: we need to sort some items by name and then return their ids in a `SolidList`.
 
 ``` java
 stream(namedEntities)
@@ -105,7 +105,7 @@ that will not be used by anyone, this is why I need your help.
 
 ### Non-streaming usage
 
-All features in this library can be used without chaining operators.
+All features of this library can be used without chaining operators.
 
 For example, you can merge two arrays and use them in one `for` statement using `Merge` class that is internally used
 to back `Stream.merge(...)` operator:
@@ -126,7 +126,11 @@ int[] values = stream(asList(1, 2, 3))   // Iterable<Integer> at this point
     .collect(toPrimitiveIntegerArray())
 ```
 
-You can write your own converters if you wish - just implement a converting function and pass it to `Stream.collect`.
+Currently Solid supports conversion of these primitive types: `byte`, `double`, `float`, `int`, `long`.
+
+You can write your own converters if you wish - just implement a converting function and pass it into `Stream.collect()`.
+
+*Solid* converters are quite powerful:
 
 To convert a primitive array into an iterable stream just call one method.
 Call two methods to convert them into an immutable parcelable list.
@@ -196,5 +200,5 @@ for (int i : new ListUpdate(comparison))
 
 There is also a version of this algorithm that allows to compare two streams of different data types,
 in example if you have a database entity that corresponds to a network entity that has been received from a server,
-and you need to compare two lists to update your database.
+and you need to compare two lists to update your database. See `StreamComparisonSeparate` for details.
 

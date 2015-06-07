@@ -22,7 +22,8 @@ public class SolidListTest {
     @Test
     public void testConstructors() throws Exception {
         assert123(new SolidList<>(new Integer[]{1, 2, 3}));
-        assert123(new SolidList<>(Arrays.asList(new Integer[]{1, 2, 3})));
+        assert123(new SolidList<>((Iterable<Integer>)Arrays.asList(1, 2, 3)));
+        assert123(new SolidList<>(Arrays.asList(1, 2, 3)));
         assert123(SolidList.copyOf(new Integer[]{1, 2, 3}));
         assert123(SolidList.copyOf(Arrays.asList(new Integer[]{1, 2, 3})));
 
