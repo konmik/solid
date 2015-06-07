@@ -5,8 +5,7 @@ Solid is an Android library for data handling.
 
 It provides:
 
-* `SolidList` and `SolidMultimap` - immutable, parcelable collections. Multimap allows to build
-values that are grouped by some key.
+* `SolidList` - an immutable, parcelable collection.
 
 * Lightweight and composable **data streams**.
 
@@ -24,7 +23,7 @@ of an application, while keeping the ability to transform data in a convenient w
 
 ``` groovy
 dependencies {
-    compile 'info.android15.solid:solid:1.0.4'
+    compile 'info.android15.solid:solid:1.0.5'
 }
 ```
 
@@ -34,7 +33,7 @@ File an issue and there is a big probability that I will add more features.
 Just describe what you want with a real use case. I do not promise that I will implement
 *anything* you wish, but if your need fits into the library nicely, I will add it for sure.
 
-# `SolidList` and `SolidMultimap`
+# `SolidList`
 
 If you're a big fan of immutable data structures like me then you also probably miss `Parcelable` interface
 implementation in *Guava*'s `ImmutableList`.
@@ -44,9 +43,8 @@ If you're not a big fan of immutability then you should be.
 I recommend reading this library description to get started with immutability: [AutoValue](https://github.com/google/auto/tree/master/value).
 The library has a very good Android port with `Parcelable` implementation: [AutoParcel](https://github.com/frankiesardo/auto-parcel).
 
-There is also a library that makes a good combo with `SolidList` - [Icepick](https://github.com/frankiesardo/icepick).
-
-*Icepick* + `SolidList` rock. `SolidList` can be safely passed between activities, services, intents
+There is a yet another library that makes a good combo with `SolidList` - [Icepick](https://github.com/frankiesardo/icepick).
+`SolidList` can be safely passed between activities, services, intents
 and threads, and it can be automatically saved into an activity/fragment `Bundle` with just one annotation. Amazing.
 
 ### Details
@@ -58,8 +56,8 @@ It implements `List<T>` interface throwing `UnsupportedOperationException` on ea
 If you're familiar with Guava's `ImmutableList` - there is a difference that is good to know. `SolidList` does
 not have a support for *Builder* pattern - use an `ArrayList` or `Stream` to prepare it.
 
-`SolidMultimap` is a shortcut for `SolidList<Pair<K, SolidList<V>>>` with a set of handy construction methods.
-[SolidMultimap](https://github.com/konmik/solid/blob/master/solid/src/main/java/solid/collections/SolidMultimap.java)
+Experimental `SolidMultimap` is a shortcut for `SolidList<Pair<K, SolidList<V>>>` with a set of handy construction methods.
+[SolidMultimap](https://github.com/konmik/solid/blob/master/solid/src/main/java/solid/experimental/collections/SolidMultimap.java)
 
 # Lightweight data streams
 
@@ -143,10 +141,10 @@ SolidList<Byte> list = bytes(new byte[]{1, 2, 3})     // Iterable<Byte>
 Easy.
 
 Want to convert them back?
+`SolidList` is a subclass of `Stream`, so you don't even have to write `stream(list)` here. ;)
 
 ``` java
-byte[] values = stream(list)            // Iterable<Byte>
-    .collect(toPrimitiveByteArray());
+byte[] values = list.collect(toPrimitiveByteArray());
 ```
 
 A piece of cake.

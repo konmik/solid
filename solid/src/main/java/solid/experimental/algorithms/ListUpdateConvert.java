@@ -2,7 +2,7 @@ package solid.experimental.algorithms;
 
 import java.util.Iterator;
 
-import solid.collections.Pair;
+import solid.experimental.collections.Pair;
 import solid.functions.SolidAction2;
 import solid.functions.SolidFunc1;
 import solid.stream.Stream;

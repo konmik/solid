@@ -1,4 +1,4 @@
-package solid.collections;
+package solid.experimental.collections;
 
 import android.os.Parcel;
 
@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import solid.collections.SolidList;
 import solid.functions.SolidFunc1;
 
 /**

@@ -3,7 +3,7 @@ package solid.experimental.algorithms;
 import java.util.ArrayList;
 import java.util.List;
 
-import solid.collections.Pair;
+import solid.experimental.collections.Pair;
 import solid.functions.SolidFunc2;
 import solid.stream.Copy;
 import solid.stream.Stream;

@@ -5,7 +5,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.Collections;
 
-import solid.collections.Pair;
+import solid.experimental.collections.Pair;
 import solid.functions.SolidAction2;
 import solid.functions.SolidFunc1;
 import solid.stream.Stream;

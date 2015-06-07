@@ -1,4 +1,4 @@
-package solid.collections;
+package solid.experimental.collections;
 
 import org.junit.Test;
 

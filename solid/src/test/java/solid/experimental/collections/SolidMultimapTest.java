@@ -1,4 +1,4 @@
-package solid.collections;
+package solid.experimental.collections;
 
 import org.junit.Test;
 
@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import solid.experimental.collections.Pair;
+import solid.experimental.collections.SolidMultimap;
 import solid.functions.SolidFunc1;
 import test_utils.MockParcel;
 

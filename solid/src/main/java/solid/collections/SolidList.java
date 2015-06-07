@@ -11,13 +11,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import solid.stream.Stream;
+
 /**
  * Represents an immutable parcelable list.
  * This is basically a decorator around ArrayList.
  *
  * @param <T> A type of data in the list.
  */
-public class SolidList<T> implements List<T>, Parcelable {
+public class SolidList<T> extends Stream<T> implements List<T>, Parcelable {
 
     private static final SolidList<Object> EMPTY = new SolidList<>(new Object[0]);
     private static final ClassLoader CLASS_LOADER = SolidList.class.getClassLoader();

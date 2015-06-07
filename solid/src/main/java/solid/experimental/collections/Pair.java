@@ -1,4 +1,4 @@
-package solid.collections;
+package solid.experimental.collections;
 
 import android.os.Parcel;
 import android.os.Parcelable;

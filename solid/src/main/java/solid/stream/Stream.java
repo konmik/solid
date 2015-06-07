@@ -22,8 +22,8 @@ public abstract class Stream<T> implements Iterable<T> {
      * Converts a non-primitive array into a {@link Stream}.
      *
      * @param array array to convert.
-     * @param <T>   a type of array items
-     * @return a {@link Stream} that represents source array's elements
+     * @param <T>   a type of array items.
+     * @return a {@link Stream} that represents source array's elements.
      */
     public static <T> Stream<T> stream(T[] array) {
         return new CopyArray<>(array);
