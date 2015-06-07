@@ -77,7 +77,7 @@ public abstract class Stream<T> implements Iterable<T> {
      * @param <R>     a type of items new stream returns.
      * @return a constructed stream.
      */
-    public <R> Stream<R> lift(SolidFunc1<Stream<T>, Stream<R>> factory) {
+    public <R> Stream<R> compose(SolidFunc1<Stream<T>, Stream<R>> factory) {
         return factory.call(this);
     }
 
@@ -136,7 +136,7 @@ public abstract class Stream<T> implements Iterable<T> {
     }
 
     /**
-     * Adds items from another stream at the end of the current stream.
+     * Adds items from another stream to the end of the current stream.
      *
      * @param with an {@link Iterable} that should be used to emit items after items in the current stream ran out.
      * @return a new stream that contains items from both streams.
@@ -197,7 +197,7 @@ public abstract class Stream<T> implements Iterable<T> {
      * The operator creates a list of all items internally.
      *
      * @param comparator a comparator to apply.
-     * @return
+     * @return a new stream that contains all items of the current stream in sorted order.
      */
     public Stream<T> sort(Comparator<T> comparator) {
         return new Sort<>(this, comparator);

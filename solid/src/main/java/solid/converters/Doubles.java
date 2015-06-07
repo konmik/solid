@@ -9,6 +9,12 @@ public class Doubles extends Stream<Double> {
 
     private double[] doubles;
 
+    /**
+     * Creates a new stream of {@link Double} type that contains all items of a given array.
+     *
+     * @param doubles an array to get items from.
+     * @return a new stream of {@link Double} type that contains all items of a given array.
+     */
     public static Stream<Double> doubles(double[] doubles) {
         return new Doubles(doubles);
     }

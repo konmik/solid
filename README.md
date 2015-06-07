@@ -14,13 +14,9 @@ values that are grouped by some key.
 
 * Data analysis **algorithms** (experimental).
 
-*Under development* - file an issue and there is a big probability that I will add more features.
-Just describe what you want with a real use case. I do not promise that I will implement
-*anything* you wish, but if your need fits into the library nicely, I will add it for sure.
-
 ### Philosophy
 
-*Solid* library adheres to the philosophy: "transform it in a stream, keep it immutable".
+*Solid* library adheres to the philosophy: "transform it as a stream, keep it as immutable".
 Thus allowing to pass collections around without fear chat they can be changed by another part
 of an application, while keeping the ability to transform data in a convenient way.
 
@@ -28,9 +24,15 @@ of an application, while keeping the ability to transform data in a convenient w
 
 ``` groovy
 dependencies {
-    compile 'info.android15.solid:solid:1.0.1'
+    compile 'info.android15.solid:solid:1.0.4'
 }
 ```
+
+### Further development
+
+File an issue and there is a big probability that I will add more features.
+Just describe what you want with a real use case. I do not promise that I will implement
+*anything* you wish, but if your need fits into the library nicely, I will add it for sure.
 
 # `SolidList` and `SolidMultimap`
 
@@ -44,12 +46,13 @@ The library has a very good Android port with `Parcelable` implementation: [Auto
 
 There is also a library that makes a good combo with `SolidList` - [Icepick](https://github.com/frankiesardo/icepick).
 
-*Icepick* + `SolidList` rock. `SolidList` can be safely passed between activities, different objects, intents
+*Icepick* + `SolidList` rock. `SolidList` can be safely passed between activities, services, intents
 and threads, and it can be automatically saved into an activity/fragment `Bundle` with just one annotation. Amazing.
 
-### `SolidList` and `SolidMultimap` - details
+### Details
 
-Usage of `SolidList` is mostly identical to `ArrayList`, so I do not think that any docs are needed.
+`SolidList` is just a decorator around `ArrayList`, so I do not think that any docs are needed.
+It implements `List<T>` interface throwing `UnsupportedOperationException` on each method that tries to modify contents data.
 [SolidList](https://github.com/konmik/solid/blob/master/solid/src/main/java/solid/collections/SolidList.java)
 
 If you're familiar with Guava's `ImmutableList` - there is a difference that is good to know. `SolidList` does
@@ -62,7 +65,8 @@ not have a support for *Builder* pattern - use an `ArrayList` or `Stream` to pre
 
 These streams are inspired by [RxJava](https://github.com/ReactiveX/RxJava), but
 are much faster and take less memory. Unfortunately, we don't have high-performance Java 8 data streams on Android,
-so here is an alternative. My tests say that this implementation is about 7 times faster than *RxJava*.
+so here is an alternative. My tests say that this implementation is about 5 times faster than *RxJava* and takes about
+5 times less memory the same time.
 
 These (*Iterable*) streams are passive and do not emit items, so they are greatly simplified.
 If you're stuck with studying *RxJava* you may try to understand these iterable streams first.
@@ -101,7 +105,7 @@ that will not be used by anyone, this is why I need your help.
 
 ### Non-streaming usage
 
-All features in this library can be used without streams.
+All features in this library can be used without chaining operators.
 
 For example, you can merge two arrays and use them in one `for` statement using `Merge` class that is internally used
 to back `Stream.merge(...)` operator:
@@ -111,7 +115,7 @@ for (int value : new Merge<>(asList(1, 2, 3), asList(4, 5, 6)))
     ...
 ```
 
-This way you can be an OOP purist and still be able to use all features of the library.
+Despite of there are some debates on *what* is OOP, the possibility of using operators as objects is here.
 
 # Data converters and primitive arrays
 
@@ -147,7 +151,7 @@ Want to join two primitive arrays?
 
 ``` java
 byte[] joined = bytes(new byte[]{1, 2, 3})
-    .merge(Bytes.bytes(new byte[]{4, 5, 6}))
+    .merge(bytes(new byte[]{4, 5, 6}))
     .collect(toPrimitiveByteArray());
 ```
 
@@ -164,7 +168,7 @@ beginning but as long as you use them, more and more ideas come into mind.
 
 # Data analysis (experimental)
 
-Currently there is only one algorithm in two variations that is present in the library.
+Currently there is only one algorithm in two variations that presents in the library.
 Probably I will find another place for such things.
 
 One of the most annoying problems for me was a convenient way to compare a list of items

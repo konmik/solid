@@ -48,7 +48,7 @@ public class StreamTest {
     @Test
     public void testLift() throws Exception {
         assertIterableEquals(asList(1, 3, 6), Stream.stream(asList(1, 2, 3))
-            .lift(new SolidFunc1<Stream<Integer>, Stream<Integer>>() {
+            .compose(new SolidFunc1<Stream<Integer>, Stream<Integer>>() {
                 @Override
                 public Stream<Integer> call(final Stream<Integer> value) {
                     return new Stream<Integer>() {

@@ -9,6 +9,12 @@ public class Floats extends Stream<Float> {
 
     private float[] floats;
 
+    /**
+     * Creates a new stream of {@link Float} type that contains all items of a given array.
+     *
+     * @param floats an array to get items from.
+     * @return a new stream of {@link Float} type that contains all items of a given array.
+     */
     public static Stream<Float> floats(float[] floats) {
         return new Floats(floats);
     }

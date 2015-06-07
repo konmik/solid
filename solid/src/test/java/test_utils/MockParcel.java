@@ -80,6 +80,6 @@ public class MockParcel {
                 position = ((Integer)invocation.getArguments()[0]);
                 return null;
             }
-        }).when(mockedParcel).setDataPosition(anyInt());
+        }).when(mockedParcel).setDataPosition(0);
     }
 }

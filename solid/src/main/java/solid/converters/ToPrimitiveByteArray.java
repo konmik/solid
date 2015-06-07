@@ -9,6 +9,12 @@ public class ToPrimitiveByteArray implements SolidFunc1<Iterable<Byte>, byte[]> 
 
     private static final SolidFunc1<Iterable<Byte>, byte[]> TO_PRIMITIVE_BYTE_ARRAY = new ToPrimitiveByteArray();
 
+    /**
+     * Returns a method that can be used with {@link solid.stream.Stream#collect(SolidFunc1)}
+     * to convert an iterable stream of {@link Byte} type into a primitive byte[] array.
+     *
+     * @return a method that converts an iterable stream of {@link Byte} type into a primitive byte[] array.
+     */
     public static SolidFunc1<Iterable<Byte>, byte[]> toPrimitiveByteArray() {
         return TO_PRIMITIVE_BYTE_ARRAY;
     }
