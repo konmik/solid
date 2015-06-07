@@ -24,7 +24,7 @@ public class SolidList<T> extends Stream<T> implements List<T>, Parcelable {
     private static final SolidList<Object> EMPTY = new SolidList<>(new Object[0]);
     private static final ClassLoader CLASS_LOADER = SolidList.class.getClassLoader();
 
-    private final List<T> array;
+    private final ArrayList<T> array;
 
     /**
      * Creates and returns a new {@link SolidList} from an array.
@@ -32,7 +32,7 @@ public class SolidList<T> extends Stream<T> implements List<T>, Parcelable {
      * @param array a source of data for {@link SolidList}.
      */
     public SolidList(T[] array) {
-        this.array = Arrays.asList(array);
+        this.array = new ArrayList<>(Arrays.asList(array));
     }
 
     /**
