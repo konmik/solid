@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -88,9 +89,7 @@ public class SolidList<T> implements List<T>, Parcelable {
      * @return a new {@link SolidList} that is initialized with the given item.
      */
     public static <T> SolidList<T> single(T item) {
-        ArrayList<T> builder = new ArrayList<>(1);
-        builder.add(item);
-        return new SolidList<>(builder);
+        return new SolidList<>(Collections.singletonList(item));
     }
 
     @Deprecated

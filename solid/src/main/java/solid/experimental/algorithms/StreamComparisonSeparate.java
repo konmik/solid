@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import solid.collections.Pair;
-import solid.functions.SolidConst;
 import solid.functions.SolidFunc2;
 import solid.stream.Copy;
 import solid.stream.Stream;
@@ -20,13 +19,18 @@ public class StreamComparisonSeparate<T1, T2> {
     private Iterable<T2> source2;
     private SolidFunc2<T1, T2, Boolean> comparator;
 
-    private boolean done;
+    private boolean analyzed;
     private List<Pair<T1, T2>> both = new ArrayList<>();
     private List<T1> only1 = new ArrayList<>();
     private List<T2> only2 = new ArrayList<>();
 
     public StreamComparisonSeparate(Iterable<T1> source1, Iterable<T2> source2) {
-        this(source1, source2, SolidConst.<T1, T2>equalsComparator());
+        this(source1, source2, new SolidFunc2<T1, T2, Boolean>() {
+            @Override
+            public Boolean call(T1 value1, T2 value2) {
+                return value1 == null ? value2 == null : value1.equals(value2);
+            }
+        });
     }
 
     public StreamComparisonSeparate(Iterable<T1> source1, Iterable<T2> source2, SolidFunc2<T1, T2, Boolean> comparator) {
@@ -51,7 +55,7 @@ public class StreamComparisonSeparate<T1, T2> {
     }
 
     private void analyze() {
-        if (!done) {
+        if (!analyzed) {
             only2 = new Copy<>(source2).toList();
 
             for (T1 o : source1) {
@@ -68,7 +72,7 @@ public class StreamComparisonSeparate<T1, T2> {
                     only1.add(o);
             }
 
-            done = true;
+            analyzed = true;
         }
     }
 }

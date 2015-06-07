@@ -2,6 +2,7 @@ package solid.converters;
 
 import java.util.Iterator;
 
+import solid.stream.ReadOnlyIterator;
 import solid.stream.Stream;
 
 public class Integers extends Stream<Integer> {

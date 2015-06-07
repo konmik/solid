@@ -11,4 +11,9 @@ public class EmptyTest {
     public void testIterator() throws Exception {
         assertIterableEquals(Collections.emptyList(), new Empty<>());
     }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void testException() throws Exception {
+        new Empty<>().iterator().next();
+    }
 }

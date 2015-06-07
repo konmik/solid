@@ -10,7 +10,7 @@ values that are grouped by some key.
 
 * Lightweight and composable **data streams**.
 
-* Primitive array / Wrapped array **converters**.
+* Primitive array / wrapped array **converters**.
 
 * Data analysis **algorithms** (experimental).
 
@@ -18,11 +18,17 @@ values that are grouped by some key.
 Just describe what you want with a real use case. I do not promise that I will implement
 *anything* you wish, but if your need fits into the library nicely, I will add it for sure.
 
-### Usage
+### Philosophy
+
+*Solid* library adheres to the philosophy: "transform it in a stream, keep it immutable".
+Thus allowing to pass collections around without fear chat they can be changed by another part
+of an application, while keeping the ability to transform data in a convenient way.
+
+### Include
 
 ``` groovy
 dependencies {
-    compile 'info.android15.solid:solid:1.0.0'
+    compile 'info.android15.solid:solid:1.0.1'
 }
 ```
 
@@ -33,15 +39,13 @@ implementation in *Guava*'s `ImmutableList`.
 
 If you're not a big fan of immutability then you should be.
 
-I recommend reading this library description: [AutoValue](https://github.com/google/auto/tree/master/value).
+I recommend reading this library description to get started with immutability: [AutoValue](https://github.com/google/auto/tree/master/value).
 The library has a very good Android port with `Parcelable` implementation: [AutoParcel](https://github.com/frankiesardo/auto-parcel).
 
 There is also a library that makes a good combo with `SolidList` - [Icepick](https://github.com/frankiesardo/icepick).
 
-*AutoParcel* + *Icepick* + `SolidList` rock. `SolidList` can be safely passed between activities / classes / intents
+*Icepick* + `SolidList` rock. `SolidList` can be safely passed between activities, different objects, intents
 and threads, and it can be automatically saved into an activity/fragment `Bundle` with just one annotation. Amazing.
-
-My typical usage for `SolidList` is to pass around a list of objects that has been created with *AutoParcel*.
 
 ### `SolidList` and `SolidMultimap` - details
 
@@ -49,8 +53,7 @@ Usage of `SolidList` is mostly identical to `ArrayList`, so I do not think that 
 [SolidList](https://github.com/konmik/solid/blob/master/solid/src/main/java/solid/collections/SolidList.java)
 
 If you're familiar with Guava's `ImmutableList` - there is a difference that is good to know. `SolidList` does
-not have a support for *Builder* pattern - use an `ArrayList` or `Stream` to prepare it. `ImmutableList` uses
-array internally, so there is no reason to complicate stuff.
+not have a support for *Builder* pattern - use an `ArrayList` or `Stream` to prepare it.
 
 `SolidMultimap` is a shortcut for `SolidList<Pair<K, SolidList<V>>>` with a set of handy construction methods.
 [SolidMultimap](https://github.com/konmik/solid/blob/master/solid/src/main/java/solid/collections/SolidMultimap.java)
@@ -65,10 +68,10 @@ These (*Iterable*) streams are passive and do not emit items, so they are greatl
 If you're stuck with studying *RxJava* you may try to understand these iterable streams first.
 
 You can take any `Iterable` or an array and turn it into a set of chained methods
-(all examples are with IntelliJ IDEA code folding):
+(all examples are with IntelliJ IDEA code folding on):
 
 ``` java
-stream(asList(1, 2, 3))                              // Iterable<Integer>
+stream(asList(1, 3, 2))                              // Iterable<Integer>
     .filter((it) -> { return it < 3; })              // only 1 and 2 items are not filtered
     .map((it) -> { return Integer.toString(it); })   // convert Integer values to String values
     .toList();
@@ -76,7 +79,7 @@ stream(asList(1, 2, 3))                              // Iterable<Integer>
 
 This code will result in a `List<String>` which contains `"1"` and `"2"` values.
 
-Here is another example. We need to sort some items by name and then return their ids:
+Another example: we need to sort some items by name and then return their ids.
 
 ``` java
 stream(namedEntities)
@@ -90,7 +93,7 @@ so here is a very lightweight and convenient implementation, especially for need
 
 Here is another tip: any stream in this library implements `Iterable` itself, so you can put it in a temporary variable and
 use it in a `for` statement later. Streams mostly are calculated lazily, so you can save some CPU cycles and memory
-using them directly, without converting to a `List` first.
+using them directly, without converting to `List` first.
 
 For a list of stream operators see: [Stream.java](https://github.com/konmik/solid/blob/master/solid/src/main/java/solid/stream/Stream.java)
 This list is not so big right now but, and as I already said, file an issue! :) I don't want to bloat this library with methods

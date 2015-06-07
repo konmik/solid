@@ -2,7 +2,6 @@ package solid.stream;
 
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
 import solid.collections.SolidList;
@@ -58,6 +57,17 @@ public abstract class Stream<T> implements Iterable<T> {
      */
     public SolidList<T> toSolidList() {
         return collect(ToSolidList.<T>toSolidList());
+    }
+
+    /**
+     * Converts the current stream into any value with a given method.
+     *
+     * @param collector a method that should be used to return value.
+     * @param <R>       a type of value to return.
+     * @return a value that has been returned by the given collecting method.
+     */
+    public <R> R collect(SolidFunc1<Iterable<T>, R> collector) {
+        return collector.call(this);
     }
 
     /**
@@ -147,6 +157,16 @@ public abstract class Stream<T> implements Iterable<T> {
     }
 
     /**
+     * Creates a new stream that contains elements of the current stream with a given number of them skipped from the beginning.
+     *
+     * @param count a number items to skip.
+     * @return a new stream that contains elements of the current stream with a given number of them skipped from the beginning.
+     */
+    public Stream<T> skip(int count) {
+        return new Skip<>(this, count);
+    }
+
+    /**
      * Returns a new stream that filters out duplicate items off the current stream.
      * <p/>
      * This operator keeps a list of all items that has been passed to
@@ -170,8 +190,7 @@ public abstract class Stream<T> implements Iterable<T> {
      * @return the combined stream.
      */
     public Stream<T> mergeDistinct(Iterable<T> with) {
-        DistinctFilter<T> distinctFilter = new DistinctFilter<>();
-        return new Merge<>(new Filter<>(this, distinctFilter), (new Filter<>(with, distinctFilter)));
+        return new MergeDistinct<>(this, with);
     }
 
     /**
@@ -193,23 +212,5 @@ public abstract class Stream<T> implements Iterable<T> {
      */
     public Stream<T> reverse() {
         return new Reverse<>(this);
-    }
-
-    /**
-     * Converts the current stream into any value with a given method.
-     *
-     * @param collector a method that should be used to return value.
-     * @param <R>       a type of value to return.
-     * @return a value that has been returned by the given collecting method.
-     */
-    public <R> R collect(SolidFunc1<Iterable<T>, R> collector) {
-        return collector.call(this);
-    }
-
-    protected static abstract class ReadOnlyIterator<T> implements Iterator<T> {
-        @Override
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
     }
 }

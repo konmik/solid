@@ -109,6 +109,41 @@ public class SolidListTest {
         assertArrayEquals(new SolidList<>(new Integer[]{1, 2, 3}).toArray(new Integer[0]), new Integer[]{1, 2, 3});
     }
 
+    @Test
+    public void testParcelable() throws Exception {
+        SolidList<Integer> list1 = new SolidList<>(new Integer[]{0, 1, 2, 3, 1, 2, 3, 0});
+        assertEquals(list1, MockParcel.writeRead(list1, SolidList.CREATOR));
+    }
+
+    @Test
+    public void testEqualsHash() throws Exception {
+        SolidList<Integer> list1 = new SolidList<>(new Integer[]{0, 1, 2, 3, 1, 2, 3, 0});
+
+        SolidList<Integer> list2 = new SolidList<>(new Integer[]{0, 1, 2, 3, 1, 2, 3, 0});
+        assertTrue(list1.equals(list2));
+        assertEquals(list1.hashCode(), list2.hashCode());
+
+        SolidList<Integer> list3 = new SolidList<>(new Integer[]{0, 1, 2, 3, 1, 2, 3, 999});
+        assertFalse(list1.equals(list3));
+        assertNotEquals(list1.hashCode(), list3.hashCode());
+
+        //noinspection EqualsWithItself
+        assertTrue(SolidList.empty().equals(SolidList.empty()));
+    }
+
+    @Test
+    public void testToString() throws Exception {
+        assertEquals("SolidList{array=[1, 2, 3]}", new SolidList<>(new Integer[]{1, 2, 3}).toString());
+    }
+
+    @Test
+    public void testIterator() throws Exception {
+        ArrayList<Integer> target = new ArrayList<>();
+        for (int i : new SolidList<>(new Integer[]{1, 2, 3}))
+            target.add(i);
+        assert123(target);
+    }
+
     @Test(expected = UnsupportedOperationException.class)
     public void testClearThrows() throws Exception {
         new SolidList<>(new ArrayList<Integer>()).clear();
@@ -178,41 +213,6 @@ public class SolidListTest {
         ListIterator<Integer> iterator = new SolidList<>(Collections.singletonList(0)).listIterator();
         iterator.next();
         iterator.set(0);
-    }
-
-    @Test
-    public void testParcelable() throws Exception {
-        SolidList<Integer> list1 = new SolidList<>(new Integer[]{0, 1, 2, 3, 1, 2, 3, 0});
-        assertEquals(list1, MockParcel.writeRead(list1, SolidList.CREATOR));
-    }
-
-    @Test
-    public void testEqualsHash() throws Exception {
-        SolidList<Integer> list1 = new SolidList<>(new Integer[]{0, 1, 2, 3, 1, 2, 3, 0});
-
-        SolidList<Integer> list2 = new SolidList<>(new Integer[]{0, 1, 2, 3, 1, 2, 3, 0});
-        assertTrue(list1.equals(list2));
-        assertEquals(list1.hashCode(), list2.hashCode());
-
-        SolidList<Integer> list3 = new SolidList<>(new Integer[]{0, 1, 2, 3, 1, 2, 3, 999});
-        assertFalse(list1.equals(list3));
-        assertNotEquals(list1.hashCode(), list3.hashCode());
-
-        //noinspection EqualsWithItself
-        assertTrue(SolidList.empty().equals(SolidList.empty()));
-    }
-
-    @Test
-    public void testToString() throws Exception {
-        assertEquals("SolidList{array=[1, 2, 3]}", new SolidList<>(new Integer[]{1, 2, 3}).toString());
-    }
-
-    @Test
-    public void testIterator() throws Exception {
-        ArrayList<Integer> target = new ArrayList<>();
-        for (int i : new SolidList<>(new Integer[]{1, 2, 3}))
-            target.add(i);
-        assert123(target);
     }
 
     private void assert123(List<Integer> list) throws Exception {
