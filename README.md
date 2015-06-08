@@ -16,7 +16,7 @@ It provides:
 ### Philosophy
 
 *Solid* library adheres to the philosophy: "transform it as a stream, keep it as immutable".
-Thus allowing to pass collections around without fear chat they can be changed by another part
+Thus allowing to pass collections around without a fear that they can be changed by another part
 of the application, while keeping the ability to transform data in a convenient way.
 
 ### Include
