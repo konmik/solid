@@ -13,6 +13,8 @@ It provides:
 
 * Data analysis **algorithms** (experimental).
 
+* 55Kb jar
+
 ### Philosophy
 
 *Solid* library adheres to the philosophy: "transform it as a stream, keep it as immutable".
