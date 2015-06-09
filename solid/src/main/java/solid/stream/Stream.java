@@ -11,10 +11,10 @@ import solid.filters.NotEqualTo;
 import solid.functions.SolidFunc1;
 
 /**
- * This stream implementation is about 7 times faster than RxJava and requires less code to use.
- * It does not support multithreading, callbacks and error handling. This is why.
+ * This is a base stream class for implementation of iterable streams.
+ * It provides shortcuts for calling operators in a chaining manner.
  *
- * @param <T>
+ * @param <T> the type of object returned by the iterator.
  */
 public abstract class Stream<T> implements Iterable<T> {
 

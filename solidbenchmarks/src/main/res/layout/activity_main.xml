@@ -10,34 +10,12 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/log"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="RxJava" />
-
-        <TextView
-            android:id="@+id/rxJava"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Solid" />
-
-        <TextView
-            android:id="@+id/solid"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Plain" />
-
-        <TextView
-            android:id="@+id/plain"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:focusable="true"
+            android:selectAllOnFocus="true"
+            android:textIsSelectable="true" />
     </LinearLayout>
 
 </RelativeLayout>

@@ -64,7 +64,7 @@ Experimental `SolidMultimap` is a shortcut for `SolidList<Pair<K, SolidList<V>>>
 These streams are inspired by [RxJava](https://github.com/ReactiveX/RxJava), but
 are much faster and take less memory. Unfortunately, we don't have high-performance Java 8 data streams on Android,
 so here is an alternative. My tests say that this implementation is about 5 times faster than *RxJava* and takes about
-5 times less memory the same time.
+5 times less memory the same time on small data sets.
 
 These (*Iterable*) streams are passive and do not emit items, they are also not thread-safe, so they are greatly simplified.
 If you're stuck with studying *RxJava* you may try to understand these iterable streams first.
