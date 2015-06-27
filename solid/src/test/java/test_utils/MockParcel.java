@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
@@ -31,12 +30,12 @@ public class MockParcel {
         return new MockParcel().getMockedParcel();
     }
 
-    private Parcel mockedParcel = mock(Parcel.class);
+    private Parcel mocked = mock(Parcel.class);
     private List<Object> objects = new ArrayList<>();
     private int position;
 
     public Parcel getMockedParcel() {
-        return mockedParcel;
+        return mocked;
     }
 
     public MockParcel() {
@@ -54,10 +53,10 @@ public class MockParcel {
                 return null;
             }
         };
-        doAnswer(writeValueAnswer).when(mockedParcel).writeLong(anyLong());
-        doAnswer(writeValueAnswer).when(mockedParcel).writeString(anyString());
-        doAnswer(writeValueAnswer).when(mockedParcel).writeList(anyList());
-        doAnswer(writeValueAnswer).when(mockedParcel).writeValue(any());
+        doAnswer(writeValueAnswer).when(mocked).writeLong(anyLong());
+        doAnswer(writeValueAnswer).when(mocked).writeString(anyString());
+        doAnswer(writeValueAnswer).when(mocked).writeList(anyList());
+        doAnswer(writeValueAnswer).when(mocked).writeValue(any());
     }
 
     private void setupReads() {
@@ -67,10 +66,10 @@ public class MockParcel {
                 return objects.get(position++);
             }
         };
-        when(mockedParcel.readLong()).thenAnswer(readValueAnswer);
-        when(mockedParcel.readString()).thenAnswer(readValueAnswer);
-        when(mockedParcel.readArrayList(any(ClassLoader.class))).thenAnswer(readValueAnswer);
-        when(mockedParcel.readValue(any(ClassLoader.class))).thenAnswer(readValueAnswer);
+        when(mocked.readLong()).thenAnswer(readValueAnswer);
+        when(mocked.readString()).thenAnswer(readValueAnswer);
+        when(mocked.readArrayList(any(ClassLoader.class))).thenAnswer(readValueAnswer);
+        when(mocked.readValue(any(ClassLoader.class))).thenAnswer(readValueAnswer);
     }
 
     private void setupOthers() {
@@ -80,6 +79,6 @@ public class MockParcel {
                 position = ((Integer)invocation.getArguments()[0]);
                 return null;
             }
-        }).when(mockedParcel).setDataPosition(0);
+        }).when(mocked).setDataPosition(0);
     }
 }
