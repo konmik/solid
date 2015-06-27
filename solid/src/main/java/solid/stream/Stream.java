@@ -50,12 +50,39 @@ public abstract class Stream<T> implements Iterable<T> {
     }
 
     /**
-     * Converts a {@link Stream} into a {@link SolidList} ({@link android.os.Parcelable} and Immutable).
+     * Converts a {@link Stream} into a {@link List}, providing the possibility to set a starting capacity
+     * of the returned list.
+     * <p/>
+     * Use this method instead of {@link #toList()} for better performance on
+     * streams that can have more than 12 items.
+     *
+     * @param initialCapacity initial capacity of the returning list.
+     * @return a {@link List} containing all {@link Stream} items.
+     */
+    public List<T> toList(int initialCapacity) {
+        return collect(new ToList<T>(initialCapacity));
+    }
+
+    /**
+     * Converts a {@link Stream} into a {@link SolidList}.
      *
      * @return a {@link SolidList} containing all {@link Stream} items.
      */
     public SolidList<T> toSolidList() {
         return collect(ToSolidList.<T>toSolidList());
+    }
+
+    /**
+     * Converts a {@link Stream} into a {@link SolidList}, providing the possibility to set a starting capacity
+     * of the returned list.
+     * <p/>
+     * Use this method instead of {@link #toSolidList()} for better performance on
+     * streams that can have more than 12 items.
+     *
+     * @return a {@link SolidList} containing all {@link Stream} items.
+     */
+    public SolidList<T> toSolidList(int initialCapacity) {
+        return collect(new ToSolidList<T>(initialCapacity));
     }
 
     /**

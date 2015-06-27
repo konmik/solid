@@ -41,7 +41,18 @@ public class SolidList<T> extends Stream<T> implements List<T>, Parcelable {
      * @param iterable a source of data for the new {@link SolidList}.
      */
     public SolidList(Iterable<T> iterable) {
-        array = new ArrayList<>();
+        this(iterable, 0);
+    }
+
+    /**
+     * Creates a new {@link SolidList} from an {@link Iterable}. Provides the possibility
+     * to define an initial capacity of the list for performance gain on lists that exceed 12 items.
+     *
+     * @param initialCapacity initial capacity of the list.
+     * @param iterable        a source of data for the new {@link SolidList}.
+     */
+    public SolidList(Iterable<T> iterable, int initialCapacity) {
+        array = new ArrayList<>(initialCapacity);
         for (T value : iterable)
             array.add(value);
     }
@@ -52,7 +63,7 @@ public class SolidList<T> extends Stream<T> implements List<T>, Parcelable {
      * @param collection a source of data for the new {@link SolidList}.
      */
     public SolidList(Collection<T> collection) {
-        array = new ArrayList<>(collection);
+        this(collection, collection.size());
     }
 
     /**

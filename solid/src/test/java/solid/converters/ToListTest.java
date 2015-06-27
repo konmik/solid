@@ -12,11 +12,15 @@ public class ToListTest {
     public void testToList() throws Exception {
         assertIterableEquals(Arrays.asList(1, 2, 3), ToList.<Integer>toList().call(Arrays.asList(1, 2, 3)));
         assertIterableEquals(Collections.<Integer>emptyList(), ToList.<Integer>toList().call(Collections.<Integer>emptyList()));
+        assertIterableEquals(Arrays.asList(1, 2, 3), ToList.<Integer>toList(10).call(Arrays.asList(1, 2, 3)));
+        assertIterableEquals(Collections.<Integer>emptyList(), ToList.<Integer>toList(10).call(Collections.<Integer>emptyList()));
     }
 
     @Test
     public void testNewAndCall() throws Exception {
         assertIterableEquals(Arrays.asList(1, 2, 3), new ToList<Integer>().call(Arrays.asList(1, 2, 3)));
         assertIterableEquals(Collections.<Integer>emptyList(), new ToList<Integer>().call(Collections.<Integer>emptyList()));
+        assertIterableEquals(Arrays.asList(1, 2, 3), new ToList<Integer>(10).call(Arrays.asList(1, 2, 3)));
+        assertIterableEquals(Collections.<Integer>emptyList(), new ToList<Integer>(10).call(Collections.<Integer>emptyList()));
     }
 }

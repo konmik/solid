@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 
+import solid.converters.ToListTest;
+import solid.converters.ToSolidListTest;
 import solid.filters.DistinctFilterTest;
 import solid.functions.SolidFunc1;
 
@@ -18,14 +20,14 @@ import static test_utils.AssertIterableEquals.assertIterableEquals;
 public class StreamTest {
 
     @Test
-    public void testStream() throws Exception {
+    public void testStreamOfArray() throws Exception {
         assertIterableEquals(asList(1, 2, 3), Stream.stream(asList(1, 2, 3).toArray(new Integer[3])));
         assertIterableEquals(Collections.emptyList(), Stream.stream(new Object[]{}));
         assertIterableEquals(asList(null, null), Stream.stream(new Object[]{null, null}));
     }
 
     @Test
-    public void testStream1() throws Exception {
+    public void testStreamOfIterator() throws Exception {
         assertIterableEquals(asList(1, 2, 3), Stream.stream(asList(1, 2, 3)));
         assertIterableEquals(Collections.emptyList(), Stream.stream(Collections.emptyList()));
         assertIterableEquals(asList(null, null), Stream.stream(asList(null, null)));
@@ -34,15 +36,17 @@ public class StreamTest {
     @Test
     public void testToList() throws Exception {
         assertIterableEquals(asList(1, 2, 3), Stream.stream(asList(1, 2, 3)).toList());
-        assertIterableEquals(Collections.emptyList(), Stream.stream(Collections.emptyList()).toList());
-        assertIterableEquals(asList(null, null), Stream.stream(asList(null, null)).toList());
+        assertIterableEquals(asList(1, 2, 3), Stream.stream(asList(1, 2, 3)).toList(10));
+        new ToListTest().testToList();
+        new ToListTest().testNewAndCall();
     }
 
     @Test
     public void testToSolidList() throws Exception {
         assertIterableEquals(asList(1, 2, 3), Stream.stream(asList(1, 2, 3)).toSolidList());
-        assertIterableEquals(Collections.emptyList(), Stream.stream(Collections.emptyList()).toSolidList());
-        assertIterableEquals(asList(null, null), Stream.stream(asList(null, null)).toSolidList());
+        assertIterableEquals(asList(1, 2, 3), Stream.stream(asList(1, 2, 3)).toSolidList(10));
+        new ToSolidListTest().testToSolidList();
+        new ToSolidListTest().testNewAndCall();
     }
 
     @Test
