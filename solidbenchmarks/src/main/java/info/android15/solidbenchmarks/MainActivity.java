@@ -21,19 +21,19 @@ import static java.lang.String.format;
 
 === Galaxy S3, 4.3
 
--------- 1 --------
+-------- 1 items list --------
 rx 7406 ms
 solid 966 ms
 plain 419 ms
 rx / solid = 7.67
 solid / plain = 2.31
--------- 10 --------
+-------- 10 items list --------
 rx 9463 ms
 solid 1829 ms
 plain 783 ms
 rx / solid = 5.17
 solid / plain = 2.34
--------- 100 --------
+-------- 100 items list --------
 rx 26820 ms
 solid 12422 ms
 plain 5672 ms
@@ -43,19 +43,19 @@ solid / plain = 2.19
 
 === Galaxy S4, 5.0.1
 
--------- 1 --------
+-------- 1 items list --------
 rx 5285 ms
 solid 541 ms
 plain 124 ms
 rx / solid = 9.77
 solid / plain = 4.36
--------- 10 --------
+-------- 10 items list --------
 rx 6457 ms
 solid 1101 ms
 plain 298 ms
 rx / solid = 5.86
 solid / plain = 3.69
--------- 100 --------
+-------- 100 items list --------
 rx 14961 ms
 solid 4576 ms
 plain 1746 ms
@@ -65,19 +65,19 @@ solid / plain = 2.62
 
 === Galaxy S5, 5.0.1
 
--------- 1 --------
+-------- 1 items list --------
 rx 4204 ms
 solid 467 ms
 plain 117 ms
 rx / solid = 9.00
 solid / plain = 3.99
--------- 10 --------
+-------- 10 items list --------
 rx 5004 ms
 solid 723 ms
 plain 225 ms
 rx / solid = 6.92
 solid / plain = 3.21
--------- 100 --------
+-------- 100 items list --------
 rx 11925 ms
 solid 3503 ms
 plain 1387 ms
@@ -116,7 +116,7 @@ public class MainActivity extends Activity {
     }
 
     private void items(int items, int iterations) {
-        log("-------- " + items + " --------");
+        log("-------- " + items + " items list --------");
         List<Integer> source100 = new ArrayList<>();
         for (int i = 0; i < items; i++)
             source100.add(i);
