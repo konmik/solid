@@ -19,70 +19,102 @@ import static java.lang.String.format;
 
 /*
 
+=== Galaxy S1, 4.4.4
+
+-------- 1 item --------
+rx 16580 ms
+solid 1895 ms
+plain 718 ms
+rx / plain = 23.09
+solid / plain = 2.64
+rx / solid = 8.75
+-------- 10 items --------
+rx 22602 ms
+solid 4006 ms
+plain 1788 ms
+rx / plain = 12.64
+solid / plain = 2.24
+rx / solid = 5.64
+-------- 100 items --------
+rx 69458 ms
+solid 21597 ms
+plain 10644 ms
+rx / plain = 6.53
+solid / plain = 2.03
+rx / solid = 3.22
+
+
+
 === Galaxy S3, 4.3
 
--------- 1 items list --------
-rx 7406 ms
-solid 966 ms
-plain 419 ms
-rx / solid = 7.67
-solid / plain = 2.31
--------- 10 items list --------
-rx 9463 ms
-solid 1829 ms
-plain 783 ms
-rx / solid = 5.17
-solid / plain = 2.34
--------- 100 items list --------
-rx 26820 ms
-solid 12422 ms
-plain 5672 ms
-rx / solid = 2.16
-solid / plain = 2.19
+-------- 1 item --------
+rx 7238 ms
+solid 1102 ms
+plain 545 ms
+rx / plain = 13.28
+solid / plain = 2.02
+rx / solid = 6.57
+-------- 10 items --------
+rx 9747 ms
+solid 1758 ms
+plain 827 ms
+rx / plain = 11.79
+solid / plain = 2.13
+rx / solid = 5.54
+-------- 100 items --------
+rx 27899 ms
+solid 9657 ms
+plain 5996 ms
+rx / plain = 4.65
+solid / plain = 1.61
+rx / solid = 2.89
+
 
 
 === Galaxy S4, 5.0.1
 
--------- 1 items list --------
-rx 5285 ms
-solid 541 ms
-plain 124 ms
-rx / solid = 9.77
-solid / plain = 4.36
--------- 10 items list --------
-rx 6457 ms
-solid 1101 ms
-plain 298 ms
-rx / solid = 5.86
-solid / plain = 3.69
--------- 100 items list --------
-rx 14961 ms
-solid 4576 ms
-plain 1746 ms
-rx / solid = 3.27
-solid / plain = 2.62
+-------- 1 item --------
+rx 5092 ms
+solid 591 ms
+plain 126 ms
+rx / plain = 40.41
+solid / plain = 4.69
+rx / solid = 8.62
+-------- 10 items --------
+rx 6156 ms
+solid 888 ms
+plain 316 ms
+rx / plain = 19.48
+solid / plain = 2.81
+rx / solid = 6.93
+-------- 100 items --------
+rx 15190 ms
+solid 3394 ms
+plain 1700 ms
+rx / plain = 8.94
+solid / plain = 2.00
+rx / solid = 4.48
 
 
-=== Galaxy S5, 5.0.1
 
--------- 1 items list --------
-rx 4204 ms
-solid 467 ms
-plain 117 ms
-rx / solid = 9.00
-solid / plain = 3.99
--------- 10 items list --------
-rx 5004 ms
-solid 723 ms
-plain 225 ms
-rx / solid = 6.92
-solid / plain = 3.21
--------- 100 items list --------
-rx 11925 ms
-solid 3503 ms
-plain 1387 ms
-rx / solid = 3.40
-solid / plain = 2.53
+=== A NOTE ABOUT THE IMPLEMENTATION ===
+
+During the development of the library there was an idea to pass the stream size with an iterator to avoid allocations on a large data set.
+While such implementation gives performance benefits for large data set, it works significantly slower on small data sets.
+So, now we have Stream.<T>toList(initialCapacity) and Stream.<T>toSolidList(initialCapacity) operators
+that allow to have great performance on large AND small data sets.
+
+-- 1 item --
+plain: 760 ms
+size passed: 1150 ms
+
+-- 10 items ---
+plain: 1332 ms
+size passed: 1760 ms
+
+-- 100 items ---
+plain: 9696 ms
+size passed: 6759 ms
 
 */
 
@@ -116,7 +148,7 @@ public class MainActivity extends Activity {
     }
 
     private void items(int items, int iterations) {
-        log("-------- " + items + " items list --------");
+        log("-------- " + items + " item" + (items == 1 ? "" : "s") + " --------");
         List<Integer> source100 = new ArrayList<>();
         for (int i = 0; i < items; i++)
             source100.add(i);
@@ -157,32 +189,9 @@ public class MainActivity extends Activity {
         long plainTotal = (System.nanoTime() - time3) / 1000000;
         log(format("plain %d ms", plainTotal));
 
-        log(format("rx / solid = %.2f", (float)rxTotal / solidTotal));
+        log(format("rx / plain = %.2f", (float)rxTotal / plainTotal));
         log(format("solid / plain = %.2f", (float)solidTotal / plainTotal));
-    }
-
-    private void testSolid(List<Integer> source) {
-        Stream.stream(source)
-            .skip(1)
-            .map(new SolidFunc1<Integer, String>() {
-                @Override
-                public String call(Integer value) {
-                    return value.toString();
-                }
-            })
-            .toList();
-    }
-
-    private void testSolidPerformance(List<Integer> source) {
-        Stream.stream(source)
-            .skip(1)
-            .map(new SolidFunc1<Integer, String>() {
-                @Override
-                public String call(Integer value) {
-                    return value.toString();
-                }
-            })
-            .toList();
+        log(format("rx / solid = %.2f", (float)rxTotal / solidTotal));
     }
 
     private void testRx(List<Integer> source) {
@@ -197,6 +206,18 @@ public class MainActivity extends Activity {
             .toList()
             .toBlocking()
             .single();
+    }
+
+    private void testSolid(List<Integer> source) {
+        Stream.stream(source)
+            .skip(1)
+            .map(new SolidFunc1<Integer, String>() {
+                @Override
+                public String call(Integer value) {
+                    return value.toString();
+                }
+            })
+            .toList(source.size() - 1);
     }
 
     private void testPlain(List<Integer> source) {

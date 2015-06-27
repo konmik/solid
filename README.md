@@ -1,8 +1,7 @@
-
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Solid-green.svg?style=flat)](https://android-arsenal.com/details/1/1955)
-
 Solid
 =====
+
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Solid-green.svg?style=flat)](https://android-arsenal.com/details/1/1955)
 
 Solid is an Android library for data handling.
 
