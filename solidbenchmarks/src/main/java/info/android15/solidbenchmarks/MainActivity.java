@@ -7,8 +7,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 import rx.Observable;
 import rx.functions.Func1;
 import solid.functions.SolidFunc1;
@@ -122,13 +120,13 @@ public class MainActivity extends Activity {
 
     public static final String TAG = MainActivity.class.getSimpleName();
 
-    @InjectView(R.id.log) TextView log;
+    private TextView log;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.inject(this);
+        log = (TextView)findViewById(R.id.log);
 
         try {
             Thread.sleep(1000);
