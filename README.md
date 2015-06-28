@@ -37,13 +37,15 @@ File an issue and there is a big probability that I will add more features.
 Just describe what you want with a real use case. I do not promise that I will implement
 *anything* you wish, but if your need fits into the library nicely, I will add it for sure.
 
-# Contents
+### What's new
 
-- [SolidList](#solidlist)
-- [Lightweight data streams](#lightweight-data-streams)
-- [Data converters and primitive arrays](#data-converters-and-primitive-arrays)
+##### 1.0.6 version (28.06.2015)
 
-# `SolidList`
+* New `ToSparseArray`, `ToJoinedString`, `ToFirst` converters.
+* A possibility to set an initial list capacity for `ToList`, `ToSolidList`, `Stream.toList()` and
+`Stream.toSolidList()` - this optimization can give up to 30% performance gain.
+
+# SolidList
 
 If you're a big fan of immutable data structures like me then you also probably miss `Parcelable` interface
 implementation in *Guava*'s `ImmutableList`.
@@ -178,7 +180,7 @@ byte[] array_1_3 = bytes(new byte[]{1, 2, 3})
 And so on. The amount of flexibility that iterable streams and converters provide is hard to get at the
 beginning but as long as you use them, more and more ideas come into mind.
 
-# Data analysis (experimental)
+# Data analysis, experimental
 
 Currently there is only one algorithm in two variations that presents in the library.
 Probably I will find another place for such things.
