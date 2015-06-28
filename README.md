@@ -37,6 +37,12 @@ File an issue and there is a big probability that I will add more features.
 Just describe what you want with a real use case. I do not promise that I will implement
 *anything* you wish, but if your need fits into the library nicely, I will add it for sure.
 
+# Contents
+
+- [SolidList](#solidlist)
+- [Lightweight data streams](#lightweight-data-streams)
+- [Data converters and primitive arrays](#data-converters-and-primitive-arrays)
+
 # `SolidList`
 
 If you're a big fan of immutable data structures like me then you also probably miss `Parcelable` interface
