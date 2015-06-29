@@ -4,10 +4,10 @@ import java.util.Iterator;
 
 public class Merge<T> extends Stream<T> {
 
-    private Iterable<T> source;
-    private Iterable<T> with;
+    private Iterable<? extends T> source;
+    private Iterable<? extends T> with;
 
-    public Merge(Iterable<T> source, Iterable<T> with) {
+    public Merge(Iterable<? extends T> source, Iterable<? extends T> with) {
         this.source = source;
         this.with = with;
     }
@@ -15,8 +15,9 @@ public class Merge<T> extends Stream<T> {
     @Override
     public Iterator<T> iterator() {
         return new ReadOnlyIterator<T>() {
-            Iterator<T> sourceI = source.iterator();
-            Iterator<T> withI = with.iterator();
+
+            Iterator<? extends T> sourceI = source.iterator();
+            Iterator<? extends T> withI = with.iterator();
 
             @Override
             public boolean hasNext() {

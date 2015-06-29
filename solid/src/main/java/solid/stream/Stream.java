@@ -36,7 +36,7 @@ public abstract class Stream<T> implements Iterable<T> {
      * @param <T>    a type of stream items
      * @return a {@link Stream} that represents source {@link Iterable} elements
      */
-    public static <T> Stream<T> stream(Iterable<T> source) {
+    public static <T> Stream<T> stream(Iterable<? extends T> source) {
         return new Copy<>(source);
     }
 
@@ -168,7 +168,7 @@ public abstract class Stream<T> implements Iterable<T> {
      * @param with an {@link Iterable} that should be used to emit items after items in the current stream ran out.
      * @return a new stream that contains items from both streams.
      */
-    public Stream<T> merge(Iterable<T> with) {
+    public Stream<T> merge(Iterable<? extends T> with) {
         return new Merge<>(this, with);
     }
 
@@ -215,7 +215,7 @@ public abstract class Stream<T> implements Iterable<T> {
      * @param with a stream to add at the end of current stream.
      * @return the combined stream.
      */
-    public Stream<T> mergeDistinct(Iterable<T> with) {
+    public Stream<T> mergeDistinct(Iterable<? extends T> with) {
         return new MergeDistinct<>(this, with);
     }
 
@@ -231,12 +231,23 @@ public abstract class Stream<T> implements Iterable<T> {
     }
 
     /**
-     * Returns a new stream that emits all items of the current stream in reverse order.
+     * Returns a new stream that contains all items of the current stream in reverse order.
      * The operator creates a list of all items internally.
      *
      * @return a new stream that emits all items of the current stream in reverse order.
      */
     public Stream<T> reverse() {
         return new Reverse<>(this);
+    }
+
+    /**
+     * Returns a stream that contains all values of the original stream that has been casted to a given class type.
+     *
+     * @param c   a class to cast into
+     * @param <R> a type of the class
+     * @return a stream that contains all values of the original stream that has been casted to a given class type.
+     */
+    public <R> Stream<R> cast(Class<R> c) {
+        return new Cast<>(this, c);
     }
 }

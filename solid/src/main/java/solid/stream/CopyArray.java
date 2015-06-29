@@ -3,6 +3,7 @@ package solid.stream;
 import java.util.Iterator;
 
 public class CopyArray<T> extends Stream<T> {
+
     private T[] array;
 
     public CopyArray(T[] array) {

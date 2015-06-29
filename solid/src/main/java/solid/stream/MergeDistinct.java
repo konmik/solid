@@ -8,7 +8,7 @@ public class MergeDistinct<T> extends Stream<T> {
 
     private Iterable<T> composed;
 
-    public MergeDistinct(Iterable<T> source, Iterable<T> with) {
+    public MergeDistinct(Iterable<? extends T> source, Iterable<? extends T> with) {
         DistinctFilter<T> distinctFilter = new DistinctFilter<>();
         composed = new Merge<>(new Filter<>(source, distinctFilter), (new Filter<>(with, distinctFilter)));
     }

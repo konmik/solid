@@ -4,9 +4,9 @@ import java.util.Iterator;
 
 public class Copy<T> extends Stream<T> {
 
-    private Iterable<T> iterable;
+    private Iterable<? extends T> iterable;
 
-    public Copy(Iterable<T> iterable) {
+    public Copy(Iterable<? extends T> iterable) {
         this.iterable = iterable;
     }
 
@@ -14,7 +14,7 @@ public class Copy<T> extends Stream<T> {
     public Iterator<T> iterator() {
         return new ReadOnlyIterator<T>() {
 
-            Iterator<T> iterator = iterable.iterator();
+            Iterator<? extends T> iterator = iterable.iterator();
 
             @Override
             public boolean hasNext() {

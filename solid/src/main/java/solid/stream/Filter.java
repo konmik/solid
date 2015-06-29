@@ -6,10 +6,10 @@ import solid.functions.SolidFunc1;
 
 public class Filter<T> extends Stream<T> {
 
-    private Iterable<T> source;
+    private Iterable<? extends T> source;
     private SolidFunc1<T, Boolean> func;
 
-    public Filter(Iterable<T> source, SolidFunc1<T, Boolean> func) {
+    public Filter(Iterable<? extends T> source, SolidFunc1<T, Boolean> func) {
         this.source = source;
         this.func = func;
     }
@@ -17,7 +17,7 @@ public class Filter<T> extends Stream<T> {
     @Override
     public Iterator<T> iterator() {
         return new ReadOnlyIterator<T>() {
-            Iterator<T> iterator = source.iterator();
+            Iterator<? extends T> iterator = source.iterator();
             T next;
             boolean hasNext;
 

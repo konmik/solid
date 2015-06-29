@@ -183,4 +183,16 @@ public class StreamTest {
         assertTrue(target == result);
         assertEquals(target, result);
     }
+
+    @Test
+    public void testCast() throws Exception {
+        assertTrue(Stream.stream(asList(1, 2, 3)).cast(Number.class) instanceof Cast);
+        new CastTest().testIterator();
+    }
+
+    @Test(expected = ClassCastException.class)
+    public void testCastException() throws Exception {
+        assertTrue(Stream.stream(asList(1, 2, 3)).cast(Number.class) instanceof Cast);
+        new CastTest().testIteratorException();
+    }
 }
