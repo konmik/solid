@@ -27,7 +27,7 @@ of the application, while keeping the ability to transform data in a convenient 
 
 ``` groovy
 dependencies {
-    compile 'info.android15.solid:solid:1.0.6'
+    compile 'info.android15.solid:solid:1.0.7'
 }
 ```
 
@@ -39,11 +39,10 @@ Just describe what you want with a real use case. I do not promise that I will i
 
 ### What's new
 
-##### 1.0.6 version (28.06.2015)
+##### 1.0.7 version (30.07.2015)
 
-* New `ToSparseArray`, `ToJoinedString`, `ToFirst` converters.
-* A possibility to set an initial list capacity for `ToList`, `ToSolidList`, `Stream.toList()` and
-`Stream.toSolidList()` - this optimization can give up to 30% performance gain.
+* Now we can join a couple of streams of different types without map (Integer and Byte can be joined in a stream of type Number).
+* Cast operator.
 
 # SolidList
 
