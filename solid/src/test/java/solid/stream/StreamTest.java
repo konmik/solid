@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 
+import solid.converters.ToFirstTest;
+import solid.converters.ToLastTest;
 import solid.converters.ToListTest;
 import solid.converters.ToSolidListTest;
 import solid.filters.DistinctFilterTest;
@@ -182,6 +184,18 @@ public class StreamTest {
         });
         assertTrue(target == result);
         assertEquals(target, result);
+    }
+
+    @Test
+    public void testFirst() throws Exception {
+        assertEquals(1, (int)Stream.stream(asList(1, 2, 3)).first(10));
+        new ToFirstTest().testToFirst();
+    }
+
+    @Test
+    public void testLast() throws Exception {
+        assertEquals(3, (int)Stream.stream(asList(1, 2, 3)).last(10));
+        new ToLastTest().testToLast();
     }
 
     @Test

@@ -4,6 +4,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import solid.collections.SolidList;
+import solid.converters.ToFirst;
+import solid.converters.ToLast;
 import solid.converters.ToList;
 import solid.converters.ToSolidList;
 import solid.filters.DistinctFilter;
@@ -94,6 +96,26 @@ public abstract class Stream<T> implements Iterable<T> {
      */
     public <R> R collect(SolidFunc1<Iterable<T>, R> collector) {
         return collector.call(this);
+    }
+
+    /**
+     * Convert an iterable stream into one first item of the stream.
+     *
+     * @param defaultValue a value to return if the stream has no items.
+     * @return the first item of the stream.
+     */
+    public T first(T defaultValue) {
+        return collect(new ToFirst<>(defaultValue));
+    }
+
+    /**
+     * Convert an iterable stream into one last item of the stream.
+     *
+     * @param defaultValue a value to return if the stream has no items.
+     * @return the last item of the stream.
+     */
+    public T last(T defaultValue) {
+        return collect(new ToLast<>(defaultValue));
     }
 
     /**
