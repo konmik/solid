@@ -32,6 +32,11 @@ public class SolidMapTest {
         assertNotEquals(hashMap, map);
     }
 
+    @Test
+    public void testEmpty() throws Exception {
+        assertEquals(0, SolidMap.empty().size());
+    }
+
     @Test(expected = UnsupportedOperationException.class)
     public void clear() throws Exception {
         new SolidMap<>(create123map234()).clear();

@@ -18,12 +18,30 @@ import java.util.Set;
  */
 public class SolidMap<K, V> implements Map<K, V>, Parcelable {
 
+    private static final SolidMap<Object, Object> EMPTY = new SolidMap<>(new HashMap<>());
     private static final ClassLoader CLASS_LOADER = SolidMap.class.getClassLoader();
 
     private final Map<K, V> map;
 
+    /**
+     * Constructs a SolidMap from a given map.
+     *
+     * @param map a source map.
+     */
     public SolidMap(Map<K, V> map) {
         this.map = Collections.unmodifiableMap(new HashMap<>(map));
+    }
+
+    /**
+     * Returns an empty {@link SolidMap}.
+     *
+     * @param <K> a type of keys.
+     * @param <V> a type of values.
+     * @return an empty {@link SolidMap}.
+     */
+    public static <K, V> SolidMap<K, V> empty() {
+        //noinspection unchecked
+        return (SolidMap<K, V>)EMPTY;
     }
 
     @Deprecated
