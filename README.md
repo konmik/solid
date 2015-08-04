@@ -7,7 +7,7 @@ Solid is an Android library for data handling.
 
 It provides:
 
-* `SolidList` - an immutable, parcelable collection.
+* `SolidList`, `SolidMap` - immutable, parcelable collections.
 
 * Lightweight and composable **data streams**.
 
@@ -15,7 +15,7 @@ It provides:
 
 * Data analysis **algorithms** (experimental).
 
-* 55Kb jar
+* 61Kb jar
 
 ### Philosophy
 
@@ -27,7 +27,7 @@ of the application, while keeping the ability to transform data in a convenient 
 
 ``` groovy
 dependencies {
-    compile 'info.android15.solid:solid:1.0.7'
+    compile 'info.android15.solid:solid:1.0.9'
 }
 ```
 
@@ -39,10 +39,10 @@ Just describe what you want with a real use case. I do not promise that I will i
 
 ### What's new
 
-##### 1.0.7 version (30.07.2015)
+##### 1.0.9 version (05.08.2015)
 
-* Now we can join a couple of streams of different types without map (Integer and Byte can be joined in a stream of type Number).
-* Cast operator.
+* `SolidMap`.
+* `first()`, `last()` operators.
 
 # SolidList
 
