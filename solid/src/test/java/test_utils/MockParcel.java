@@ -12,6 +12,7 @@ import java.util.List;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyMap;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
@@ -57,6 +58,7 @@ public class MockParcel {
         doAnswer(writeValueAnswer).when(mocked).writeString(anyString());
         doAnswer(writeValueAnswer).when(mocked).writeList(anyList());
         doAnswer(writeValueAnswer).when(mocked).writeValue(any());
+        doAnswer(writeValueAnswer).when(mocked).writeMap(anyMap());
     }
 
     private void setupReads() {
@@ -70,6 +72,7 @@ public class MockParcel {
         when(mocked.readString()).thenAnswer(readValueAnswer);
         when(mocked.readArrayList(any(ClassLoader.class))).thenAnswer(readValueAnswer);
         when(mocked.readValue(any(ClassLoader.class))).thenAnswer(readValueAnswer);
+        when(mocked.readHashMap(any(ClassLoader.class))).thenAnswer(readValueAnswer);
     }
 
     private void setupOthers() {
