@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import test_utils.MockParcel;
@@ -61,6 +62,12 @@ public class SolidMapTest {
         new SolidMap<>(create123map234()).entrySet().clear();
     }
 
+    @Test(expected = UnsupportedOperationException.class)
+    public void testEntryIsUnmodifiable() throws Exception {
+        for (Map.Entry entry : new SolidMap<>(create123map234()).entrySet())
+            entry.setValue(1);
+    }
+
     @Test
     public void testGet() throws Exception {
         assertEquals((Integer)2, new SolidMap<>(create123map234()).get(1));
@@ -113,6 +120,16 @@ public class SolidMapTest {
     @Test(expected = UnsupportedOperationException.class)
     public void testValuesIsUnmodifiable() throws Exception {
         new SolidMap<>(create123map234()).values().remove(1);
+    }
+
+    @Test
+    public void testEquals() throws Exception {
+        assertTrue(new SolidMap<>(create123map234()).equals(create123map234()));
+        HashMap<Integer, Integer> map234null = create123map234();
+        map234null.remove(1);
+        map234null.put(null, null);
+        assertTrue(new SolidMap<>(map234null).equals(map234null));
+        assertFalse(new SolidMap<>(create123map234()).equals(map234null));
     }
 
     private <T> void assertSetEquals(Set<T> expected, Set<T> actual) {

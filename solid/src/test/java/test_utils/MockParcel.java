@@ -8,6 +8,7 @@ import org.mockito.stubbing.Answer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyList;
@@ -73,6 +74,13 @@ public class MockParcel {
         when(mocked.readArrayList(any(ClassLoader.class))).thenAnswer(readValueAnswer);
         when(mocked.readValue(any(ClassLoader.class))).thenAnswer(readValueAnswer);
         when(mocked.readHashMap(any(ClassLoader.class))).thenAnswer(readValueAnswer);
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                ((Map)invocation.getArguments()[0]).putAll((Map)objects.get(position++));
+                return null;
+            }
+        }).when(mocked).readMap(anyMap(), any(ClassLoader.class));
     }
 
     private void setupOthers() {

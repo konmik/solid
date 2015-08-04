@@ -20,10 +20,10 @@ public class SolidMap<K, V> implements Map<K, V>, Parcelable {
 
     private static final ClassLoader CLASS_LOADER = SolidMap.class.getClassLoader();
 
-    private final HashMap<K, V> map;
+    private final Map<K, V> map;
 
     public SolidMap(Map<K, V> map) {
-        this.map = new HashMap<>(map);
+        this.map = Collections.unmodifiableMap(new HashMap<>(map));
     }
 
     @Deprecated
@@ -44,7 +44,7 @@ public class SolidMap<K, V> implements Map<K, V>, Parcelable {
 
     @Override
     public Set<Entry<K, V>> entrySet() {
-        return Collections.unmodifiableSet(map.entrySet());
+        return map.entrySet();
     }
 
     @Override
@@ -59,7 +59,7 @@ public class SolidMap<K, V> implements Map<K, V>, Parcelable {
 
     @Override
     public Set<K> keySet() {
-        return Collections.unmodifiableSet(map.keySet());
+        return map.keySet();
     }
 
     @Deprecated
@@ -87,7 +87,7 @@ public class SolidMap<K, V> implements Map<K, V>, Parcelable {
 
     @Override
     public Collection<V> values() {
-        return Collections.unmodifiableCollection(map.values());
+        return map.values();
     }
 
     @Override
@@ -96,8 +96,10 @@ public class SolidMap<K, V> implements Map<K, V>, Parcelable {
     }
 
     public SolidMap(Parcel in) {
+        HashMap<K, V> temp = new HashMap<>();
+        in.readMap(temp, CLASS_LOADER);
         //noinspection unchecked
-        map = in.readHashMap(CLASS_LOADER);
+        map = Collections.unmodifiableMap(temp);
     }
 
     @Override
@@ -117,11 +119,30 @@ public class SolidMap<K, V> implements Map<K, V>, Parcelable {
         }
     };
 
-    @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     @Override
-    public boolean equals(Object o) {
-        //noinspection EqualsBetweenInconvertibleTypes
-        return map.equals(o);
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object instanceof Map) {
+            Map<?, ?> map = (Map<?, ?>)object;
+            if (size() != map.size())
+                return false;
+
+            for (Entry<K, V> entry : entrySet()) {
+                K key = entry.getKey();
+                V mine = entry.getValue();
+                Object theirs = map.get(key);
+                if (mine == null) {
+                    if (theirs != null || !map.containsKey(key))
+                        return false;
+                }
+                else if (!mine.equals(theirs))
+                    return false;
+            }
+            return true;
+        }
+        return false;
     }
 
     @Override
