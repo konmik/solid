@@ -121,23 +121,23 @@ public class SolidMap<K, V> implements Map<K, V>, Parcelable {
 
     @Override
     public boolean equals(Object object) {
-        if (this == object) {
+        if (this == object)
             return true;
-        }
+
         if (object instanceof Map) {
-            Map<?, ?> map = (Map<?, ?>)object;
-            if (size() != map.size())
+            Map<?, ?> other = (Map<?, ?>)object;
+            if (size() != other.size())
                 return false;
 
             for (Entry<K, V> entry : entrySet()) {
                 K key = entry.getKey();
-                V mine = entry.getValue();
-                Object theirs = map.get(key);
-                if (mine == null) {
-                    if (theirs != null || !map.containsKey(key))
+                V value = entry.getValue();
+                Object value2 = other.get(key);
+                if (value == null) {
+                    if (value2 != null || !other.containsKey(key))
                         return false;
                 }
-                else if (!mine.equals(theirs))
+                else if (!value.equals(value2))
                     return false;
             }
             return true;
