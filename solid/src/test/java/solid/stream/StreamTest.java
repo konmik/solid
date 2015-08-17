@@ -15,6 +15,8 @@ import solid.filters.DistinctFilterTest;
 import solid.functions.SolidFunc1;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 import static test_utils.AssertIterableEquals.assertIterableEquals;
@@ -33,6 +35,17 @@ public class StreamTest {
         assertIterableEquals(asList(1, 2, 3), Stream.stream(asList(1, 2, 3)));
         assertIterableEquals(Collections.emptyList(), Stream.stream(Collections.emptyList()));
         assertIterableEquals(asList(null, null), Stream.stream(asList(null, null)));
+    }
+
+    @Test
+    public void testOfSingle() throws Exception {
+        assertIterableEquals(singletonList(1), Stream.of(1));
+    }
+
+    @Test
+    public void testOfVararg() throws Exception {
+        assertIterableEquals(asList(1, null, 2), Stream.of(1, null, 2));
+        assertIterableEquals(emptyList(), Stream.of());
     }
 
     @Test
@@ -128,6 +141,11 @@ public class StreamTest {
     public void testMerge() throws Exception {
         assertIterableEquals(asList(1, 2, 3, 4), Stream.stream(asList(1, 2)).merge(asList(3, 4)));
         new MergeTest().testIterator();
+    }
+
+    @Test
+    public void testSeparate() throws Exception {
+        assertIterableEquals(asList(1, 2, 3), Stream.stream(asList(0, 1, 4, 5, 6, 2, 3, null)).separate(asList(0, 4, 5, 6, null)));
     }
 
     @Test

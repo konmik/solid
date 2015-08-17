@@ -1,5 +1,6 @@
 package solid.stream;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import solid.converters.ToList;
 import solid.converters.ToSolidList;
 import solid.filters.DistinctFilter;
 import solid.filters.NotEqualTo;
+import solid.filters.NotIn;
 import solid.functions.SolidFunc1;
 
 /**
@@ -40,6 +42,28 @@ public abstract class Stream<T> implements Iterable<T> {
      */
     public static <T> Stream<T> stream(Iterable<? extends T> source) {
         return new Copy<>(source);
+    }
+
+    /**
+     * Returns a stream with just one given element.
+     *
+     * @param value the element value.
+     * @param <T>   the type of the stream.
+     * @return a stream with just one given element.
+     */
+    public static <T> Stream<T> of(T value) {
+        return new Copy<>(Collections.singleton(value));
+    }
+
+    /**
+     * Returns a stream of given values.
+     *
+     * @param values stream values.
+     * @param <T>    the type of the stream.
+     * @return a stream of given values.
+     */
+    public static <T> Stream<T> of(T... values) {
+        return stream(values);
     }
 
     /**
@@ -192,6 +216,18 @@ public abstract class Stream<T> implements Iterable<T> {
      */
     public Stream<T> merge(Iterable<? extends T> with) {
         return new Merge<>(this, with);
+    }
+
+    /**
+     * Returns a stream that includes only that items of the current stream that do not
+     * exist in a given stream.
+     *
+     * @param from a stream of values that should be separated from the current stream.
+     * @return a stream that includes only that items of the current stream that do not
+     * exist in a given stream.
+     */
+    public Stream<T> separate(Iterable<? extends T> from) {
+        return new Filter<>(this, new NotIn<>(from));
     }
 
     /**

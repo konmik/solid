@@ -6,8 +6,11 @@ import android.os.Parcelable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+
+import solid.stream.Stream;
 
 /**
  * Represents an immutable parcelable map.
@@ -16,7 +19,7 @@ import java.util.Set;
  * @param <K> a type of keys.
  * @param <V> a type of values.
  */
-public class SolidMap<K, V> implements Map<K, V>, Parcelable {
+public class SolidMap<K, V> extends Stream<Map.Entry<K, V>> implements Map<K, V>, Parcelable {
 
     private static final SolidMap<Object, Object> EMPTY = new SolidMap<>(new HashMap<>());
     private static final ClassLoader CLASS_LOADER = SolidMap.class.getClassLoader();
@@ -30,6 +33,18 @@ public class SolidMap<K, V> implements Map<K, V>, Parcelable {
      */
     public SolidMap(Map<K, V> map) {
         this.map = Collections.unmodifiableMap(new HashMap<>(map));
+    }
+
+    /**
+     * Constructs a SolidMap from a given iterable stream of entries.
+     *
+     * @param iterable a source iterable.
+     */
+    public SolidMap(Iterable<Map.Entry<K, V>> iterable) {
+        HashMap<K, V> m = new HashMap<>();
+        for (Map.Entry<K, V> entry : iterable)
+            m.put(entry.getKey(), entry.getValue());
+        this.map = Collections.unmodifiableMap(m);
     }
 
     /**
@@ -173,5 +188,10 @@ public class SolidMap<K, V> implements Map<K, V>, Parcelable {
         return "SolidMap{" +
             "map=" + map +
             '}';
+    }
+
+    @Override
+    public Iterator<Entry<K, V>> iterator() {
+        return map.entrySet().iterator();
     }
 }

@@ -19,7 +19,7 @@ import static org.junit.Assert.assertTrue;
 @SuppressLint("UseSparseArrays")
 public class SolidMapTest {
     @Test
-    public void constructors() throws Exception {
+    public void testMapConstructor() throws Exception {
         HashMap<Integer, Integer> hashMap = create123map234();
 
         SolidMap<Integer, Integer> map = new SolidMap<>(hashMap);
@@ -30,6 +30,11 @@ public class SolidMapTest {
 
         hashMap.put(4, 5);
         assertNotEquals(hashMap, map);
+    }
+
+    @Test
+    public void testIteratorConstructor() throws Exception {
+        assertEquals(create123map234(), new SolidMap<>(create123map234().entrySet()));
     }
 
     @Test
@@ -137,14 +142,24 @@ public class SolidMapTest {
         assertFalse(new SolidMap<>(create123map234()).equals(map234null));
     }
 
-    private <T> void assertSetEquals(Set<T> expected, Set<T> actual) {
-        assertArrayEquals(expected.toArray(), actual.toArray());
-    }
-
     @Test
     public void parcelableImplementation() throws Exception {
         SolidMap<Integer, Integer> map = new SolidMap<>(create123map234());
         assertEquals(map, MockParcel.writeRead(map, SolidMap.CREATOR));
+    }
+
+    @Test
+    public void testIterator() throws Exception {
+        SolidMap<Integer, Integer> map = new SolidMap<>(create123map234());
+        HashMap<Integer, Integer> hashMap = new HashMap<>();
+        for (Map.Entry<Integer, Integer> entry : map) {
+            hashMap.put(entry.getKey(), entry.getValue());
+        }
+        assertEquals(map, hashMap);
+    }
+
+    private <T> void assertSetEquals(Set<T> expected, Set<T> actual) {
+        assertArrayEquals(expected.toArray(), actual.toArray());
     }
 
     private HashMap<Integer, Integer> create123map234() {
