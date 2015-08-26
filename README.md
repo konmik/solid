@@ -7,7 +7,7 @@ Solid is an Android library for data handling.
 
 It provides:
 
-* `SolidList`, `SolidMap` - immutable, parcelable collections.
+* `SolidList`, `SolidMap`, `SolidSet` - immutable, parcelable collections.
 
 * Lightweight and composable **data streams**.
 
@@ -15,7 +15,7 @@ It provides:
 
 * Data analysis **algorithms** (experimental).
 
-* 61Kb jar
+* 69Kb jar
 
 ### Philosophy
 
@@ -27,7 +27,7 @@ of the application, while keeping the ability to transform data in a convenient 
 
 ``` groovy
 dependencies {
-    compile 'info.android15.solid:solid:1.0.10'
+    compile 'info.android15.solid:solid:1.0.11'
 }
 ```
 
@@ -37,19 +37,7 @@ File an issue and there is a big probability that I will add more features.
 Just describe what you want with a real use case. I do not promise that I will implement
 *anything* you wish, but if your need fits into the library nicely, I will add it for sure.
 
-### What's new
-
-##### 1.0.10 version (17.08.2015)
-
-* `Stream.of(...)` - constructs a stream of given items.
-* `Stream.separate(...)` - removes a given set of items from a stream.
-
-##### 1.0.9 version (05.08.2015)
-
-* `SolidMap`. - immutable, parcelable map.
-* `first()`, `last()` operators.
-
-# SolidList
+# Solid collections
 
 If you're a big fan of immutable data structures like me then you also probably miss `Parcelable` interface
 implementation in *Guava*'s `ImmutableList`.
