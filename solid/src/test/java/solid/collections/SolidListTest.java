@@ -114,6 +114,8 @@ public class SolidListTest {
     public void testParcelable() throws Exception {
         SolidList<Integer> list1 = new SolidList<>(new Integer[]{0, 1, 2, 3, 1, 2, 3, 0});
         assertEquals(list1, MockParcel.writeRead(list1, SolidList.CREATOR));
+        assertEquals(12, SolidList.CREATOR.newArray(12).length);
+        assertEquals(0, list1.describeContents());
     }
 
     @Test
@@ -143,6 +145,22 @@ public class SolidListTest {
         for (int i : new SolidList<>(new Integer[]{1, 2, 3}))
             target.add(i);
         assert123(target);
+    }
+
+    @Test
+    public void testListIteratorPrevious() throws Exception {
+        ListIterator<Integer> iterator = new SolidList<>(new Integer[]{1, 2, 3}).listIterator();
+        assertFalse(iterator.hasPrevious());
+
+        iterator.next();
+        assertTrue(iterator.hasPrevious());
+        assertEquals(1, iterator.nextIndex());
+
+        iterator.next();
+        assertEquals(1, iterator.previousIndex());
+
+        iterator.previous();
+        assertEquals(0, iterator.previousIndex());
     }
 
     @Test(expected = UnsupportedOperationException.class)
@@ -214,6 +232,22 @@ public class SolidListTest {
         ListIterator<Integer> iterator = new SolidList<>(Collections.singletonList(0)).listIterator();
         iterator.next();
         iterator.set(0);
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void testListIteratorAddThrows() throws Exception {
+        ListIterator<Integer> iterator = new SolidList<>(Collections.singletonList(0)).listIterator();
+        iterator.next();
+        iterator.add(0);
+    }
+
+    @Test
+    public void testListIterator() throws Exception {
+        SolidList<Integer> list1 = new SolidList<>(new Integer[]{0, 1});
+        ListIterator<Integer> iterator = list1.listIterator(1);
+        assertTrue(iterator.hasNext());
+        iterator.next();
+        assertFalse(iterator.hasNext());
     }
 
     private void assert123(List<Integer> list) throws Exception {

@@ -5,8 +5,8 @@ import android.os.Parcelable;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -21,7 +21,7 @@ import solid.stream.Stream;
  */
 public class SolidMap<K, V> extends Stream<Map.Entry<K, V>> implements Map<K, V>, Parcelable {
 
-    private static final SolidMap<Object, Object> EMPTY = new SolidMap<>(new HashMap<>());
+    private static final SolidMap<Object, Object> EMPTY = new SolidMap<>(new LinkedHashMap<>());
     private static final ClassLoader CLASS_LOADER = SolidMap.class.getClassLoader();
 
     private final Map<K, V> map;
@@ -32,7 +32,7 @@ public class SolidMap<K, V> extends Stream<Map.Entry<K, V>> implements Map<K, V>
      * @param map a source map.
      */
     public SolidMap(Map<K, V> map) {
-        this.map = Collections.unmodifiableMap(new HashMap<>(map));
+        this.map = Collections.unmodifiableMap(new LinkedHashMap<>(map));
     }
 
     /**
@@ -40,8 +40,8 @@ public class SolidMap<K, V> extends Stream<Map.Entry<K, V>> implements Map<K, V>
      *
      * @param iterable a source iterable.
      */
-    public SolidMap(Iterable<Map.Entry<K, V>> iterable) {
-        HashMap<K, V> m = new HashMap<>();
+    public SolidMap(Iterable<? extends Map.Entry<K, V>> iterable) {
+        LinkedHashMap<K, V> m = new LinkedHashMap<>();
         for (Map.Entry<K, V> entry : iterable)
             m.put(entry.getKey(), entry.getValue());
         this.map = Collections.unmodifiableMap(m);
@@ -129,7 +129,7 @@ public class SolidMap<K, V> extends Stream<Map.Entry<K, V>> implements Map<K, V>
     }
 
     public SolidMap(Parcel in) {
-        HashMap<K, V> temp = new HashMap<>();
+        LinkedHashMap<K, V> temp = new LinkedHashMap<>();
         in.readMap(temp, CLASS_LOADER);
         //noinspection unchecked
         map = Collections.unmodifiableMap(temp);

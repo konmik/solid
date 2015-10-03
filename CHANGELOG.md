@@ -1,5 +1,14 @@
 # Changelog
 
+##### 1.0.12 version (03.10.2005)
+
+* `Group` operator.
+* `SolidEntry` object.
+* Collections guarantee item order now.
+* `toSolidMapByKey` converter.
+* The experimental stuff has been removed.
+* 100% line coverage with tests.
+
 ##### 1.0.11 version (26.08.2015)
 
 * `SolidSet`, `ToSolidSet`.

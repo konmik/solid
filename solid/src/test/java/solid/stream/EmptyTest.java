@@ -16,4 +16,9 @@ public class EmptyTest {
     public void testException() throws Exception {
         new Empty<>().iterator().next();
     }
+
+    @Test
+    public void testStatic() throws Exception {
+        assertIterableEquals(Collections.emptyList(), Empty.empty());
+    }
 }

@@ -269,7 +269,7 @@ public class SolidList<T> extends Stream<T> implements List<T>, Parcelable {
 
     @Override
     public int hashCode() {
-        return array != null ? array.hashCode() : 0;
+        return array.hashCode();
     }
 
     @Override

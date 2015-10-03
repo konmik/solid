@@ -7,10 +7,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 
+import solid.collections.SolidEntry;
+import solid.collections.SolidList;
 import solid.converters.ToFirstTest;
 import solid.converters.ToLastTest;
 import solid.converters.ToListTest;
 import solid.converters.ToSolidListTest;
+import solid.converters.ToSolidMapByKeyTest;
 import solid.filters.DistinctFilterTest;
 import solid.functions.SolidFunc1;
 
@@ -65,6 +68,19 @@ public class StreamTest {
     }
 
     @Test
+    public void testToSolidMapByKey() throws Exception {
+        assertIterableEquals(
+            ToSolidMapByKeyTest.makeMap(new String[]{"1"}, new Integer[]{1}),
+            Stream.stream(asList(1)).toSolidMap(new SolidFunc1<Integer, String>() {
+                @Override
+                public String call(Integer value) {
+                    return value.toString();
+                }
+            }));
+        new ToSolidMapByKeyTest().all();
+    }
+
+    @Test
     public void testLift() throws Exception {
         assertIterableEquals(asList(1, 3, 6), Stream.stream(asList(1, 2, 3))
             .compose(new SolidFunc1<Stream<Integer>, Stream<Integer>>() {
@@ -114,6 +130,24 @@ public class StreamTest {
             }
         }) instanceof FlatMap);
         new FlatMapTest().testIterator();
+    }
+
+    @Test
+    public void testGroupBy() throws Exception {
+        assertIterableEquals(
+            asList(
+                new SolidEntry<>("1", SolidList.copyOf(asList(14, 15, 16))),
+                new SolidEntry<>("0", SolidList.copyOf(asList(1, 2, 3)))),
+            Stream.of(14, 1, 2, 15, 16, 3).groupBy(new SolidFunc1<Integer, String>() {
+                @Override
+                public String call(Integer value) {
+                    return Integer.valueOf(value / 10).toString();
+                }
+            }));
+        new GroupTest().group_nulls();
+        new GroupTest().group_work_no_items();
+        new GroupTest().group_works();
+        new GroupTest().group_works_tens();
     }
 
     @Test

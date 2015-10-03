@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -26,7 +26,7 @@ public class SolidSet<T> extends Stream<T> implements Set<T>, Parcelable {
     }
 
     public SolidSet(Collection<T> collection) {
-        this.set = Collections.unmodifiableSet(new HashSet<>(collection));
+        this.set = Collections.unmodifiableSet(new LinkedHashSet<>(collection));
     }
 
     public SolidSet(Iterable<T> iterable) {
@@ -37,7 +37,7 @@ public class SolidSet<T> extends Stream<T> implements Set<T>, Parcelable {
         List<T> list = new ArrayList<>(initialCapacity);
         for (T value : iterable)
             list.add(value);
-        this.set = Collections.unmodifiableSet(new HashSet<>(list));
+        this.set = Collections.unmodifiableSet(new LinkedHashSet<>(list));
     }
 
     public static <T> SolidSet<T> empty() {
@@ -117,7 +117,7 @@ public class SolidSet<T> extends Stream<T> implements Set<T>, Parcelable {
     }
 
     protected SolidSet(Parcel in) {
-        set = new HashSet<>(in.readArrayList(CLASS_LOADER));
+        set = new LinkedHashSet<>(in.readArrayList(CLASS_LOADER));
     }
 
     @Override
@@ -141,4 +141,23 @@ public class SolidSet<T> extends Stream<T> implements Set<T>, Parcelable {
             return new SolidSet[size];
         }
     };
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        return set.equals(((SolidSet<?>)o).set);
+    }
+
+    @Override
+    public int hashCode() {
+        return set.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "SolidSet{" +
+            "set=" + set +
+            '}';
+    }
 }

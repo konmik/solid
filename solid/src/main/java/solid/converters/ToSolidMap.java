@@ -5,7 +5,7 @@ import java.util.Map;
 import solid.collections.SolidMap;
 import solid.functions.SolidFunc1;
 
-public class ToSolidMap<K, V> implements SolidFunc1<Iterable<Map.Entry<K, V>>, SolidMap<K, V>> {
+public class ToSolidMap<K, V> implements SolidFunc1<Iterable<? extends Map.Entry<K, V>>, SolidMap<K, V>> {
 
     private static final ToSolidMap TO_SOLID_MAP = new ToSolidMap<>();
 
@@ -17,13 +17,13 @@ public class ToSolidMap<K, V> implements SolidFunc1<Iterable<Map.Entry<K, V>>, S
      * @param <V> a type of {@link SolidMap} values.
      * @return a method that converts an iterable into a {@link SolidMap}.
      */
-    public static <K, V> SolidFunc1<Iterable<Map.Entry<K, V>>, SolidMap<K, V>> toSolidMap() {
+    public static <K, V> SolidFunc1<Iterable<? extends Map.Entry<K, V>>, SolidMap<K, V>> toSolidMap() {
         //noinspection unchecked
         return TO_SOLID_MAP;
     }
 
     @Override
-    public SolidMap<K, V> call(Iterable<Map.Entry<K, V>> value) {
+    public SolidMap<K, V> call(Iterable<? extends Map.Entry<K, V>> value) {
         return new SolidMap<>(value);
     }
 }

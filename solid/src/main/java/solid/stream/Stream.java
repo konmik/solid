@@ -4,11 +4,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import solid.collections.SolidEntry;
 import solid.collections.SolidList;
+import solid.collections.SolidMap;
 import solid.converters.ToFirst;
 import solid.converters.ToLast;
 import solid.converters.ToList;
 import solid.converters.ToSolidList;
+import solid.converters.ToSolidMapByKey;
 import solid.filters.DistinctFilter;
 import solid.filters.NotEqualTo;
 import solid.filters.NotIn;
@@ -86,7 +89,7 @@ public abstract class Stream<T> implements Iterable<T> {
      * @return a {@link List} containing all {@link Stream} items.
      */
     public List<T> toList(int initialCapacity) {
-        return collect(new ToList<T>(initialCapacity));
+        return collect(ToList.<T>toList(initialCapacity));
     }
 
     /**
@@ -108,7 +111,19 @@ public abstract class Stream<T> implements Iterable<T> {
      * @return a {@link SolidList} containing all {@link Stream} items.
      */
     public SolidList<T> toSolidList(int initialCapacity) {
-        return collect(new ToSolidList<T>(initialCapacity));
+        return collect(ToSolidList.<T>toSolidList(initialCapacity));
+    }
+
+    /**
+     * Converts a {@link Stream} into a {@link SolidMap} using a key extracting function.
+     *
+     * @param toKey a function that extracts a ket from a given stream item.
+     * @param <K>   a type of map keys.
+     * @return a {@link SolidMap} that has been constructed using current stream's values and keys
+     * extracted from a given key extracting function.
+     */
+    public <K> SolidMap<K, T> toSolidMap(SolidFunc1<T, K> toKey) {
+        return collect(new ToSolidMapByKey<>(toKey));
     }
 
     /**
@@ -176,6 +191,17 @@ public abstract class Stream<T> implements Iterable<T> {
      */
     public <R> Stream<R> flatMap(SolidFunc1<T, Iterable<R>> func) {
         return new FlatMap<>(this, func);
+    }
+
+    /**
+     * Returns a new stream of {@link SolidList} that is grouped by a key extracted from each source stream item.
+     *
+     * @param toKey a function that extracts a key from a given item.
+     * @param <K>   a type of key value.
+     * @return a new stream of {@link SolidList} that is grouped by a key extracted from each source stream item.
+     */
+    public <K> Stream<SolidEntry<K, SolidList<T>>> groupBy(SolidFunc1<T, K> toKey) {
+        return new Group<>(this, toKey);
     }
 
     /**

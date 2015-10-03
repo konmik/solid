@@ -14,6 +14,7 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 
 public class SolidSetTest {
 
@@ -117,6 +118,30 @@ public class SolidSetTest {
     public void testParcelable() throws Exception {
         SolidSet<Integer> set = new SolidSet<>(new Integer[]{1, 2, 3});
         assert123(MockParcel.writeRead(set, SolidSet.CREATOR));
+        assertEquals(12, SolidSet.CREATOR.newArray(12).length);
+        assertEquals(0, set.describeContents());
+    }
+
+    @Test
+    public void testEmpty() throws Exception {
+        assertEquals(0, SolidSet.empty().size());
+    }
+
+    @Test
+    public void testToString() throws Exception {
+        assertTrue(new SolidSet<>(new Integer[]{1, 13, 3}).toString().contains("13"));
+    }
+
+    @Test
+    public void testHashCode() throws Exception {
+        assertEquals(new SolidSet<>(new Integer[]{1, 13, 3}).hashCode(), new SolidSet<>(new Integer[]{1, 13, 3}).hashCode());
+        assertNotEquals(SolidSet.empty().hashCode(), new SolidSet<>(new Integer[]{1, 13, 3}).hashCode());
+    }
+
+    @Test
+    public void testEquals() throws Exception {
+        assertEquals(new SolidSet<>(new Integer[]{1, 13, 3}), new SolidSet<>(new Integer[]{1, 13, 3}));
+        assertNotEquals(SolidSet.empty(), new SolidSet<>(new Integer[]{1, 13, 3}));
     }
 
     private void assert123(Set<Integer> set) throws Exception {

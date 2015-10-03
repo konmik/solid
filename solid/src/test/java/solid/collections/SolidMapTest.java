@@ -134,18 +134,39 @@ public class SolidMapTest {
 
     @Test
     public void testEquals() throws Exception {
+        SolidMap<Integer, Integer> map = new SolidMap<>(create123map234());
+        assertTrue(map.equals(map));
+
         assertTrue(new SolidMap<>(create123map234()).equals(create123map234()));
+
         HashMap<Integer, Integer> map234null = create123map234();
         map234null.remove(1);
+        assertFalse(map.equals(new SolidMap<>(map234null)));
+
         map234null.put(null, null);
         assertTrue(new SolidMap<>(map234null).equals(map234null));
         assertFalse(new SolidMap<>(create123map234()).equals(map234null));
+
+        HashMap<Integer, Integer> map234null_ = create123map234();
+        map234null_.put(3, null);
+        assertFalse(new SolidMap<>(map234null).equals(create123map234()));
+
+        assertFalse(map.equals(1));
+    }
+
+    @Test
+    public void testHashCode() throws Exception {
+        assertEquals(SolidMap.empty().hashCode(), SolidMap.empty().hashCode());
+        assertEquals(new SolidMap<>(create123map234()).hashCode(), new SolidMap<>(create123map234()).hashCode());
+        assertNotEquals(SolidMap.empty().hashCode(), new SolidMap<>(create123map234()).hashCode());
     }
 
     @Test
     public void parcelableImplementation() throws Exception {
         SolidMap<Integer, Integer> map = new SolidMap<>(create123map234());
         assertEquals(map, MockParcel.writeRead(map, SolidMap.CREATOR));
+        assertEquals(12, SolidMap.CREATOR.newArray(12).length);
+        assertEquals(0, map.describeContents());
     }
 
     @Test
@@ -156,6 +177,14 @@ public class SolidMapTest {
             hashMap.put(entry.getKey(), entry.getValue());
         }
         assertEquals(map, hashMap);
+    }
+
+    @Test
+    public void testToString() throws Exception {
+        SolidMap<Integer, Integer> map = new SolidMap<>(create123map234());
+        assertTrue(map.toString().contains("1"));
+        assertTrue(map.toString().contains("4"));
+        assertFalse(map.toString().contains("5"));
     }
 
     private <T> void assertSetEquals(Set<T> expected, Set<T> actual) {
