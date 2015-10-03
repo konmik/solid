@@ -1,6 +1,6 @@
 # Changelog
 
-##### 1.0.12 version (03.10.2005)
+##### 1.0.12 version (03.10.2015)
 
 * `Group` operator.
 * `SolidEntry` object.
