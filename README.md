@@ -13,8 +13,6 @@ It provides:
 
 * Primitive array / wrapped array **converters**.
 
-* Code coverage with tests.
-
 * 60Kb jar
 
 ### Philosophy
