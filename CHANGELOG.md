@@ -1,5 +1,9 @@
 # Changelog
 
+##### 1.0.13 version (04.10.2015)
+
+* `reduce`, `fold` operators.
+
 ##### 1.0.12 version (03.10.2015)
 
 * `Group` operator.

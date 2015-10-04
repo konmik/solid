@@ -7,6 +7,8 @@ import java.util.List;
 import solid.collections.SolidEntry;
 import solid.collections.SolidList;
 import solid.collections.SolidMap;
+import solid.converters.Fold;
+import solid.converters.Reduce;
 import solid.converters.ToFirst;
 import solid.converters.ToLast;
 import solid.converters.ToList;
@@ -16,6 +18,7 @@ import solid.filters.DistinctFilter;
 import solid.filters.NotEqualTo;
 import solid.filters.NotIn;
 import solid.functions.SolidFunc1;
+import solid.functions.SolidFunc2;
 
 /**
  * This is a base stream class for implementation of iterable streams.
@@ -135,6 +138,31 @@ public abstract class Stream<T> implements Iterable<T> {
      */
     public <R> R collect(SolidFunc1<Iterable<T>, R> collector) {
         return collector.call(this);
+    }
+
+    /**
+     * Returns a value that has been received by applying an accumulating function to each item of the current stream.
+     * An initial value should be provided.
+     *
+     * @param <R>       a type of the returning and initial values.
+     * @param operation a function to apply to the each stream item.
+     * @return a value that has been received by applying an accumulating function to each item of the current stream.
+     */
+    public <R> R fold(R initialValue, SolidFunc2<R, T, R> operation) {
+        return new Fold<>(initialValue, operation).call(this);
+    }
+
+    /**
+     * Returns a value that has been received by applying an accumulating function to each item of the current stream.
+     * An initial value is taken from the first value.
+     *
+     * If the stream is empty an {@link UnsupportedOperationException} will be thrown.
+     *
+     * @param operation a function to apply to the each (except the first one) stream item.
+     * @return a value that has been received by applying an accumulating function to each item of the current stream.
+     */
+    public T reduce(SolidFunc2<T, T, T> operation) {
+        return new Reduce<>(operation).call(this);
     }
 
     /**

@@ -25,7 +25,7 @@ of the application, while keeping the ability to transform data in a convenient 
 
 ``` groovy
 dependencies {
-    compile 'info.android15.solid:solid:1.0.12'
+    compile 'info.android15.solid:solid:1.0.13'
 }
 ```
 

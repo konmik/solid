@@ -1,5 +1,6 @@
 package solid.stream;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -9,6 +10,8 @@ import java.util.Iterator;
 
 import solid.collections.SolidEntry;
 import solid.collections.SolidList;
+import solid.converters.FoldTest;
+import solid.converters.ReduceTest;
 import solid.converters.ToFirstTest;
 import solid.converters.ToLastTest;
 import solid.converters.ToListTest;
@@ -16,6 +19,7 @@ import solid.converters.ToSolidListTest;
 import solid.converters.ToSolidMapByKeyTest;
 import solid.filters.DistinctFilterTest;
 import solid.functions.SolidFunc1;
+import solid.functions.SolidFunc2;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
@@ -236,6 +240,36 @@ public class StreamTest {
         });
         assertTrue(target == result);
         assertEquals(target, result);
+    }
+
+    @Test
+    public void testFold() throws Exception {
+        Assert.assertEquals(
+            (Integer)10,
+            Stream
+                .of(2, 3, 4)
+                .fold(1, new SolidFunc2<Integer, Integer, Integer>() {
+                    @Override
+                    public Integer call(Integer value1, Integer value2) {
+                        return value1 + value2;
+                    }
+                }));
+        new FoldTest().all();
+    }
+
+    @Test
+    public void testReduce() throws Exception {
+        Assert.assertEquals(
+            (Integer)9,
+            Stream
+                .of(2, 3, 4)
+                .reduce(new SolidFunc2<Integer, Integer, Integer>() {
+                    @Override
+                    public Integer call(Integer value1, Integer value2) {
+                        return value1 + value2;
+                    }
+                }));
+        new ReduceTest().all();
     }
 
     @Test
