@@ -10,6 +10,7 @@ import java.util.Iterator;
 
 import solid.collections.SolidEntry;
 import solid.collections.SolidList;
+import solid.converters.AccumulateTest;
 import solid.converters.FoldTest;
 import solid.converters.ReduceTest;
 import solid.converters.ToFirstTest;
@@ -245,7 +246,7 @@ public class StreamTest {
     @Test
     public void testFold() throws Exception {
         Assert.assertEquals(
-            (Integer)10,
+            (Integer) 10,
             Stream
                 .of(2, 3, 4)
                 .fold(1, new SolidFunc2<Integer, Integer, Integer>() {
@@ -260,7 +261,7 @@ public class StreamTest {
     @Test
     public void testReduce() throws Exception {
         Assert.assertEquals(
-            (Integer)9,
+            (Integer) 9,
             Stream
                 .of(2, 3, 4)
                 .reduce(new SolidFunc2<Integer, Integer, Integer>() {
@@ -273,14 +274,29 @@ public class StreamTest {
     }
 
     @Test
+    public void testAccumulate() throws Exception {
+        Assert.assertEquals(
+            (Integer) 109,
+            Stream
+                .of(2, 3, 4)
+                .accumulate(100, new SolidFunc2<Integer, Integer, Integer>() {
+                    @Override
+                    public Integer call(Integer value1, Integer value2) {
+                        return value1 + value2;
+                    }
+                }));
+        new AccumulateTest().all();
+    }
+
+    @Test
     public void testFirst() throws Exception {
-        assertEquals(1, (int)Stream.stream(asList(1, 2, 3)).first(10));
+        assertEquals(1, (int) Stream.stream(asList(1, 2, 3)).first(10));
         new ToFirstTest().testToFirst();
     }
 
     @Test
     public void testLast() throws Exception {
-        assertEquals(3, (int)Stream.stream(asList(1, 2, 3)).last(10));
+        assertEquals(3, (int) Stream.stream(asList(1, 2, 3)).last(10));
         new ToLastTest().testToLast();
     }
 

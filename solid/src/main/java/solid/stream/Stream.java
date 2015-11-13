@@ -7,6 +7,7 @@ import java.util.List;
 import solid.collections.SolidEntry;
 import solid.collections.SolidList;
 import solid.collections.SolidMap;
+import solid.converters.Accumulate;
 import solid.converters.Fold;
 import solid.converters.Reduce;
 import solid.converters.ToFirst;
@@ -163,6 +164,17 @@ public abstract class Stream<T> implements Iterable<T> {
      */
     public T reduce(SolidFunc2<T, T, T> operation) {
         return new Reduce<>(operation).call(this);
+    }
+
+    /**
+     * Returns a value that has been received by applying an accumulating function to each item of the current stream,
+     * starting from a given initial value. The initial value can have a different type from stream values.
+     *
+     * @param accumulator a function to apply to the each stream item.
+     * @return a value that has been received by applying an accumulating function to each item of the current stream.
+     */
+    public <R> R accumulate(R initial, SolidFunc2<R, T, R> accumulator) {
+        return new Accumulate<>(initial, accumulator).call(this);
     }
 
     /**
