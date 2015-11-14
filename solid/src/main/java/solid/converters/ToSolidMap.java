@@ -5,6 +5,16 @@ import java.util.Map;
 import solid.collections.SolidMap;
 import solid.functions.SolidFunc1;
 
+/**
+ * This collector does not work and will be removed on the next major release.
+ *
+ * If you're using retrolambda you can collect a stream of
+ * {@link java.util.Map.Entry} into a
+ * {@link SolidMap} like this:
+ *
+ * <pre><code>stream.collect(SolidMap::new)</code></pre>
+ */
+@Deprecated
 public class ToSolidMap<K, V> implements SolidFunc1<Iterable<? extends Map.Entry<K, V>>, SolidMap<K, V>> {
 
     private static final ToSolidMap TO_SOLID_MAP = new ToSolidMap<>();
