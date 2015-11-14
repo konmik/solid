@@ -1,5 +1,10 @@
 # Changelog
 
+##### 1.0.14 version (14.11.2015)
+
+* `accumulate` operator.
+* `ToSolidMap` deprecation.
+
 ##### 1.0.13 version (04.10.2015)
 
 * `reduce`, `fold` operators.
