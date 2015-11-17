@@ -9,7 +9,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import solid.converters.AccumulateTest;
 import solid.converters.ToFirstTest;
 import solid.converters.ToLastTest;
 
@@ -200,15 +199,6 @@ public class StreamTest {
         assertEquals((Integer) 9, Stream.of(9).reduce(null).get());
         assertFalse(null, Stream.of(null, null, null).reduce((value1, value2) -> null).isPresent());
         assertEquals((Integer) 9, Stream.of(2, 3, 4).reduce((value1, value2) -> value1 + value2).get());
-    }
-
-    @Test
-    public void testAccumulate() throws Exception {
-        Assert.assertEquals(
-            (Integer) 109,
-            of(2, 3, 4)
-                .accumulate(100, (value1, value2) -> value1 + value2));
-        new AccumulateTest().all();
     }
 
     @Test

@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 
-import solid.converters.Accumulate;
 import solid.converters.ToArrayList;
 import solid.converters.ToFirst;
 import solid.converters.ToLast;
@@ -137,17 +136,6 @@ public abstract class Stream<T> implements Iterable<T> {
         while (iterator.hasNext())
             result = operation.call(result, iterator.next());
         return Optional.of(result);
-    }
-
-    /**
-     * Returns a value that has been received by applying an accumulating function to each item of the current stream,
-     * starting from a given initial value. The initial value can have a different type from stream values.
-     *
-     * @param accumulator a function to apply to the each stream item.
-     * @return a value that has been received by applying an accumulating function to each item of the current stream.
-     */
-    public <R> R accumulate(R initial, SolidFunc2<R, T, R> accumulator) {
-        return new Accumulate<>(initial, accumulator).call(this);
     }
 
     /**
