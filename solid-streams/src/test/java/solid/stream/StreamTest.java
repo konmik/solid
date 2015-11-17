@@ -142,12 +142,6 @@ public class StreamTest {
     }
 
     @Test
-    public void testMergeDistinct() throws Exception {
-        assertTrue(stream(asList(1, 2)).mergeDistinct(asList(3, 4)) instanceof MergeDistinct);
-        new MergeDistinctTest().testIterator();
-    }
-
-    @Test
     public void testSort() throws Exception {
         assertIterableEquals(asList(1, 2, 3), stream(asList(3, 2, 1)).sorted((lhs, rhs) -> lhs < rhs ? -1 : (lhs.equals(rhs) ? 0 : 1)));
         assertIterableEquals(asList(1, 2, 3), Stream.of(3, 2, 1).sorted((lhs, rhs) -> lhs < rhs ? -1 : (lhs.equals(rhs) ? 0 : 1)));

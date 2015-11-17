@@ -280,21 +280,6 @@ public abstract class Stream<T> implements Iterable<T> {
     }
 
     /**
-     * Merges an iterable stream with another, applying {@link #distinct()} the same
-     * time. This operation is slightly faster and less memory consuming than
-     * merging two streams and calling {@link #distinct()} later.
-     * <p/>
-     * This operator keeps a list of all items that has been passed to
-     * compare it against next items.
-     *
-     * @param with a stream to add at the end of current stream.
-     * @return the combined stream.
-     */
-    public Stream<T> mergeDistinct(Iterable<? extends T> with) {
-        return new MergeDistinct<>(this, with);
-    }
-
-    /**
      * Returns a new stream that contains all items of the current stream in sorted order.
      * The operator creates a list of all items internally.
      *
