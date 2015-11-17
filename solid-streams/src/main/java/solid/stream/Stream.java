@@ -109,15 +109,14 @@ public abstract class Stream<T> implements Iterable<T> {
     /**
      * Creates a stream that contains a given number of integers starting from a given number.
      *
-     * @param from  a staring value
-     * @param count a number of values
+     * @param from a staring value
+     * @param to   an ending value, exclusive
      * @return a stream that contains a given number of integers starting from a given number.
      */
-    public static Stream<Long> range(long from, long count) {
+    public static Stream<Long> range(long from, long to) {
         return from(() -> new ReadOnlyIterator<Long>() {
 
             long value = from;
-            long to = from + count;
 
             @Override
             public boolean hasNext() {

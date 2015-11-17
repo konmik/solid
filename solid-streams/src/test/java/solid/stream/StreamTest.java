@@ -66,10 +66,10 @@ public class StreamTest {
 
     @Test
     public void testRange() throws Exception {
-        assertIterableEquals(asList(1L, 2L, 3L), range(1, 3));
-        assertIterableEquals(asList(-3L, -2L, -1L), range(-3, 3));
-        assertIterableEquals(Collections.<Long>emptyList(), range(1, -1));
-        assertIterableEquals(singletonList(1L), range(1, 1));
+        assertIterableEquals(asList(1L, 2L, 3L), range(1, 4));
+        assertIterableEquals(asList(-3L, -2L, -1L), range(-3, 0));
+        assertIterableEquals(Collections.<Long>emptyList(), range(1, 1));
+        assertIterableEquals(singletonList(1L), range(1, 2));
     }
 
     @Test
