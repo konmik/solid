@@ -216,7 +216,26 @@ public abstract class Stream<T> implements Iterable<T> {
      * @return a new stream that contains items that has been returned by a given function for each item in the current stream.
      */
     public <R> Stream<R> flatMap(SolidFunc1<T, Iterable<R>> func) {
-        return new FlatMap<>(this, func);
+        return from(() -> new ReadOnlyIterator<R>() {
+
+            Iterator<T> iterator = iterator();
+            Iterator<R> next;
+
+            @Override
+            public boolean hasNext() {
+                if (next == null || !next.hasNext()) {
+                    if (iterator.hasNext())
+                        next = func.call(iterator.next()).iterator();
+                }
+
+                return next != null && next.hasNext();
+            }
+
+            @Override
+            public R next() {
+                return next.next();
+            }
+        });
     }
 
     /**
