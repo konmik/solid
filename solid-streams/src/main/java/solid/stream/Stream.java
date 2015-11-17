@@ -42,8 +42,8 @@ public abstract class Stream<T> implements Iterable<T> {
      * @param <T>    a type of stream items
      * @return a {@link Stream} that represents source {@link Iterable} elements
      */
-    public static <T> Stream<T> stream(Iterable<? extends T> source) {
-        return new Copy<>(source);
+    public static <T> Stream<T> stream(Iterable<T> source) {
+        return from(source::iterator);
     }
 
     /**
@@ -54,7 +54,21 @@ public abstract class Stream<T> implements Iterable<T> {
      * @return a stream with just one given element.
      */
     public static <T> Stream<T> of(T value) {
-        return new Copy<>(Collections.singleton(value));
+        return from(() -> new ReadOnlyIterator<T>() {
+
+            boolean has = true;
+
+            @Override
+            public boolean hasNext() {
+                return has;
+            }
+
+            @Override
+            public T next() {
+                has = false;
+                return value;
+            }
+        });
     }
 
     /**
@@ -289,7 +303,7 @@ public abstract class Stream<T> implements Iterable<T> {
      * @return a new stream that contains all items of the current stream and one additional given item at the end.
      */
     public Stream<T> with(T value) {
-        return new Merge<>(this, new Single<>(value));
+        return new Merge<>(this, of(value));
     }
 
     /**

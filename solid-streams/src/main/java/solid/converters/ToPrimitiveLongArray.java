@@ -3,7 +3,8 @@ package solid.converters;
 import java.util.Collection;
 
 import solid.functions.SolidFunc1;
-import solid.stream.Copy;
+
+import static solid.stream.Stream.stream;
 
 public class ToPrimitiveLongArray implements SolidFunc1<Iterable<Long>, long[]> {
 
@@ -21,7 +22,7 @@ public class ToPrimitiveLongArray implements SolidFunc1<Iterable<Long>, long[]> 
 
     @Override
     public long[] call(Iterable<Long> value) {
-        Collection<Long> objects = new Copy<>(value).collect(ToList.<Long>toList());
+        Collection<Long> objects = stream(value).toList();
         long[] primitives = new long[objects.size()];
         int i = 0;
         for (Long object : objects)

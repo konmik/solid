@@ -3,7 +3,8 @@ package solid.converters;
 import java.util.List;
 
 import solid.functions.SolidFunc1;
-import solid.stream.Copy;
+
+import static solid.stream.Stream.stream;
 
 public class ToPrimitiveByteArray implements SolidFunc1<Iterable<Byte>, byte[]> {
 
@@ -21,7 +22,7 @@ public class ToPrimitiveByteArray implements SolidFunc1<Iterable<Byte>, byte[]> 
 
     @Override
     public byte[] call(Iterable<Byte> value) {
-        List<Byte> objects = new Copy<>(value).collect(ToList.<Byte>toList());
+        List<Byte> objects = stream(value).toList();
         byte[] primitives = new byte[objects.size()];
         int i = 0;
         for (Byte object : objects)

@@ -42,8 +42,10 @@ public class StreamTest {
     }
 
     @Test
-    public void testOfSingle() throws Exception {
+    public void testOf() throws Exception {
         assertIterableEquals(singletonList(1), of(1));
+        assertIterableEquals(asList(null, null), of(null, null));
+        assertIterableEquals(asList(1, 2, 3), of(1, 2, 3));
     }
 
     @Test
@@ -115,6 +117,7 @@ public class StreamTest {
     @Test
     public void testWithout() throws Exception {
         assertIterableEquals(asList(1, 2, 3), stream(asList(1, 2, 3, 4)).without(4));
+        assertIterableEquals(asList(1, 2, 3), stream(asList(1, 2, 3, null)).without(null));
     }
 
     @Test
