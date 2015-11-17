@@ -91,6 +91,10 @@ public abstract class Stream<T> implements Iterable<T> {
         };
     }
 
+    public static <T> Stream<T> empty() {
+        return from(() -> EMPTY_ITERATOR);
+    }
+
     /**
      * Converts a {@link Stream} into a {@link List}.
      *
@@ -406,6 +410,18 @@ public abstract class Stream<T> implements Iterable<T> {
     public <R> Stream<R> cast(Class<R> c) {
         return map(c::cast);
     }
+
+    private static ReadOnlyIterator EMPTY_ITERATOR = new ReadOnlyIterator() {
+        @Override
+        public boolean hasNext() {
+            return false;
+        }
+
+        @Override
+        public Object next() {
+            throw new IllegalStateException("Can't get a value from an empty iterator.");
+        }
+    };
 
     private static <T> ArrayList<T> toList(Iterable<T> iterable) {
         ArrayList<T> list = new ArrayList<>();

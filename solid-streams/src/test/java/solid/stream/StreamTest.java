@@ -20,6 +20,7 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 import static solid.stream.Stream.of;
 import static solid.stream.Stream.stream;
@@ -52,6 +53,18 @@ public class StreamTest {
     public void testOfVararg() throws Exception {
         assertIterableEquals(asList(1, null, 2), of(1, null, 2));
         assertIterableEquals(emptyList(), of());
+    }
+
+    @Test
+    public void testEmpty() throws Exception {
+        assertIterableEquals(emptyList(), Stream.empty());
+        Iterator<Object> iterator = Stream.empty().iterator();
+        assertFalse(iterator.hasNext());
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testEmptyThrows() throws Exception {
+        Stream.empty().iterator().next();
     }
 
     @Test

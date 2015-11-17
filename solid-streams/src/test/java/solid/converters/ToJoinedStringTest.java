@@ -8,7 +8,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import solid.stream.Empty;
+import solid.stream.Stream;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
@@ -33,6 +33,6 @@ public class ToJoinedStringTest {
         assertEquals(RESULT_STRING, stream(asList("1", "2", "3")).collect(toJoinedString()));
         assertEquals(RESULT_STRING, stream(asList("1", "2", "3")).collect(new ToJoinedString()));
         assertEquals(RESULT_STRING, stream(asList("1", "2", "3")).collect(new ToJoinedString(",")));
-        assertEquals(RESULT_STRING, stream(new Empty<String>()).collect(new ToJoinedString(",")));
+        assertEquals(RESULT_STRING, Stream.<String>empty().collect(new ToJoinedString(",")));
     }
 }
