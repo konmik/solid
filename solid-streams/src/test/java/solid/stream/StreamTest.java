@@ -122,14 +122,13 @@ public class StreamTest {
     }
 
     @Test
-    public void testWith() throws Exception {
-        assertIterableEquals(asList(1, 2, 3), stream(asList(1, 2)).with(3));
-    }
-
-    @Test
     public void testMerge() throws Exception {
-        assertIterableEquals(asList(1, 2, 3, 4), stream(asList(1, 2)).merge(asList(3, 4)));
-        new MergeTest().testIterator();
+        assertIterableEquals(asList(1, 2, 3, 4), of(1, 2).merge(of(3, 4)));
+        assertIterableEquals(asList(1, 2, 3, 4, 5, 6), of(1, 2, 3).merge(of(4, 5, 6)));
+        assertIterableEquals(asList(1, 2, 3), of(1, 2, 3).merge(of()));
+        assertIterableEquals(asList(4, 5, 6), of().merge(of(4, 5, 6)));
+        assertIterableEquals(Collections.emptyList(), of().merge(of()));
+        assertIterableEquals(asList(null, null, null, null), of(null, null).merge(of(null, null)));
     }
 
     @Test

@@ -288,23 +288,27 @@ public abstract class Stream<T> implements Iterable<T> {
     }
 
     /**
-     * Adds a value at the end of the current stream.
-     *
-     * @param value a value to add.
-     * @return a new stream that contains all items of the current stream and one additional given item at the end.
-     */
-    public Stream<T> with(T value) {
-        return new Merge<>(this, of(value));
-    }
-
-    /**
      * Adds items from another stream to the end of the current stream.
      *
      * @param with an {@link Iterable} that should be used to emit items after items in the current stream ran out.
      * @return a new stream that contains items from both streams.
      */
     public Stream<T> merge(Iterable<? extends T> with) {
-        return new Merge<>(this, with);
+        return from(() -> new ReadOnlyIterator<T>() {
+
+            Iterator<T> sourceI = iterator();
+            Iterator<? extends T> withI = with.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return sourceI.hasNext() || withI.hasNext();
+            }
+
+            @Override
+            public T next() {
+                return sourceI.hasNext() ? sourceI.next() : withI.next();
+            }
+        });
     }
 
     /**
