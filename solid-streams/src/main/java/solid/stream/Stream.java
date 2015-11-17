@@ -6,13 +6,13 @@ import java.util.Comparator;
 import java.util.Iterator;
 
 import solid.converters.Accumulate;
-import solid.converters.Reduce;
 import solid.converters.ToArrayList;
 import solid.converters.ToFirst;
 import solid.converters.ToLast;
 import solid.functions.SolidFunc0;
 import solid.functions.SolidFunc1;
 import solid.functions.SolidFunc2;
+import solid.optional.Optional;
 
 /**
  * This is a base stream class for implementation of iterable streams.
@@ -128,8 +128,15 @@ public abstract class Stream<T> implements Iterable<T> {
      * @param operation a function to apply to the each (except the first one) stream item.
      * @return a value that has been received by applying an accumulating function to each item of the current stream.
      */
-    public T reduce(SolidFunc2<T, T, T> operation) {
-        return new Reduce<>(operation).call(this);
+    public Optional<T> reduce(SolidFunc2<T, T, T> operation) {
+        Iterator<T> iterator = iterator();
+        if (!iterator.hasNext())
+            return Optional.empty();
+
+        T result = iterator.next();
+        while (iterator.hasNext())
+            result = operation.call(result, iterator.next());
+        return Optional.of(result);
     }
 
     /**
