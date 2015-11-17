@@ -15,7 +15,6 @@ import solid.converters.ReduceTest;
 import solid.converters.ToFirstTest;
 import solid.converters.ToLastTest;
 import solid.converters.ToListTest;
-import solid.filters.DistinctFilterTest;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
@@ -103,7 +102,14 @@ public class StreamTest {
     @Test
     public void testFilter() throws Exception {
         assertIterableEquals(asList(1, 2, 3), stream(asList(1, 2, 3, 4)).filter(value -> value != 4));
-        new FilterTest().testIterator();
+        List<Integer> list123 = asList(1, 2, 3);
+        assertIterableEquals(list123, of(1, 2, 3, 4).filter(value -> value != 4));
+        assertIterableEquals(list123, of(4, 1, 2, 3).filter(value -> value != 4));
+        assertIterableEquals(list123, of(1, 2, 4, 3).filter(value -> value != 4));
+        assertIterableEquals(list123, of(1, 2, 3).filter(value -> true));
+        assertIterableEquals(Collections.<Integer>emptyList(), of(1, 2, 4, 3).filter(value -> false));
+        assertIterableEquals(Collections.<Integer>emptyList(), Stream.<Integer>of().filter(value -> true));
+        assertIterableEquals(Collections.<Integer>emptyList(), Stream.<Integer>of(null, null).filter(value -> false));
     }
 
     @Test
@@ -142,7 +148,8 @@ public class StreamTest {
     @Test
     public void testDistinct() throws Exception {
         assertIterableEquals(asList(1, 2, 3), stream(asList(1, 2, 3, 3, 3)).distinct());
-        new DistinctFilterTest().testCall();
+        assertIterableEquals(singletonList(null), stream(asList(null, null)).distinct());
+        assertIterableEquals(emptyList(), stream(asList()).distinct());
     }
 
     @Test

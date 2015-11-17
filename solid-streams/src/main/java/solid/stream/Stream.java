@@ -12,9 +12,6 @@ import solid.converters.Reduce;
 import solid.converters.ToFirst;
 import solid.converters.ToLast;
 import solid.converters.ToList;
-import solid.filters.DistinctFilter;
-import solid.filters.NotEqualTo;
-import solid.filters.NotIn;
 import solid.functions.SolidFunc0;
 import solid.functions.SolidFunc1;
 import solid.functions.SolidFunc2;
@@ -245,7 +242,34 @@ public abstract class Stream<T> implements Iterable<T> {
      * @return a new stream that contains all items of the current stream for which a given function returned {@link Boolean#TRUE}.
      */
     public Stream<T> filter(SolidFunc1<T, Boolean> func) {
-        return new Filter<>(this, func);
+        return from(() -> new ReadOnlyIterator<T>() {
+            Iterator<? extends T> iterator = iterator();
+            T next;
+            boolean hasNext;
+
+            private void process() {
+                while (!hasNext && iterator.hasNext()) {
+                    T n = iterator.next();
+                    if (func.call(n)) {
+                        next = n;
+                        hasNext = true;
+                    }
+                }
+            }
+
+            @Override
+            public boolean hasNext() {
+                process();
+                return hasNext;
+            }
+
+            @Override
+            public T next() {
+                process();
+                hasNext = false;
+                return next;
+            }
+        });
     }
 
     /**
@@ -255,7 +279,7 @@ public abstract class Stream<T> implements Iterable<T> {
      * @return a new stream that contains all items of the current stream except of a given item.
      */
     public Stream<T> without(T value) {
-        return new Filter<>(this, new NotEqualTo<>(value));
+        return filter(it -> ((it == null) ? (value != null) : !it.equals(value)));
     }
 
     /**
@@ -287,7 +311,8 @@ public abstract class Stream<T> implements Iterable<T> {
      * exist in a given stream.
      */
     public Stream<T> separate(Iterable<? extends T> from) {
-        return new Filter<>(this, new NotIn<>(from));
+        ArrayList<? extends T> list = toList(from);
+        return filter(it -> !list.contains(it));
     }
 
     /**
@@ -319,7 +344,13 @@ public abstract class Stream<T> implements Iterable<T> {
      * @return a new stream that filters out duplicate items off the current stream.
      */
     public Stream<T> distinct() {
-        return new Filter<>(this, new DistinctFilter<>());
+        ArrayList<T> passed = new ArrayList<>();
+        return filter(value -> {
+            if (passed.contains(value))
+                return false;
+            passed.add(value);
+            return true;
+        });
     }
 
     /**
