@@ -14,8 +14,8 @@ public class ToFirstTest {
     public void testToFirst() throws Exception {
         assertEquals(1, (int) new ToFirst<>(10).call(singletonList(1)));
         assertEquals(1, (int) new ToFirst<>(10).call(asList(1, 2, 3)));
-        assertEquals(10, (int) new ToFirst<>(10).call(Stream.empty()));
+        assertEquals(10, (int) new ToFirst<>(10).call(Stream.of()));
         assertEquals(1, (int) toFist(10).call(asList(1, 2, 3)));
-        assertEquals(10, (int) toFist(10).call(Stream.empty()));
+        assertEquals(10, (int) toFist(10).call(Stream.of()));
     }
 }

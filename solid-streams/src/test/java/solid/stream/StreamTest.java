@@ -14,7 +14,6 @@ import solid.converters.FoldTest;
 import solid.converters.ReduceTest;
 import solid.converters.ToFirstTest;
 import solid.converters.ToLastTest;
-import solid.converters.ToListTest;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
@@ -57,22 +56,14 @@ public class StreamTest {
 
     @Test
     public void testEmpty() throws Exception {
-        assertIterableEquals(emptyList(), Stream.empty());
-        Iterator<Object> iterator = Stream.empty().iterator();
+        assertIterableEquals(emptyList(), Stream.of());
+        Iterator<Object> iterator = Stream.of().iterator();
         assertFalse(iterator.hasNext());
     }
 
     @Test(expected = IllegalStateException.class)
     public void testEmptyThrows() throws Exception {
-        Stream.empty().iterator().next();
-    }
-
-    @Test
-    public void testToList() throws Exception {
-        assertIterableEquals(asList(1, 2, 3), stream(asList(1, 2, 3)).toList());
-        assertIterableEquals(asList(1, 2, 3), stream(asList(1, 2, 3)).toList(10));
-        new ToListTest().testToList();
-        new ToListTest().testNewAndCall();
+        Stream.of().iterator().next();
     }
 
     @Test

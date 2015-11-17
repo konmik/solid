@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.List;
 
 import solid.converters.Accumulate;
 import solid.converters.Fold;
 import solid.converters.Reduce;
+import solid.converters.ToArrayList;
 import solid.converters.ToFirst;
 import solid.converters.ToLast;
-import solid.converters.ToList;
 import solid.functions.SolidFunc0;
 import solid.functions.SolidFunc1;
 import solid.functions.SolidFunc2;
@@ -91,31 +90,8 @@ public abstract class Stream<T> implements Iterable<T> {
         };
     }
 
-    public static <T> Stream<T> empty() {
+    public static <T> Stream<T> of() {
         return from(() -> EMPTY_ITERATOR);
-    }
-
-    /**
-     * Converts a {@link Stream} into a {@link List}.
-     *
-     * @return a {@link List} containing all {@link Stream} items.
-     */
-    public List<T> toList() {
-        return collect(ToList.<T>toList());
-    }
-
-    /**
-     * Converts a {@link Stream} into a {@link List}, providing the possibility to set a starting capacity
-     * of the returned list.
-     * <p/>
-     * Use this method instead of {@link #toList()} for better performance on
-     * streams that can have more than 12 items.
-     *
-     * @param initialCapacity initial capacity of the returning list.
-     * @return a {@link List} containing all {@link Stream} items.
-     */
-    public List<T> toList(int initialCapacity) {
-        return collect(ToList.<T>toList(initialCapacity));
     }
 
     /**
@@ -329,7 +305,7 @@ public abstract class Stream<T> implements Iterable<T> {
      * exist in a given stream.
      */
     public Stream<T> separate(Iterable<? extends T> from) {
-        ArrayList<? extends T> list = toList(from);
+        ArrayList<T> list = ToArrayList.<T>toArrayList().call(from);
         return filter(it -> !list.contains(it));
     }
 
@@ -380,7 +356,7 @@ public abstract class Stream<T> implements Iterable<T> {
      */
     public Stream<T> sorted(Comparator<T> comparator) {
         return Stream.from(() -> {
-            ArrayList<T> array = toList(this);
+            ArrayList<T> array = ToArrayList.<T>toArrayList().call(this);
             Collections.sort(array, comparator);
             return array.iterator();
         });
@@ -394,7 +370,7 @@ public abstract class Stream<T> implements Iterable<T> {
      */
     public Stream<T> reverse() {
         return Stream.from(() -> {
-            ArrayList<T> array = toList(this);
+            ArrayList<T> array = ToArrayList.<T>toArrayList().call(this);
             Collections.reverse(array);
             return array.iterator();
         });
@@ -422,11 +398,4 @@ public abstract class Stream<T> implements Iterable<T> {
             throw new IllegalStateException("Can't get a value from an empty iterator.");
         }
     };
-
-    private static <T> ArrayList<T> toList(Iterable<T> iterable) {
-        ArrayList<T> list = new ArrayList<>();
-        for (T t : iterable)
-            list.add(t);
-        return list;
-    }
 }

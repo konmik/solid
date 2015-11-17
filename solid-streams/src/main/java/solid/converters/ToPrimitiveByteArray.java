@@ -4,8 +4,6 @@ import java.util.List;
 
 import solid.functions.SolidFunc1;
 
-import static solid.stream.Stream.stream;
-
 public class ToPrimitiveByteArray implements SolidFunc1<Iterable<Byte>, byte[]> {
 
     private static final SolidFunc1<Iterable<Byte>, byte[]> TO_PRIMITIVE_BYTE_ARRAY = new ToPrimitiveByteArray();
@@ -22,7 +20,7 @@ public class ToPrimitiveByteArray implements SolidFunc1<Iterable<Byte>, byte[]> 
 
     @Override
     public byte[] call(Iterable<Byte> value) {
-        List<Byte> objects = stream(value).toList();
+        List<Byte> objects = ToArrayList.<Byte>toArrayList().call(value);
         byte[] primitives = new byte[objects.size()];
         int i = 0;
         for (Byte object : objects)

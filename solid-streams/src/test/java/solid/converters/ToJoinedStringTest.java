@@ -33,6 +33,6 @@ public class ToJoinedStringTest {
         assertEquals(RESULT_STRING, stream(asList("1", "2", "3")).collect(toJoinedString()));
         assertEquals(RESULT_STRING, stream(asList("1", "2", "3")).collect(new ToJoinedString()));
         assertEquals(RESULT_STRING, stream(asList("1", "2", "3")).collect(new ToJoinedString(",")));
-        assertEquals(RESULT_STRING, Stream.<String>empty().collect(new ToJoinedString(",")));
+        assertEquals(RESULT_STRING, Stream.<String>of().collect(new ToJoinedString(",")));
     }
 }

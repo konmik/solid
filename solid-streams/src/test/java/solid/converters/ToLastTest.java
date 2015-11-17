@@ -14,8 +14,8 @@ public class ToLastTest {
     public void testToLast() throws Exception {
         assertEquals(1, (int) new ToLast<>(10).call(singletonList(1)));
         assertEquals(3, (int) new ToLast<>(10).call(asList(1, 2, 3)));
-        assertEquals(10, (int) new ToLast<>(10).call(Stream.empty()));
+        assertEquals(10, (int) new ToLast<>(10).call(Stream.of()));
         assertEquals(3, (int) toLast(10).call(asList(1, 2, 3)));
-        assertEquals(10, (int) toLast(10).call(Stream.empty()));
+        assertEquals(10, (int) toLast(10).call(Stream.of()));
     }
 }
