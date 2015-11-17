@@ -19,6 +19,7 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 import static solid.stream.Stream.of;
+import static solid.stream.Stream.range;
 import static solid.stream.Stream.stream;
 import static test_utils.AssertIterableEquals.assertIterableEquals;
 
@@ -61,6 +62,14 @@ public class StreamTest {
     @Test(expected = IllegalStateException.class)
     public void testEmptyThrows() throws Exception {
         Stream.of().iterator().next();
+    }
+
+    @Test
+    public void testRange() throws Exception {
+        assertIterableEquals(asList(1L, 2L, 3L), range(1, 3));
+        assertIterableEquals(asList(-3L, -2L, -1L), range(-3, 3));
+        assertIterableEquals(Collections.<Long>emptyList(), range(1, -1));
+        assertIterableEquals(singletonList(1L), range(1, 1));
     }
 
     @Test

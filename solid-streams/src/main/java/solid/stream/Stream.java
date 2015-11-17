@@ -107,6 +107,31 @@ public abstract class Stream<T> implements Iterable<T> {
     }
 
     /**
+     * Creates a stream that contains a given number of integers starting from a given number.
+     *
+     * @param from  a staring value
+     * @param count a number of values
+     * @return a stream that contains a given number of integers starting from a given number.
+     */
+    public static Stream<Long> range(long from, long count) {
+        return from(() -> new ReadOnlyIterator<Long>() {
+
+            long value = from;
+            long to = from + count;
+
+            @Override
+            public boolean hasNext() {
+                return value < to;
+            }
+
+            @Override
+            public Long next() {
+                return value++;
+            }
+        });
+    }
+
+    /**
      * Converts the current stream into any value with a given method.
      *
      * @param collector a method that should be used to return value.
