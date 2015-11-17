@@ -13,10 +13,4 @@ public class ToPrimitiveFloatArrayTest {
         assertArrayEquals(new float[]{1, 2, 3}, ToPrimitiveFloatArray.toPrimitiveFloatArray().call(Arrays.asList(1f, 2f, 3f)), 0);
         assertArrayEquals(new float[]{}, ToPrimitiveFloatArray.toPrimitiveFloatArray().call(Collections.<Float>emptyList()), 0);
     }
-
-    @Test
-    public void testCall() throws Exception {
-        assertArrayEquals(new float[]{1, 2, 3}, new ToPrimitiveFloatArray().call(Arrays.asList(1f, 2f, 3f)), 0);
-        assertArrayEquals(new float[]{}, new ToPrimitiveFloatArray().call(Collections.<Float>emptyList()), 0);
-    }
 }

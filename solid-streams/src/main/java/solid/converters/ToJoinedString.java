@@ -8,9 +8,9 @@ import solid.functions.SolidFunc1;
  * This class is a syntax enhancement around {@link TextUtils#join(CharSequence, Iterable)} method
  * to chain it with {@link solid.stream.Stream<String>} streams.
  */
-public class ToJoinedString implements SolidFunc1<Iterable<String>, String> {
+public class ToJoinedString {
 
-    private static ToJoinedString TO_JOINED_STRING = new ToJoinedString();
+    private static SolidFunc1<Iterable<String>, String> TO_JOINED_STRING = toJoinedString("");
 
     /**
      * Returns a method that can be used with {@link solid.stream.Stream#collect(SolidFunc1)}
@@ -18,7 +18,7 @@ public class ToJoinedString implements SolidFunc1<Iterable<String>, String> {
      *
      * @return a method that converts an iterable stream of {@link String} type into a joined string.
      */
-    public static ToJoinedString toJoinedString() {
+    public static SolidFunc1<Iterable<String>, String> toJoinedString() {
         return TO_JOINED_STRING;
     }
 
@@ -29,23 +29,7 @@ public class ToJoinedString implements SolidFunc1<Iterable<String>, String> {
      * @param delimiter a delimiter
      * @return a method that converts an iterable stream of {@link String} type into a joined string.
      */
-
-    public static ToJoinedString toJoinedString(String delimiter) {
-        return new ToJoinedString(delimiter);
-    }
-
-    private String delimiter;
-
-    public ToJoinedString() {
-        this("");
-    }
-
-    public ToJoinedString(String delimiter) {
-        this.delimiter = delimiter;
-    }
-
-    @Override
-    public String call(Iterable<String> value) {
-        return TextUtils.join(delimiter, value);
+    public static SolidFunc1<Iterable<String>, String> toJoinedString(String delimiter) {
+        return iterable -> TextUtils.join(delimiter, iterable);
     }
 }

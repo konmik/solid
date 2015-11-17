@@ -40,13 +40,6 @@ public class ToSparseArrayTest {
                 }
             }, 10)));
 
-
-        assert123(stream(asList("1", "2", "3"))
-            .collect(new ToSparseArray<>(value -> Integer.parseInt(value))));
-
-        assert123(stream(asList("1", "2", "3"))
-            .collect(new ToSparseArray<>(value -> Integer.parseInt(value), 10)));
-
         assertEquals(0, stream(new ArrayList<>()).collect(toSparseArray(null)).size());
     }
 

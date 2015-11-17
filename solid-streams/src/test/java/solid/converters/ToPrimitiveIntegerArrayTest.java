@@ -13,10 +13,4 @@ public class ToPrimitiveIntegerArrayTest {
         assertArrayEquals(new int[]{1, 2, 3}, ToPrimitiveIntegerArray.toPrimitiveIntegerArray().call(Arrays.asList(1, 2, 3)));
         assertArrayEquals(new int[]{}, ToPrimitiveIntegerArray.toPrimitiveIntegerArray().call(Collections.<Integer>emptyList()));
     }
-
-    @Test
-    public void testCall() throws Exception {
-        assertArrayEquals(new int[]{1, 2, 3}, new ToPrimitiveIntegerArray().call(Arrays.asList(1, 2, 3)));
-        assertArrayEquals(new int[]{}, new ToPrimitiveIntegerArray().call(Collections.<Integer>emptyList()));
-    }
 }

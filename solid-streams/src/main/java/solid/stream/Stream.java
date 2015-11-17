@@ -6,8 +6,6 @@ import java.util.Comparator;
 import java.util.Iterator;
 
 import solid.converters.ToArrayList;
-import solid.converters.ToFirst;
-import solid.converters.ToLast;
 import solid.functions.SolidFunc0;
 import solid.functions.SolidFunc1;
 import solid.functions.SolidFunc2;
@@ -179,21 +177,24 @@ public abstract class Stream<T> implements Iterable<T> {
     /**
      * Convert an iterable stream into one first item of the stream.
      *
-     * @param defaultValue a value to return if the stream has no items.
      * @return the first item of the stream.
      */
-    public T first(T defaultValue) {
-        return collect(new ToFirst<>(defaultValue));
+    public Optional<T> first() {
+        Iterator<T> iterator = iterator();
+        return iterator.hasNext() ? Optional.of(iterator.next()) : Optional.<T>empty();
     }
 
     /**
      * Convert an iterable stream into one last item of the stream.
      *
-     * @param defaultValue a value to return if the stream has no items.
      * @return the last item of the stream.
      */
-    public T last(T defaultValue) {
-        return collect(new ToLast<>(defaultValue));
+    public Optional<T> last() {
+        Iterator<T> iterator = iterator();
+        T value = null;
+        while (iterator.hasNext())
+            value = iterator.next();
+        return Optional.of(value);
     }
 
     /**

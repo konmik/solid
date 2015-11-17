@@ -5,9 +5,9 @@ import java.util.List;
 
 import solid.functions.SolidFunc1;
 
-public class ToArrayList<T> implements SolidFunc1<Iterable<? extends T>, ArrayList<T>> {
+public class ToArrayList {
 
-    private static final ToArrayList TO_ARRAY_LIST = new ToArrayList();
+    private static final SolidFunc1 TO_ARRAY_LIST = toArrayList(0);
 
     /**
      * Returns a method that can be used with {@link solid.stream.Stream#collect(SolidFunc1)}
@@ -16,8 +16,7 @@ public class ToArrayList<T> implements SolidFunc1<Iterable<? extends T>, ArrayLi
      * @param <T> a type of {@link ArrayList} items.
      * @return a method that converts an iterable into {@link ArrayList}.
      */
-    public static <T> ToArrayList<T> toArrayList() {
-        //noinspection unchecked
+    public static <T> SolidFunc1<Iterable<? extends T>, ArrayList<T>> toArrayList() {
         return TO_ARRAY_LIST;
     }
 
@@ -32,24 +31,12 @@ public class ToArrayList<T> implements SolidFunc1<Iterable<? extends T>, ArrayLi
      * @param initialCapacity initial capacity of the list.
      * @return a method that converts an iterable into {@link List}.
      */
-    public static <T> ToArrayList<T> toArrayList(int initialCapacity) {
-        return new ToArrayList<>(initialCapacity);
-    }
-
-    private int initialCapacity;
-
-    public ToArrayList() {
-    }
-
-    public ToArrayList(int initialCapacity) {
-        this.initialCapacity = initialCapacity;
-    }
-
-    @Override
-    public ArrayList<T> call(Iterable<? extends T> iterable) {
-        ArrayList<T> list = new ArrayList<>(initialCapacity);
-        for (T value : iterable)
-            list.add(value);
-        return list;
+    public static <T> SolidFunc1<Iterable<? extends T>, ArrayList<T>> toArrayList(int initialCapacity) {
+        return iterable -> {
+            ArrayList<T> list = new ArrayList<>(initialCapacity);
+            for (T value : iterable)
+                list.add(value);
+            return list;
+        };
     }
 }

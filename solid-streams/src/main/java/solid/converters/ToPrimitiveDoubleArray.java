@@ -4,9 +4,16 @@ import java.util.ArrayList;
 
 import solid.functions.SolidFunc1;
 
-public class ToPrimitiveDoubleArray implements SolidFunc1<Iterable<Double>, double[]> {
+public class ToPrimitiveDoubleArray {
 
-    private static final SolidFunc1<Iterable<Double>, double[]> TO_PRIMITIVE_DOUBLE_ARRAY = new ToPrimitiveDoubleArray();
+    private static final SolidFunc1<Iterable<Double>, double[]> TO_PRIMITIVE_DOUBLE_ARRAY = value -> {
+        ArrayList<Double> objects = ToArrayList.<Double>toArrayList().call(value);
+        double[] primitives = new double[objects.size()];
+        int i = 0;
+        for (Double object : objects)
+            primitives[i++] = object;
+        return primitives;
+    };
 
     /**
      * Returns a method that can be used with {@link solid.stream.Stream#collect(SolidFunc1)}
@@ -16,15 +23,5 @@ public class ToPrimitiveDoubleArray implements SolidFunc1<Iterable<Double>, doub
      */
     public static SolidFunc1<Iterable<Double>, double[]> toPrimitiveDoubleArray() {
         return TO_PRIMITIVE_DOUBLE_ARRAY;
-    }
-
-    @Override
-    public double[] call(Iterable<Double> value) {
-        ArrayList<Double> objects = ToArrayList.<Double>toArrayList().call(value);
-        double[] primitives = new double[objects.size()];
-        int i = 0;
-        for (Double object : objects)
-            primitives[i++] = object;
-        return primitives;
     }
 }

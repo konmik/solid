@@ -1,6 +1,5 @@
 package solid.stream;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -8,9 +7,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-
-import solid.converters.ToFirstTest;
-import solid.converters.ToLastTest;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
@@ -201,9 +197,9 @@ public class StreamTest {
 
     @Test
     public void testFold() throws Exception {
-        Assert.assertEquals(null, Stream.of().fold(null, (it, that) -> null));
-        Assert.assertEquals(null, Stream.of(null, null).fold(null, (value1, value2) -> null));
-        Assert.assertEquals((Integer) 10, Stream.of(2, 3, 4).fold(1, (value1, value2) -> value1 + value2));
+        assertEquals(null, Stream.of().fold(null, (it, that) -> null));
+        assertEquals(null, Stream.of(null, null).fold(null, (value1, value2) -> null));
+        assertEquals((Integer) 10, Stream.of(2, 3, 4).fold(1, (value1, value2) -> value1 + value2));
     }
 
     @Test
@@ -218,14 +214,19 @@ public class StreamTest {
 
     @Test
     public void testFirst() throws Exception {
-        assertEquals(1, (int) stream(asList(1, 2, 3)).first(10));
-        new ToFirstTest().testToFirst();
+        assertEquals((Long) 1L, of(1L).first().get());
+        assertEquals((Long) 1L, of(1L, 2L, 3L).first().get());
+        assertFalse(of().first().isPresent());
+        assertFalse(of(null, 2L, 3L).first().isPresent());
     }
 
     @Test
     public void testLast() throws Exception {
-        assertEquals(3, (int) stream(asList(1, 2, 3)).last(10));
-        new ToLastTest().testToLast();
+        assertEquals(1, (int) of(1).last().get());
+        assertEquals(3, (int) of(1, 2, 3).last().get());
+        assertFalse(of().last().isPresent());
+        assertEquals(3, (int) of(1, null, 3).last().get());
+        assertFalse(of(1, 1, null).last().isPresent());
     }
 
     @Test
