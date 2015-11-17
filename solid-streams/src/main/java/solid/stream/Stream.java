@@ -3,6 +3,7 @@ package solid.stream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 import solid.converters.Accumulate;
@@ -14,6 +15,7 @@ import solid.converters.ToList;
 import solid.filters.DistinctFilter;
 import solid.filters.NotEqualTo;
 import solid.filters.NotIn;
+import solid.functions.SolidFunc0;
 import solid.functions.SolidFunc1;
 import solid.functions.SolidFunc2;
 
@@ -67,6 +69,15 @@ public abstract class Stream<T> implements Iterable<T> {
      */
     public static <T> Stream<T> of(T... values) {
         return stream(values);
+    }
+
+    public static <T> Stream<T> from(SolidFunc0<Iterator<T>> func) {
+        return new Stream<T>() {
+            @Override
+            public Iterator<T> iterator() {
+                return func.call();
+            }
+        };
     }
 
     /**
@@ -179,7 +190,20 @@ public abstract class Stream<T> implements Iterable<T> {
      * @return a new stream that contains items that has been returned by a given function for each item in the current stream.
      */
     public <R> Stream<R> map(SolidFunc1<T, R> func) {
-        return new Map<>(this, func);
+        return from(() -> new ReadOnlyIterator<R>() {
+
+            Iterator<T> iterator = iterator();
+
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public R next() {
+                return func.call(iterator.next());
+            }
+        });
     }
 
     /**
@@ -287,7 +311,7 @@ public abstract class Stream<T> implements Iterable<T> {
      * @return a new stream that contains all items of the current stream in sorted order.
      */
     public Stream<T> sorted(Comparator<T> comparator) {
-        return new Lambda<>(() -> {
+        return Stream.from(() -> {
             ArrayList<T> array = toList(this);
             Collections.sort(array, comparator);
             return array.iterator();
@@ -301,7 +325,7 @@ public abstract class Stream<T> implements Iterable<T> {
      * @return a new stream that emits all items of the current stream in reverse order.
      */
     public Stream<T> reverse() {
-        return new Lambda<>(() -> {
+        return Stream.from(() -> {
             ArrayList<T> array = toList(this);
             Collections.reverse(array);
             return array.iterator();

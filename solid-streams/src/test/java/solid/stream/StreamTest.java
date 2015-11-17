@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -21,6 +22,7 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
+import static solid.stream.Stream.of;
 import static solid.stream.Stream.stream;
 import static test_utils.AssertIterableEquals.assertIterableEquals;
 
@@ -42,13 +44,13 @@ public class StreamTest {
 
     @Test
     public void testOfSingle() throws Exception {
-        assertIterableEquals(singletonList(1), Stream.of(1));
+        assertIterableEquals(singletonList(1), of(1));
     }
 
     @Test
     public void testOfVararg() throws Exception {
-        assertIterableEquals(asList(1, null, 2), Stream.of(1, null, 2));
-        assertIterableEquals(emptyList(), Stream.of());
+        assertIterableEquals(asList(1, null, 2), of(1, null, 2));
+        assertIterableEquals(emptyList(), of());
     }
 
     @Test
@@ -86,8 +88,9 @@ public class StreamTest {
 
     @Test
     public void testMap() throws Exception {
-        assertIterableEquals(asList("1", "2", "3"), stream(asList(1, 2, 3)).map(value -> value.toString()));
-        new MapTest().testIterator();
+        assertIterableEquals(asList("1", "2", "3"), of(1, 2, 3).map(Object::toString));
+        assertIterableEquals(Arrays.<Integer>asList(null, null), of(null, null).map(value -> null));
+        assertIterableEquals(emptyList(), of().map(value -> null));
     }
 
     @Test
@@ -144,17 +147,17 @@ public class StreamTest {
     @Test
     public void testSort() throws Exception {
         assertIterableEquals(asList(1, 2, 3), stream(asList(3, 2, 1)).sorted((lhs, rhs) -> lhs < rhs ? -1 : (lhs.equals(rhs) ? 0 : 1)));
-        assertIterableEquals(asList(1, 2, 3), Stream.of(3, 2, 1).sorted((lhs, rhs) -> lhs < rhs ? -1 : (lhs.equals(rhs) ? 0 : 1)));
-        assertIterableEquals(asList(null, null), Stream.of(null, null).sorted((lhs, rhs) -> 0));
-        assertIterableEquals(emptyList(), Stream.of().sorted((lhs, rhs) -> 0));
+        assertIterableEquals(asList(1, 2, 3), of(3, 2, 1).sorted((lhs, rhs) -> lhs < rhs ? -1 : (lhs.equals(rhs) ? 0 : 1)));
+        assertIterableEquals(asList(null, null), of(null, null).sorted((lhs, rhs) -> 0));
+        assertIterableEquals(emptyList(), of().sorted((lhs, rhs) -> 0));
     }
 
     @Test
     public void testReverse() throws Exception {
-        assertIterableEquals(asList(1, 2, 3), Stream.of(3, 2, 1).reverse());
-        assertIterableEquals(asList(null, null), Stream.of(null, null).reverse());
-        assertIterableEquals(singletonList(1), Stream.of(1));
-        assertIterableEquals(emptyList(), Stream.of().reverse());
+        assertIterableEquals(asList(1, 2, 3), of(3, 2, 1).reverse());
+        assertIterableEquals(asList(null, null), of(null, null).reverse());
+        assertIterableEquals(singletonList(1), of(1));
+        assertIterableEquals(emptyList(), of().reverse());
     }
 
     @Test
@@ -173,8 +176,7 @@ public class StreamTest {
     public void testFold() throws Exception {
         Assert.assertEquals(
             (Integer) 10,
-            Stream
-                .of(2, 3, 4)
+            of(2, 3, 4)
                 .fold(1, (value1, value2) -> value1 + value2));
         new FoldTest().all();
     }
@@ -183,8 +185,7 @@ public class StreamTest {
     public void testReduce() throws Exception {
         Assert.assertEquals(
             (Integer) 9,
-            Stream
-                .of(2, 3, 4)
+            of(2, 3, 4)
                 .reduce((value1, value2) -> value1 + value2));
         new ReduceTest().all();
     }
@@ -193,8 +194,7 @@ public class StreamTest {
     public void testAccumulate() throws Exception {
         Assert.assertEquals(
             (Integer) 109,
-            Stream
-                .of(2, 3, 4)
+            of(2, 3, 4)
                 .accumulate(100, (value1, value2) -> value1 + value2));
         new AccumulateTest().all();
     }
@@ -222,6 +222,6 @@ public class StreamTest {
     public void testCastException() throws Exception {
         List<Integer> numbers = asList(1, 2, 3);
         //noinspection unchecked
-        assertIterableEquals(numbers, Stream.of("1").cast(Integer.class));
+        assertIterableEquals(numbers, of("1").cast(Integer.class));
     }
 }
