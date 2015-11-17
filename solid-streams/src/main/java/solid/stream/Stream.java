@@ -275,7 +275,7 @@ public abstract class Stream<T> implements Iterable<T> {
      * @return a new stream that filters out duplicate items off the current stream.
      */
     public Stream<T> distinct() {
-        return new Filter<>(this, new DistinctFilter<T>());
+        return new Filter<>(this, new DistinctFilter<>());
     }
 
     /**
@@ -322,6 +322,6 @@ public abstract class Stream<T> implements Iterable<T> {
      * @return a stream that contains all values of the original stream that has been casted to a given class type.
      */
     public <R> Stream<R> cast(Class<R> c) {
-        return new Cast<>(this, c);
+        return map(c::cast);
     }
 }
