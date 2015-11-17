@@ -47,13 +47,10 @@ public class MockParcel {
     }
 
     private void setupWrites() {
-        Answer<Void> writeValueAnswer = new Answer<Void>() {
-            @Override
-            public Void answer(InvocationOnMock invocation) throws Throwable {
-                Object parameter = invocation.getArguments()[0];
-                objects.add(parameter);
-                return null;
-            }
+        Answer<Void> writeValueAnswer = invocation -> {
+            Object parameter = invocation.getArguments()[0];
+            objects.add(parameter);
+            return null;
         };
         doAnswer(writeValueAnswer).when(mocked).writeLong(anyLong());
         doAnswer(writeValueAnswer).when(mocked).writeString(anyString());
@@ -63,33 +60,22 @@ public class MockParcel {
     }
 
     private void setupReads() {
-        Answer<Object> readValueAnswer = new Answer<Object>() {
-            @Override
-            public Object answer(InvocationOnMock invocation) throws Throwable {
-                return objects.get(position++);
-            }
-        };
+        Answer<Object> readValueAnswer = invocation -> objects.get(position++);
         when(mocked.readLong()).thenAnswer(readValueAnswer);
         when(mocked.readString()).thenAnswer(readValueAnswer);
         when(mocked.readArrayList(any(ClassLoader.class))).thenAnswer(readValueAnswer);
         when(mocked.readValue(any(ClassLoader.class))).thenAnswer(readValueAnswer);
         when(mocked.readHashMap(any(ClassLoader.class))).thenAnswer(readValueAnswer);
-        doAnswer(new Answer() {
-            @Override
-            public Object answer(InvocationOnMock invocation) throws Throwable {
-                ((Map)invocation.getArguments()[0]).putAll((Map)objects.get(position++));
-                return null;
-            }
+        doAnswer(invocation -> {
+            ((Map)invocation.getArguments()[0]).putAll((Map)objects.get(position++));
+            return null;
         }).when(mocked).readMap(anyMap(), any(ClassLoader.class));
     }
 
     private void setupOthers() {
-        doAnswer(new Answer<Void>() {
-            @Override
-            public Void answer(InvocationOnMock invocation) throws Throwable {
-                position = ((Integer)invocation.getArguments()[0]);
-                return null;
-            }
+        doAnswer(invocation -> {
+            position = ((Integer)invocation.getArguments()[0]);
+            return null;
         }).when(mocked).setDataPosition(0);
     }
 }

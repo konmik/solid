@@ -1,5 +1,5 @@
 <manifest
-    package="info.android15.solid"
+    package="info.android15.solid.collections"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application android:allowBackup="true">

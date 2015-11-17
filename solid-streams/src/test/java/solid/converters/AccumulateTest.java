@@ -14,22 +14,12 @@ public class AccumulateTest {
 
     @Test
     public void test_just_works() throws Exception {
-        assertEquals((Integer) 109, new Accumulate<>(100, new SolidFunc2<Integer, Integer, Integer>() {
-            @Override
-            public Integer call(Integer value1, Integer value2) {
-                return value1 + value2;
-            }
-        }).call(asList(2, 3, 4)));
+        assertEquals((Integer) 109, new Accumulate<Integer, Integer>(100, (value1, value2) -> value1 + value2).call(asList(2, 3, 4)));
     }
 
     @Test
     public void test_null() throws Exception {
-        assertEquals(null, new Accumulate<>(null, new SolidFunc2<Integer, Integer, Integer>() {
-            @Override
-            public Integer call(Integer value1, Integer value2) {
-                return null;
-            }
-        }).call(Arrays.<Integer>asList(null, null, null)));
+        assertEquals(null, new Accumulate<Integer, Integer>(null, (value1, value2) -> null).call(Arrays.<Integer>asList(null, null, null)));
     }
 
     @Test

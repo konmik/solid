@@ -28,12 +28,7 @@ public class OptionalTest {
         verifyNoMoreInteractions(mockAction);
 
         assertEquals(1, o.or(1));
-        assertEquals(1, o.or(new SolidFunc0<Object>() {
-            @Override
-            public Object call() {
-                return 1;
-            }
-        }));
+        assertEquals(1, o.or(() -> 1));
         assertNull(o.orNull());
 
         assertTrue(o.equals(Optional.empty()));
@@ -50,12 +45,7 @@ public class OptionalTest {
     public void testNullOrThrow() throws Exception {
         Optional<Object> o = Optional.of(null);
 
-        o.orThrow(new SolidFunc0<RuntimeException>() {
-            @Override
-            public RuntimeException call() {
-                return new RuntimeException();
-            }
-        });
+        o.orThrow(() -> new RuntimeException());
     }
 
     @Test
@@ -69,12 +59,7 @@ public class OptionalTest {
         verify(mockAction, times(1)).call(eq(1));
 
         assertEquals(1, o.or(2));
-        assertEquals(1, o.or(new SolidFunc0<Object>() {
-            @Override
-            public Object call() {
-                return 2;
-            }
-        }));
+        assertEquals(1, o.or(() -> 2));
         assertEquals(1, o.orNull());
 
         assertTrue(Optional.of(1).equals(o));
@@ -82,11 +67,6 @@ public class OptionalTest {
         assertEquals(o.hashCode(), Optional.of(1).hashCode());
 
         assertEquals(1, o.get());
-        assertEquals(1, o.orThrow(new SolidFunc0<RuntimeException>() {
-            @Override
-            public RuntimeException call() {
-                return new RuntimeException();
-            }
-        }));
+        assertEquals(1, o.orThrow(() -> new RuntimeException()));
     }
 }

@@ -63,27 +63,22 @@ public class StreamTest {
     @Test
     public void testLift() throws Exception {
         assertIterableEquals(asList(1, 3, 6), Stream.stream(asList(1, 2, 3))
-            .compose(new SolidFunc1<Stream<Integer>, Stream<Integer>>() {
+            .compose(value -> new Stream<Integer>() {
                 @Override
-                public Stream<Integer> call(final Stream<Integer> value) {
-                    return new Stream<Integer>() {
+                public Iterator<Integer> iterator() {
+                    return new ReadOnlyIterator<Integer>() {
+
+                        Iterator<Integer> source = value.iterator();
+                        int count;
+
                         @Override
-                        public Iterator<Integer> iterator() {
-                            return new ReadOnlyIterator<Integer>() {
+                        public boolean hasNext() {
+                            return source.hasNext();
+                        }
 
-                                Iterator<Integer> source = value.iterator();
-                                int count;
-
-                                @Override
-                                public boolean hasNext() {
-                                    return source.hasNext();
-                                }
-
-                                @Override
-                                public Integer next() {
-                                    return count += source.next();
-                                }
-                            };
+                        @Override
+                        public Integer next() {
+                            return count += source.next();
                         }
                     };
                 }
@@ -92,34 +87,19 @@ public class StreamTest {
 
     @Test
     public void testMap() throws Exception {
-        assertIterableEquals(asList("1", "2", "3"), Stream.stream(asList(1, 2, 3)).map(new SolidFunc1<Integer, String>() {
-            @Override
-            public String call(Integer value) {
-                return value.toString();
-            }
-        }));
+        assertIterableEquals(asList("1", "2", "3"), Stream.stream(asList(1, 2, 3)).map(value -> value.toString()));
         new MapTest().testIterator();
     }
 
     @Test
     public void testFlatMap() throws Exception {
-        assertTrue(Stream.stream(asList(1, 2, 3)).flatMap(new SolidFunc1<Integer, Iterable<Object>>() {
-            @Override
-            public Iterable<Object> call(Integer value) {
-                return null;
-            }
-        }) instanceof FlatMap);
+        assertTrue(Stream.stream(asList(1, 2, 3)).flatMap(value -> null) instanceof FlatMap);
         new FlatMapTest().testIterator();
     }
 
     @Test
     public void testFilter() throws Exception {
-        assertIterableEquals(asList(1, 2, 3), Stream.stream(asList(1, 2, 3, 4)).filter(new SolidFunc1<Integer, Boolean>() {
-            @Override
-            public Boolean call(Integer value) {
-                return value != 4;
-            }
-        }));
+        assertIterableEquals(asList(1, 2, 3), Stream.stream(asList(1, 2, 3, 4)).filter(value -> value != 4));
         new FilterTest().testIterator();
     }
 
@@ -170,12 +150,7 @@ public class StreamTest {
 
     @Test
     public void testSort() throws Exception {
-        assertIterableEquals(asList(1, 2, 3), Stream.stream(asList(3, 2, 1)).sort(new Comparator<Integer>() {
-            @Override
-            public int compare(Integer lhs, Integer rhs) {
-                return lhs < rhs ? -1 : (lhs.equals(rhs) ? 0 : 1);
-            }
-        }));
+        assertIterableEquals(asList(1, 2, 3), Stream.stream(asList(3, 2, 1)).sort((lhs, rhs) -> lhs < rhs ? -1 : (lhs.equals(rhs) ? 0 : 1)));
         new SortTest().testIterator();
     }
 
@@ -188,13 +163,10 @@ public class StreamTest {
     @Test
     public void testCollect() throws Exception {
         final ArrayList<Integer> target = new ArrayList<>();
-        ArrayList<Integer> result = Stream.stream(asList(1, 2, 3)).collect(new SolidFunc1<Iterable<Integer>, ArrayList<Integer>>() {
-            @Override
-            public ArrayList<Integer> call(Iterable<Integer> value) {
-                for (Integer v : value)
-                    target.add(v);
-                return target;
-            }
+        ArrayList<Integer> result = Stream.stream(asList(1, 2, 3)).collect(value -> {
+            for (Integer v : value)
+                target.add(v);
+            return target;
         });
         assertTrue(target == result);
         assertEquals(target, result);
@@ -206,12 +178,7 @@ public class StreamTest {
             (Integer) 10,
             Stream
                 .of(2, 3, 4)
-                .fold(1, new SolidFunc2<Integer, Integer, Integer>() {
-                    @Override
-                    public Integer call(Integer value1, Integer value2) {
-                        return value1 + value2;
-                    }
-                }));
+                .fold(1, (value1, value2) -> value1 + value2));
         new FoldTest().all();
     }
 
@@ -221,12 +188,7 @@ public class StreamTest {
             (Integer) 9,
             Stream
                 .of(2, 3, 4)
-                .reduce(new SolidFunc2<Integer, Integer, Integer>() {
-                    @Override
-                    public Integer call(Integer value1, Integer value2) {
-                        return value1 + value2;
-                    }
-                }));
+                .reduce((value1, value2) -> value1 + value2));
         new ReduceTest().all();
     }
 
@@ -236,12 +198,7 @@ public class StreamTest {
             (Integer) 109,
             Stream
                 .of(2, 3, 4)
-                .accumulate(100, new SolidFunc2<Integer, Integer, Integer>() {
-                    @Override
-                    public Integer call(Integer value1, Integer value2) {
-                        return value1 + value2;
-                    }
-                }));
+                .accumulate(100, (value1, value2) -> value1 + value2));
         new AccumulateTest().all();
     }
 
