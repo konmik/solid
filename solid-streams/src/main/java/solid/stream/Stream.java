@@ -331,7 +331,22 @@ public abstract class Stream<T> implements Iterable<T> {
      * @return a new stream that contains only the first given amount of items of the current stream.
      */
     public Stream<T> take(int count) {
-        return new Take<>(this, count);
+        return from(() -> new ReadOnlyIterator<T>() {
+
+            Iterator<T> iterator = iterator();
+            int left = count;
+
+            @Override
+            public boolean hasNext() {
+                return left > 0 && iterator.hasNext();
+            }
+
+            @Override
+            public T next() {
+                left--;
+                return iterator.next();
+            }
+        });
     }
 
     /**
@@ -341,7 +356,12 @@ public abstract class Stream<T> implements Iterable<T> {
      * @return a new stream that contains elements of the current stream with a given number of them skipped from the beginning.
      */
     public Stream<T> skip(int count) {
-        return new Skip<>(this, count);
+        return from(() -> {
+            Iterator<T> iterator = iterator();
+            for (int skip = count; skip > 0 && iterator.hasNext(); skip--)
+                iterator.next();
+            return iterator;
+        });
     }
 
     /**

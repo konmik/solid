@@ -138,14 +138,21 @@ public class StreamTest {
 
     @Test
     public void testTake() throws Exception {
-        assertTrue(stream(asList(1, 2, 3)).take(2) instanceof Take);
-        new TakeTest().testIterator();
+        assertIterableEquals(asList(1, 2), of(1, 2, 3).take(2));
+        assertIterableEquals(asList(1, 2), of(1, 2).take(10));
+        assertIterableEquals(asList(null, null), of(null, null).take(3));
+        assertIterableEquals(emptyList(), of().take(10));
+        assertIterableEquals(emptyList(), of().take(0));
     }
 
     @Test
     public void testSkip() throws Exception {
-        assertTrue(stream(asList(1, 2, 3)).skip(2) instanceof Skip);
-        new SkipTest().testIterator();
+        assertIterableEquals(asList(3, 4, 5), of(1, 2, 3, 4, 5).skip(2));
+        assertIterableEquals(asList(3, 4, 5), of(3, 4, 5).skip(0));
+        assertIterableEquals(Collections.<Integer>emptyList(), of(1, 2, 3, 4, 5).skip(5));
+        assertIterableEquals(Collections.<Integer>emptyList(), of(1, 2, 3).skip(5));
+        assertIterableEquals(Collections.emptyList(), of().skip(5));
+        assertIterableEquals(asList(null, null), of(null, null, null).skip(1));
     }
 
     @Test
