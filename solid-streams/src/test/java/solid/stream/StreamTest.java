@@ -10,7 +10,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import solid.converters.AccumulateTest;
-import solid.converters.FoldTest;
 import solid.converters.ReduceTest;
 import solid.converters.ToFirstTest;
 import solid.converters.ToLastTest;
@@ -189,11 +188,9 @@ public class StreamTest {
 
     @Test
     public void testFold() throws Exception {
-        Assert.assertEquals(
-            (Integer) 10,
-            of(2, 3, 4)
-                .fold(1, (value1, value2) -> value1 + value2));
-        new FoldTest().all();
+        Assert.assertEquals(null, Stream.of().fold(null, (it, that) -> null));
+        Assert.assertEquals(null, Stream.of(null, null).fold(null, (value1, value2) -> null));
+        Assert.assertEquals((Integer) 10, Stream.of(2, 3, 4).fold(1, (value1, value2) -> value1 + value2));
     }
 
     @Test

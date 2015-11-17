@@ -6,7 +6,6 @@ import java.util.Comparator;
 import java.util.Iterator;
 
 import solid.converters.Accumulate;
-import solid.converters.Fold;
 import solid.converters.Reduce;
 import solid.converters.ToArrayList;
 import solid.converters.ToFirst;
@@ -113,8 +112,11 @@ public abstract class Stream<T> implements Iterable<T> {
      * @param operation a function to apply to the each stream item.
      * @return a value that has been received by applying an accumulating function to each item of the current stream.
      */
-    public <R> R fold(R initialValue, SolidFunc2<R, T, R> operation) {
-        return new Fold<>(initialValue, operation).call(this);
+    public <R> R fold(R initial, SolidFunc2<R, T, R> operation) {
+        R value = initial;
+        for (T anIt : this)
+            value = operation.call(value, anIt);
+        return value;
     }
 
     /**
