@@ -29,7 +29,21 @@ public abstract class Stream<T> implements Iterable<T> {
      * @return a {@link Stream} that represents source array's elements.
      */
     public static <T> Stream<T> stream(T[] array) {
-        return new CopyArray<>(array);
+        return from(() -> new ReadOnlyIterator<T>() {
+
+            int length = array.length;
+            int index;
+
+            @Override
+            public boolean hasNext() {
+                return index < length;
+            }
+
+            @Override
+            public T next() {
+                return array[index++];
+            }
+        });
     }
 
     /**
