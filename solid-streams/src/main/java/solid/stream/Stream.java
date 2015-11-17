@@ -1,5 +1,6 @@
 package solid.stream;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -300,8 +301,12 @@ public abstract class Stream<T> implements Iterable<T> {
      * @param comparator a comparator to apply.
      * @return a new stream that contains all items of the current stream in sorted order.
      */
-    public Stream<T> sort(Comparator<T> comparator) {
-        return new Sort<>(this, comparator);
+    public Stream<T> sorted(Comparator<T> comparator) {
+        return new Lambda<>(() -> {
+            ArrayList<T> array = toList(this);
+            Collections.sort(array, comparator);
+            return array.iterator();
+        });
     }
 
     /**
@@ -311,7 +316,11 @@ public abstract class Stream<T> implements Iterable<T> {
      * @return a new stream that emits all items of the current stream in reverse order.
      */
     public Stream<T> reverse() {
-        return new Reverse<>(this);
+        return new Lambda<>(() -> {
+            ArrayList<T> array = toList(this);
+            Collections.reverse(array);
+            return array.iterator();
+        });
     }
 
     /**
@@ -323,5 +332,12 @@ public abstract class Stream<T> implements Iterable<T> {
      */
     public <R> Stream<R> cast(Class<R> c) {
         return map(c::cast);
+    }
+
+    private static <T> ArrayList<T> toList(Iterable<T> iterable) {
+        ArrayList<T> list = new ArrayList<>();
+        for (T t : iterable)
+            list.add(t);
+        return list;
     }
 }

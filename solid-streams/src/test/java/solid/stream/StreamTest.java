@@ -149,14 +149,18 @@ public class StreamTest {
 
     @Test
     public void testSort() throws Exception {
-        assertIterableEquals(asList(1, 2, 3), stream(asList(3, 2, 1)).sort((lhs, rhs) -> lhs < rhs ? -1 : (lhs.equals(rhs) ? 0 : 1)));
-        new SortTest().testIterator();
+        assertIterableEquals(asList(1, 2, 3), stream(asList(3, 2, 1)).sorted((lhs, rhs) -> lhs < rhs ? -1 : (lhs.equals(rhs) ? 0 : 1)));
+        assertIterableEquals(asList(1, 2, 3), Stream.of(3, 2, 1).sorted((lhs, rhs) -> lhs < rhs ? -1 : (lhs.equals(rhs) ? 0 : 1)));
+        assertIterableEquals(asList(null, null), Stream.of(null, null).sorted((lhs, rhs) -> 0));
+        assertIterableEquals(emptyList(), Stream.of().sorted((lhs, rhs) -> 0));
     }
 
     @Test
     public void testReverse() throws Exception {
-        assertIterableEquals(asList(1, 2, 3), stream(asList(3, 2, 1)).reverse());
-        new ReverseTest().testIterator();
+        assertIterableEquals(asList(1, 2, 3), Stream.of(3, 2, 1).reverse());
+        assertIterableEquals(asList(null, null), Stream.of(null, null).reverse());
+        assertIterableEquals(singletonList(1), Stream.of(1));
+        assertIterableEquals(emptyList(), Stream.of().reverse());
     }
 
     @Test
