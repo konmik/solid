@@ -23,8 +23,8 @@ public class SolidSetTest {
         assert123(new SolidSet<>(new Integer[]{1, 2, 3}));
         assert123(new SolidSet<>(Arrays.asList(1, 2, 3)));
         assert123(new SolidSet<>(Arrays.asList(1, 2, 3, 3, 2, 1)));
-        assert123(new SolidSet<>((Iterable<Integer>)Arrays.asList(1, 2, 3)));
-        assert123(new SolidSet<>((Iterable<Integer>)Arrays.asList(1, 2, 3), 3));
+        assert123(new SolidSet<>((Iterable<Integer>) Arrays.asList(1, 2, 3)));
+        assert123(new SolidSet<>((Iterable<Integer>) Arrays.asList(1, 2, 3), 3));
 
         assertTrue(new SolidSet<>(Collections.singletonList(1)).contains(1));
         assertEquals(1, new SolidSet<>(Collections.singletonList(1)).size());

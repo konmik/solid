@@ -42,7 +42,7 @@ public class SolidSet<T> extends Stream<T> implements Set<T>, Parcelable {
 
     public static <T> SolidSet<T> empty() {
         //noinspection unchecked
-        return (SolidSet<T>)EMPTY;
+        return (SolidSet<T>) EMPTY;
     }
 
     @Override
@@ -146,7 +146,7 @@ public class SolidSet<T> extends Stream<T> implements Set<T>, Parcelable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        return set.equals(((SolidSet<?>)o).set);
+        return set.equals(((SolidSet<?>) o).set);
     }
 
     @Override

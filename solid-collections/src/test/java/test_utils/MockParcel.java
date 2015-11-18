@@ -3,7 +3,6 @@ package test_utils;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import java.util.ArrayList;
@@ -67,14 +66,14 @@ public class MockParcel {
         when(mocked.readValue(any(ClassLoader.class))).thenAnswer(readValueAnswer);
         when(mocked.readHashMap(any(ClassLoader.class))).thenAnswer(readValueAnswer);
         doAnswer(invocation -> {
-            ((Map)invocation.getArguments()[0]).putAll((Map)objects.get(position++));
+            ((Map) invocation.getArguments()[0]).putAll((Map) objects.get(position++));
             return null;
         }).when(mocked).readMap(anyMap(), any(ClassLoader.class));
     }
 
     private void setupOthers() {
         doAnswer(invocation -> {
-            position = ((Integer)invocation.getArguments()[0]);
+            position = ((Integer) invocation.getArguments()[0]);
             return null;
         }).when(mocked).setDataPosition(0);
     }

@@ -10,7 +10,7 @@ import static test_utils.AssertIterableEquals.assertIterableEquals;
 public class BytesTest {
     @Test
     public void testIterator() throws Exception {
-        assertIterableEquals(Arrays.asList((byte)1, (byte)2, (byte)3), new Bytes(new byte[]{1, 2, 3}));
+        assertIterableEquals(Arrays.asList((byte) 1, (byte) 2, (byte) 3), new Bytes(new byte[]{1, 2, 3}));
         assertIterableEquals(Collections.<Byte>emptyList(), new Bytes(new byte[0]));
         assertIterableEquals(new Bytes(new byte[]{1, 2, 3}), Bytes.bytes(new byte[]{1, 2, 3}));
     }

@@ -56,7 +56,7 @@ public class SolidMap<K, V> extends Stream<Map.Entry<K, V>> implements Map<K, V>
      */
     public static <K, V> SolidMap<K, V> empty() {
         //noinspection unchecked
-        return (SolidMap<K, V>)EMPTY;
+        return (SolidMap<K, V>) EMPTY;
     }
 
     @Deprecated
@@ -158,7 +158,7 @@ public class SolidMap<K, V> extends Stream<Map.Entry<K, V>> implements Map<K, V>
             return true;
 
         if (object instanceof Map) {
-            Map<?, ?> other = (Map<?, ?>)object;
+            Map<?, ?> other = (Map<?, ?>) object;
             if (size() != other.size())
                 return false;
 

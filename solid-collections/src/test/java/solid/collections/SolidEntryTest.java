@@ -15,7 +15,7 @@ public class SolidEntryTest {
     public void testConstructor1() throws Exception {
         SolidEntry<String, Integer> entry = new SolidEntry<>("1", 1);
         assertEquals("1", entry.getKey());
-        assertEquals((Integer)1, entry.getValue());
+        assertEquals((Integer) 1, entry.getValue());
     }
 
     @Test
@@ -24,7 +24,7 @@ public class SolidEntryTest {
         map.put("1", 1);
         SolidEntry<String, Integer> entry = new SolidEntry<>(map.entrySet().iterator().next());
         assertEquals("1", entry.getKey());
-        assertEquals((Integer)1, entry.getValue());
+        assertEquals((Integer) 1, entry.getValue());
     }
 
     @Test(expected = UnsupportedOperationException.class)

@@ -23,9 +23,9 @@ public class SolidMapTest {
         HashMap<Integer, Integer> hashMap = create123map234();
 
         SolidMap<Integer, Integer> map = new SolidMap<>(hashMap);
-        assertEquals((Integer)2, map.get(1));
-        assertEquals((Integer)3, map.get(2));
-        assertEquals((Integer)4, map.get(3));
+        assertEquals((Integer) 2, map.get(1));
+        assertEquals((Integer) 3, map.get(2));
+        assertEquals((Integer) 4, map.get(3));
         assertEquals(3, map.size());
 
         hashMap.put(4, 5);
@@ -80,7 +80,7 @@ public class SolidMapTest {
 
     @Test
     public void testGet() throws Exception {
-        assertEquals((Integer)2, new SolidMap<>(create123map234()).get(1));
+        assertEquals((Integer) 2, new SolidMap<>(create123map234()).get(1));
         assertEquals(null, new SolidMap<>(create123map234()).get(5));
     }
 

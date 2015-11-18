@@ -2,7 +2,6 @@ package test_utils;
 
 import android.util.SparseArray;
 
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import java.util.HashMap;
@@ -25,14 +24,14 @@ public class MockSparseArray {
 
     public MockSparseArray() {
         Answer<Void> writeValueAnswer = invocation -> {
-            int key = (int)invocation.getArguments()[0];
+            int key = (int) invocation.getArguments()[0];
             Object value = invocation.getArguments()[1];
             map.put(key, value);
             return null;
         };
         doAnswer(writeValueAnswer).when(mocked).put(anyInt(), anyObject());
         when(mocked.get(anyInt())).thenAnswer(invocation -> {
-            int key = (int)invocation.getArguments()[0];
+            int key = (int) invocation.getArguments()[0];
             return map.get(key);
         });
         when(mocked.size()).thenAnswer(invocation -> map.size());

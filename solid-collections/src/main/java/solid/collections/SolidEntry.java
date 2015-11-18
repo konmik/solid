@@ -45,8 +45,8 @@ public class SolidEntry<K, V> implements Map.Entry<K, V>, Parcelable {
     }
 
     protected SolidEntry(Parcel in) {
-        key = (K)in.readValue(CLASS_LOADER);
-        value = (V)in.readValue(CLASS_LOADER);
+        key = (K) in.readValue(CLASS_LOADER);
+        value = (V) in.readValue(CLASS_LOADER);
     }
 
     @Override
@@ -77,7 +77,7 @@ public class SolidEntry<K, V> implements Map.Entry<K, V>, Parcelable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        SolidEntry<?, ?> that = (SolidEntry<?, ?>)o;
+        SolidEntry<?, ?> that = (SolidEntry<?, ?>) o;
 
         if (key != null ? !key.equals(that.key) : that.key != null) return false;
         return !(value != null ? !value.equals(that.value) : that.value != null);

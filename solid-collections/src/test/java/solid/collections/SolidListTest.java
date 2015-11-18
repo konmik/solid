@@ -22,14 +22,14 @@ public class SolidListTest {
     @Test
     public void testConstructors() throws Exception {
         assert123(new SolidList<>(new Integer[]{1, 2, 3}));
-        assert123(new SolidList<>((Iterable<Integer>)Arrays.asList(1, 2, 3)));
+        assert123(new SolidList<>((Iterable<Integer>) Arrays.asList(1, 2, 3)));
         assert123(new SolidList<>(Arrays.asList(1, 2, 3)));
         assert123(SolidList.copyOf(new Integer[]{1, 2, 3}));
         assert123(SolidList.copyOf(Arrays.asList(new Integer[]{1, 2, 3})));
 
         SolidList<Integer> list = SolidList.single(1);
         assertEquals(1, list.size());
-        assertEquals(1, (int)list.get(0));
+        assertEquals(1, (int) list.get(0));
 
         list = SolidList.empty();
         assertEquals(0, list.size());
@@ -55,7 +55,7 @@ public class SolidListTest {
     @Test
     public void testGet() throws Exception {
         SolidList<Integer> list1 = new SolidList<>(new Integer[]{1, 2, 3});
-        assertEquals(2, (int)list1.get(1));
+        assertEquals(2, (int) list1.get(1));
     }
 
     @Test
@@ -93,8 +93,8 @@ public class SolidListTest {
         SolidList<Integer> list1 = new SolidList<>(new Integer[]{0, 1, 2, 3, 1, 2, 3, 0});
         assert123(list1.subList(1, 4));
         assert123(list1.subList(4, 7));
-        assertEquals(0, (int)list1.subList(0, 1).get(0));
-        assertEquals(0, (int)list1.subList(7, 8).get(0));
+        assertEquals(0, (int) list1.subList(0, 1).get(0));
+        assertEquals(0, (int) list1.subList(7, 8).get(0));
         assertEquals(0, list1.subList(3, 3).size());
     }
 
@@ -195,7 +195,7 @@ public class SolidListTest {
 
     @Test(expected = UnsupportedOperationException.class)
     public void testRemoveObjectThrows() throws Exception {
-        new SolidList<>(Collections.singletonList(0)).remove((Integer)0);
+        new SolidList<>(Collections.singletonList(0)).remove((Integer) 0);
     }
 
     @Test(expected = UnsupportedOperationException.class)
@@ -252,9 +252,9 @@ public class SolidListTest {
 
     private void assert123(List<Integer> list) throws Exception {
         assertEquals(3, list.size());
-        assertEquals(1, (int)list.get(0));
-        assertEquals(2, (int)list.get(1));
-        assertEquals(3, (int)list.get(2));
+        assertEquals(1, (int) list.get(0));
+        assertEquals(2, (int) list.get(1));
+        assertEquals(3, (int) list.get(2));
     }
 }
 

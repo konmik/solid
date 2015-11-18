@@ -74,7 +74,7 @@ public class SolidList<T> extends Stream<T> implements List<T>, Parcelable {
      */
     public static <T> SolidList<T> empty() {
         //noinspection unchecked
-        return (SolidList<T>)EMPTY;
+        return (SolidList<T>) EMPTY;
     }
 
     /**
