@@ -5,11 +5,11 @@ import android.os.Parcelable;
 
 import java.util.Map;
 
-import solid.functions.SolidFunc1;
+import solid.functions.Func1;
 
 /**
  * This is a Parcelable implementation of {@link Map.Entry} which can be used by
- * {@link SolidMap} and {@link solid.stream.Stream#groupBy(SolidFunc1)}.
+ * {@link SolidMap} and {@link solid.stream.Stream#groupBy(Func1)}.
  */
 public class SolidEntry<K, V> implements Map.Entry<K, V>, Parcelable {
 

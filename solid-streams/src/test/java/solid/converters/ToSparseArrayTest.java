@@ -9,7 +9,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.ArrayList;
 
-import solid.functions.SolidFunc1;
+import solid.functions.Func1;
 import test_utils.MockSparseArray;
 
 import static java.util.Arrays.asList;
@@ -25,7 +25,7 @@ public class ToSparseArrayTest {
         MockSparseArray.powerMockNew();
 
         assert123(stream(asList("1", "2", "3"))
-            .collect(toSparseArray(new SolidFunc1<String, Integer>() {
+            .collect(toSparseArray(new Func1<String, Integer>() {
                 @Override
                 public Integer call(String value) {
                     return Integer.parseInt(value);
@@ -33,7 +33,7 @@ public class ToSparseArrayTest {
             })));
 
         assert123(stream(asList("1", "2", "3"))
-            .collect(toSparseArray(new SolidFunc1<String, Integer>() {
+            .collect(toSparseArray(new Func1<String, Integer>() {
                 @Override
                 public Integer call(String value) {
                     return Integer.parseInt(value);

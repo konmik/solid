@@ -1,5 +1,5 @@
 package solid.functions;
 
-public interface SolidFunc0<R> {
+public interface Func0<R> {
     R call();
 }

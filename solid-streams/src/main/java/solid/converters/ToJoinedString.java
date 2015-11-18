@@ -2,7 +2,7 @@ package solid.converters;
 
 import android.text.TextUtils;
 
-import solid.functions.SolidFunc1;
+import solid.functions.Func1;
 
 /**
  * This class is a syntax enhancement around {@link TextUtils#join(CharSequence, Iterable)} method
@@ -10,26 +10,26 @@ import solid.functions.SolidFunc1;
  */
 public class ToJoinedString {
 
-    private static SolidFunc1<Iterable<String>, String> TO_JOINED_STRING = toJoinedString("");
+    private static Func1<Iterable<String>, String> TO_JOINED_STRING = toJoinedString("");
 
     /**
-     * Returns a method that can be used with {@link solid.stream.Stream#collect(SolidFunc1)}
+     * Returns a method that can be used with {@link solid.stream.Stream#collect(Func1)}
      * to convert an iterable stream of {@link String} type into a joined string.
      *
      * @return a method that converts an iterable stream of {@link String} type into a joined string.
      */
-    public static SolidFunc1<Iterable<String>, String> toJoinedString() {
+    public static Func1<Iterable<String>, String> toJoinedString() {
         return TO_JOINED_STRING;
     }
 
     /**
-     * Returns a method that can be used with {@link solid.stream.Stream#collect(SolidFunc1)}
+     * Returns a method that can be used with {@link solid.stream.Stream#collect(Func1)}
      * to convert an iterable stream of {@link String} type into a joined string.
      *
      * @param delimiter a delimiter
      * @return a method that converts an iterable stream of {@link String} type into a joined string.
      */
-    public static SolidFunc1<Iterable<String>, String> toJoinedString(String delimiter) {
+    public static Func1<Iterable<String>, String> toJoinedString(String delimiter) {
         return iterable -> TextUtils.join(delimiter, iterable);
     }
 }

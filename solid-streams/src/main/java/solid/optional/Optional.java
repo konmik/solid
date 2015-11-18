@@ -1,7 +1,7 @@
 package solid.optional;
 
-import solid.functions.SolidAction1;
-import solid.functions.SolidFunc0;
+import solid.functions.Action1;
+import solid.functions.Func0;
 
 public class Optional<T> {
 
@@ -31,7 +31,7 @@ public class Optional<T> {
         return value != null;
     }
 
-    public void ifPresent(SolidAction1<T> action) {
+    public void ifPresent(Action1<T> action) {
         if (value != null)
             action.call(value);
     }
@@ -40,7 +40,7 @@ public class Optional<T> {
         return this.value != null ? this.value : value;
     }
 
-    public T or(SolidFunc0<T> func1) {
+    public T or(Func0<T> func1) {
         return value != null ? value : func1.call();
     }
 
@@ -48,7 +48,7 @@ public class Optional<T> {
         return value;
     }
 
-    public <W extends Throwable> T orThrow(SolidFunc0<? extends W> throwableFactory) throws W {
+    public <W extends Throwable> T orThrow(Func0<? extends W> throwableFactory) throws W {
         if (value != null)
             return value;
         throw throwableFactory.call();

@@ -2,11 +2,11 @@ package solid.converters;
 
 import java.util.ArrayList;
 
-import solid.functions.SolidFunc1;
+import solid.functions.Func1;
 
 public class ToPrimitiveDoubleArray {
 
-    private static final SolidFunc1<Iterable<Double>, double[]> TO_PRIMITIVE_DOUBLE_ARRAY = value -> {
+    private static final Func1<Iterable<Double>, double[]> TO_PRIMITIVE_DOUBLE_ARRAY = value -> {
         ArrayList<Double> objects = ToArrayList.<Double>toArrayList().call(value);
         double[] primitives = new double[objects.size()];
         int i = 0;
@@ -16,12 +16,12 @@ public class ToPrimitiveDoubleArray {
     };
 
     /**
-     * Returns a method that can be used with {@link solid.stream.Stream#collect(SolidFunc1)}
+     * Returns a method that can be used with {@link solid.stream.Stream#collect(Func1)}
      * to convert an iterable stream of {@link Double} type into a primitive double[] array.
      *
      * @return a method that converts an iterable stream of {@link Double} type into a primitive double[] array.
      */
-    public static SolidFunc1<Iterable<Double>, double[]> toPrimitiveDoubleArray() {
+    public static Func1<Iterable<Double>, double[]> toPrimitiveDoubleArray() {
         return TO_PRIMITIVE_DOUBLE_ARRAY;
     }
 }

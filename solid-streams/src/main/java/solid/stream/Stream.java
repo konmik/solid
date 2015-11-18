@@ -6,9 +6,9 @@ import java.util.Comparator;
 import java.util.Iterator;
 
 import solid.converters.ToArrayList;
-import solid.functions.SolidFunc0;
-import solid.functions.SolidFunc1;
-import solid.functions.SolidFunc2;
+import solid.functions.Func0;
+import solid.functions.Func1;
+import solid.functions.Func2;
 import solid.optional.Optional;
 
 /**
@@ -91,7 +91,7 @@ public abstract class Stream<T> implements Iterable<T> {
         return stream(values);
     }
 
-    public static <T> Stream<T> from(SolidFunc0<Iterator<T>> func) {
+    public static <T> Stream<T> from(Func0<Iterator<T>> func) {
         return new Stream<T>() {
             @Override
             public Iterator<T> iterator() {
@@ -135,7 +135,7 @@ public abstract class Stream<T> implements Iterable<T> {
      * @param <R>       a type of value to return.
      * @return a value that has been returned by the given collecting method.
      */
-    public <R> R collect(SolidFunc1<Iterable<T>, R> collector) {
+    public <R> R collect(Func1<Iterable<T>, R> collector) {
         return collector.call(this);
     }
 
@@ -147,7 +147,7 @@ public abstract class Stream<T> implements Iterable<T> {
      * @param operation a function to apply to the each stream item.
      * @return a value that has been received by applying an accumulating function to each item of the current stream.
      */
-    public <R> R fold(R initial, SolidFunc2<R, T, R> operation) {
+    public <R> R fold(R initial, Func2<R, T, R> operation) {
         R value = initial;
         for (T anIt : this)
             value = operation.call(value, anIt);
@@ -163,7 +163,7 @@ public abstract class Stream<T> implements Iterable<T> {
      * @param operation a function to apply to the each (except the first one) stream item.
      * @return a value that has been received by applying an accumulating function to each item of the current stream.
      */
-    public Optional<T> reduce(SolidFunc2<T, T, T> operation) {
+    public Optional<T> reduce(Func2<T, T, T> operation) {
         Iterator<T> iterator = iterator();
         if (!iterator.hasNext())
             return Optional.empty();
@@ -205,7 +205,7 @@ public abstract class Stream<T> implements Iterable<T> {
      * @param <R>     a type of items new stream returns.
      * @return a constructed stream.
      */
-    public <R> Stream<R> compose(SolidFunc1<Stream<T>, Stream<R>> factory) {
+    public <R> Stream<R> compose(Func1<Stream<T>, Stream<R>> factory) {
         return factory.call(this);
     }
 
@@ -216,7 +216,7 @@ public abstract class Stream<T> implements Iterable<T> {
      * @param <R>  a type of items new stream returns.
      * @return a new stream that contains items that has been returned by a given function for each item in the current stream.
      */
-    public <R> Stream<R> map(SolidFunc1<T, R> func) {
+    public <R> Stream<R> map(Func1<T, R> func) {
         return from(() -> new ReadOnlyIterator<R>() {
 
             Iterator<T> iterator = iterator();
@@ -235,14 +235,14 @@ public abstract class Stream<T> implements Iterable<T> {
 
     /**
      * Returns a new stream that contains items that has been returned a given function for each item in the current stream.
-     * The difference from {@link #map(SolidFunc1)} is that a given function can return more than one item for
+     * The difference from {@link #map(Func1)} is that a given function can return more than one item for
      * each item of the current list.
      *
      * @param func a function that takes an item of the current stream and returns a stream of values for the new stream.
      * @param <R>  a type of items new stream returns.
      * @return a new stream that contains items that has been returned by a given function for each item in the current stream.
      */
-    public <R> Stream<R> flatMap(SolidFunc1<T, Iterable<R>> func) {
+    public <R> Stream<R> flatMap(Func1<T, Iterable<R>> func) {
         return from(() -> new ReadOnlyIterator<R>() {
 
             Iterator<T> iterator = iterator();
@@ -271,7 +271,7 @@ public abstract class Stream<T> implements Iterable<T> {
      * @param func a function to call for each item.
      * @return a new stream that contains all items of the current stream for which a given function returned {@link Boolean#TRUE}.
      */
-    public Stream<T> filter(SolidFunc1<T, Boolean> func) {
+    public Stream<T> filter(Func1<T, Boolean> func) {
         return from(() -> new ReadOnlyIterator<T>() {
             Iterator<? extends T> iterator = iterator();
             T next;

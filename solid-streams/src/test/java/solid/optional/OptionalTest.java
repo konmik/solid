@@ -2,8 +2,7 @@ package solid.optional;
 
 import org.junit.Test;
 
-import solid.functions.SolidAction1;
-import solid.functions.SolidFunc0;
+import solid.functions.Action1;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -23,7 +22,7 @@ public class OptionalTest {
 
         assertFalse(o.isPresent());
 
-        SolidAction1 mockAction = mock(SolidAction1.class);
+        Action1 mockAction = mock(Action1.class);
         o.ifPresent(mockAction);
         verifyNoMoreInteractions(mockAction);
 
@@ -54,7 +53,7 @@ public class OptionalTest {
 
         assertTrue(o.isPresent());
 
-        SolidAction1<Object> mockAction = mock(SolidAction1.class);
+        Action1<Object> mockAction = mock(Action1.class);
         o.ifPresent(mockAction);
         verify(mockAction, times(1)).call(eq(1));
 
