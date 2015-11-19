@@ -9,8 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import test_utils.MockParcel;
-
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
@@ -108,14 +106,6 @@ public class SolidListTest {
         assertArrayEquals(new SolidList<>(new Integer[]{1, 2, 3}).toArray(new Integer[3]), new Integer[]{1, 2, 3});
         //noinspection ToArrayCallWithZeroLengthArrayArgument
         assertArrayEquals(new SolidList<>(new Integer[]{1, 2, 3}).toArray(new Integer[0]), new Integer[]{1, 2, 3});
-    }
-
-    @Test
-    public void testParcelable() throws Exception {
-        SolidList<Integer> list1 = new SolidList<>(new Integer[]{0, 1, 2, 3, 1, 2, 3, 0});
-        assertEquals(list1, MockParcel.writeRead(list1, SolidList.CREATOR));
-        assertEquals(12, SolidList.CREATOR.newArray(12).length);
-        assertEquals(0, list1.describeContents());
     }
 
     @Test

@@ -2,7 +2,6 @@ package solid.collections;
 
 import android.support.test.runner.AndroidJUnit4;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -15,7 +14,6 @@ import static org.junit.Assert.assertArrayEquals;
 
 @RunWith(AndroidJUnit4.class)
 public class SolidMapTest {
-    @Ignore
     @Test
     public void testParcelUnparcel() throws Exception {
         SolidMap map = new SolidMap(create123map234());

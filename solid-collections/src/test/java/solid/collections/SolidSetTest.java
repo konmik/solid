@@ -8,8 +8,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
 
-import test_utils.MockParcel;
-
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertArrayEquals;
@@ -112,14 +110,6 @@ public class SolidSetTest {
     @Test(expected = UnsupportedOperationException.class)
     public void testRetainAll() throws Exception {
         new SolidSet<>(new Integer[]{1, 2, 3}).retainAll(Arrays.asList(2, 3));
-    }
-
-    @Test
-    public void testParcelable() throws Exception {
-        SolidSet<Integer> set = new SolidSet<>(new Integer[]{1, 2, 3});
-        assert123(MockParcel.writeRead(set, SolidSet.CREATOR));
-        assertEquals(12, SolidSet.CREATOR.newArray(12).length);
-        assertEquals(0, set.describeContents());
     }
 
     @Test

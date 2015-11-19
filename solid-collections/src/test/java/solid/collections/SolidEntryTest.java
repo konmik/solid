@@ -4,8 +4,6 @@ import org.junit.Test;
 
 import java.util.HashMap;
 
-import test_utils.MockParcel;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
@@ -31,14 +29,6 @@ public class SolidEntryTest {
     public void testSetThrows() throws Exception {
         SolidEntry<String, Integer> entry = new SolidEntry<>("1", 1);
         entry.setValue(2);
-    }
-
-    @Test
-    public void testParcelable() throws Exception {
-        SolidEntry<String, Integer> entry = new SolidEntry<>("1", 1);
-        assertEquals(entry, MockParcel.writeRead(entry, SolidEntry.CREATOR));
-        assertEquals(12, SolidEntry.CREATOR.newArray(12).length);
-        assertEquals(0, entry.describeContents());
     }
 
     @Test

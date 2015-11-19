@@ -22,7 +22,6 @@ import solid.stream.Stream;
 public class SolidList<T> extends Stream<T> implements List<T>, Parcelable {
 
     private static final SolidList<Object> EMPTY = new SolidList<>(new Object[0]);
-    private static final ClassLoader CLASS_LOADER = SolidList.class.getClassLoader();
 
     private final ArrayList<T> array;
 
@@ -234,6 +233,8 @@ public class SolidList<T> extends Stream<T> implements List<T>, Parcelable {
     public <T1> T1[] toArray(T1[] contents) {
         return array.toArray(contents);
     }
+
+    private static final ClassLoader CLASS_LOADER = SolidList.class.getClassLoader();
 
     @Override
     public int describeContents() {

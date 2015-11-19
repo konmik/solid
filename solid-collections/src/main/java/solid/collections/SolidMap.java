@@ -14,15 +14,20 @@ import solid.stream.Stream;
 
 /**
  * Represents an immutable parcelable map.
- * This is basically a decorator around Hashmap.
+ * This is basically a decorator around {@link java.util.LinkedHashMap}.
+ *
+ * {@link SolidMap} does not extend {@link Map} because of
+ * {@link Map} has a higher priority over {@link Parcelable} when putting into
+ * {@link Parcel}, see {@link Parcel#writeValue(Object)}.
+ *
+ * Use {@link SolidMap#asMap()}.
  *
  * @param <K> a type of keys.
  * @param <V> a type of values.
  */
-public class SolidMap<K, V> extends Stream<Map.Entry<K, V>> implements Map<K, V>, Parcelable {
+public class SolidMap<K, V> extends Stream<Map.Entry<K, V>> implements Parcelable {
 
     private static final SolidMap<Object, Object> EMPTY = new SolidMap<>(new LinkedHashMap<>());
-    private static final ClassLoader CLASS_LOADER = SolidMap.class.getClassLoader();
 
     private final Map<K, V> map;
 
@@ -59,69 +64,46 @@ public class SolidMap<K, V> extends Stream<Map.Entry<K, V>> implements Map<K, V>
         return (SolidMap<K, V>) EMPTY;
     }
 
-    @Deprecated
-    @Override
-    public void clear() {
-        throw new UnsupportedOperationException();
+    /**
+     * Returns an immutable {@link Map} interface.
+     */
+    public Map<K, V> asMap() {
+        return map;
     }
 
-    @Override
     public boolean containsKey(Object key) {
         return map.containsKey(key);
     }
 
-    @Override
     public boolean containsValue(Object value) {
         return map.containsKey(value);
     }
 
-    @Override
-    public Set<Entry<K, V>> entrySet() {
+    public Set<Map.Entry<K, V>> entrySet() {
         return map.entrySet();
     }
 
-    @Override
     public V get(Object key) {
         return map.get(key);
     }
 
-    @Override
     public boolean isEmpty() {
         return map.isEmpty();
     }
 
-    @Override
     public Set<K> keySet() {
         return map.keySet();
     }
 
-    @Deprecated
-    @Override
-    public V put(K key, V value) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Deprecated
-    @Override
-    public void putAll(Map<? extends K, ? extends V> map) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Deprecated
-    @Override
-    public V remove(Object key) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public int size() {
         return map.size();
     }
 
-    @Override
     public Collection<V> values() {
         return map.values();
     }
+
+    private static final ClassLoader CLASS_LOADER = SolidMap.class.getClassLoader();
 
     @Override
     public int describeContents() {
@@ -153,29 +135,11 @@ public class SolidMap<K, V> extends Stream<Map.Entry<K, V>> implements Map<K, V>
     };
 
     @Override
-    public boolean equals(Object object) {
-        if (this == object)
-            return true;
-
-        if (object instanceof Map) {
-            Map<?, ?> other = (Map<?, ?>) object;
-            if (size() != other.size())
-                return false;
-
-            for (Entry<K, V> entry : entrySet()) {
-                K key = entry.getKey();
-                V value = entry.getValue();
-                Object value2 = other.get(key);
-                if (value == null) {
-                    if (value2 != null || !other.containsKey(key))
-                        return false;
-                }
-                else if (!value.equals(value2))
-                    return false;
-            }
-            return true;
-        }
-        return false;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SolidMap<?, ?> solidMap = (SolidMap<?, ?>) o;
+        return map.equals(solidMap.map);
     }
 
     @Override
@@ -191,7 +155,7 @@ public class SolidMap<K, V> extends Stream<Map.Entry<K, V>> implements Map<K, V>
     }
 
     @Override
-    public Iterator<Entry<K, V>> iterator() {
+    public Iterator<Map.Entry<K, V>> iterator() {
         return map.entrySet().iterator();
     }
 }

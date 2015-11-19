@@ -8,8 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import test_utils.MockParcel;
-
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -32,19 +30,19 @@ public class SolidMapTest {
         assertNotEquals(hashMap, map);
     }
 
+    @Test(expected = UnsupportedOperationException.class)
+    public void testAsMapIsImmutable() throws Exception {
+        new SolidMap<>(create123map234()).asMap().put(1, 1);
+    }
+
     @Test
     public void testIteratorConstructor() throws Exception {
-        assertEquals(create123map234(), new SolidMap<>(create123map234().entrySet()));
+        assertEquals(new SolidMap<>(create123map234()), new SolidMap<>(create123map234().entrySet()));
     }
 
     @Test
     public void testEmpty() throws Exception {
         assertEquals(0, SolidMap.empty().size());
-    }
-
-    @Test(expected = UnsupportedOperationException.class)
-    public void clear() throws Exception {
-        new SolidMap<>(create123map234()).clear();
     }
 
     @Test
@@ -101,21 +99,6 @@ public class SolidMapTest {
         new SolidMap<>(create123map234()).keySet().clear();
     }
 
-    @Test(expected = UnsupportedOperationException.class)
-    public void testPut() throws Exception {
-        new SolidMap<>(create123map234()).put(1, 2);
-    }
-
-    @Test(expected = UnsupportedOperationException.class)
-    public void testPutAll() throws Exception {
-        new SolidMap<>(create123map234()).putAll(create123map234());
-    }
-
-    @Test(expected = UnsupportedOperationException.class)
-    public void testRemove() throws Exception {
-        new SolidMap<>(create123map234()).remove(1);
-    }
-
     @Test
     public void testSize() throws Exception {
         assertEquals(3, new SolidMap<>(create123map234()).size());
@@ -137,15 +120,15 @@ public class SolidMapTest {
         SolidMap<Integer, Integer> map = new SolidMap<>(create123map234());
         assertTrue(map.equals(map));
 
-        assertTrue(new SolidMap<>(create123map234()).equals(create123map234()));
+        assertTrue(new SolidMap<>(create123map234()).equals(new SolidMap<>(create123map234())));
 
         HashMap<Integer, Integer> map234null = create123map234();
         map234null.remove(1);
         assertFalse(map.equals(new SolidMap<>(map234null)));
 
         map234null.put(null, null);
-        assertTrue(new SolidMap<>(map234null).equals(map234null));
-        assertFalse(new SolidMap<>(create123map234()).equals(map234null));
+        assertTrue(new SolidMap<>(map234null).equals(new SolidMap<>(map234null)));
+        assertFalse(new SolidMap<>(create123map234()).equals(new SolidMap<>(map234null)));
 
         HashMap<Integer, Integer> map234null_ = create123map234();
         map234null_.put(3, null);
@@ -162,21 +145,13 @@ public class SolidMapTest {
     }
 
     @Test
-    public void parcelableImplementation() throws Exception {
-        SolidMap<Integer, Integer> map = new SolidMap<>(create123map234());
-        assertEquals(map, MockParcel.writeRead(map, SolidMap.CREATOR));
-        assertEquals(12, SolidMap.CREATOR.newArray(12).length);
-        assertEquals(0, map.describeContents());
-    }
-
-    @Test
     public void testIterator() throws Exception {
         SolidMap<Integer, Integer> map = new SolidMap<>(create123map234());
         HashMap<Integer, Integer> hashMap = new HashMap<>();
         for (Map.Entry<Integer, Integer> entry : map) {
             hashMap.put(entry.getKey(), entry.getValue());
         }
-        assertEquals(map, hashMap);
+        assertEquals(map, new SolidMap<>(hashMap));
     }
 
     @Test

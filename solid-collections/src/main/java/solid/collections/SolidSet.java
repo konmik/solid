@@ -17,7 +17,6 @@ import solid.stream.Stream;
 public class SolidSet<T> extends Stream<T> implements Set<T>, Parcelable {
 
     private static final Set<Object> EMPTY = new SolidSet<>(new Object[0]);
-    private static final ClassLoader CLASS_LOADER = SolidSet.class.getClassLoader();
 
     private final Set<T> set;
 
@@ -115,6 +114,8 @@ public class SolidSet<T> extends Stream<T> implements Set<T>, Parcelable {
     public boolean retainAll(Collection<?> collection) {
         throw new UnsupportedOperationException();
     }
+
+    private static final ClassLoader CLASS_LOADER = SolidSet.class.getClassLoader();
 
     protected SolidSet(Parcel in) {
         set = new LinkedHashSet<>(in.readArrayList(CLASS_LOADER));

@@ -13,8 +13,6 @@ import solid.functions.Func1;
  */
 public class SolidEntry<K, V> implements Map.Entry<K, V>, Parcelable {
 
-    private static final ClassLoader CLASS_LOADER = SolidEntry.class.getClassLoader();
-
     private final K key;
     private final V value;
 
@@ -43,6 +41,8 @@ public class SolidEntry<K, V> implements Map.Entry<K, V>, Parcelable {
     public V setValue(V object) {
         throw new UnsupportedOperationException();
     }
+
+    private static final ClassLoader CLASS_LOADER = SolidEntry.class.getClassLoader();
 
     protected SolidEntry(Parcel in) {
         key = (K) in.readValue(CLASS_LOADER);
