@@ -1,9 +1,8 @@
 apply plugin: 'com.android.library'
-apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    buildToolsVersion "23.0.2"
 
     defaultConfig {
         minSdkVersion 10
@@ -12,24 +11,22 @@ android {
         versionName "1.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
 }
 
 configurations {
     compileJavadoc
 }
 
-dependencies {
-    retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.0.6'
+repositories {
+    mavenLocal()
+}
 
-    compile project(':solid-streams')
+dependencies {
+    compile 'info.android15.solid:solid-streams:2.0.0-SNAPSHOT'
 
     androidTestCompile 'junit:junit:4.12'
     androidTestCompile 'com.android.support.test:runner:0.3'
+    androidTestCompile 'com.android.support.test:rules:0.3'
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.0.12-beta'

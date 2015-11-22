@@ -1,29 +1,24 @@
 package solid.converters;
 
+import android.support.test.runner.AndroidJUnit4;
 import android.util.SparseArray;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.ArrayList;
 
 import solid.functions.Func1;
-import test_utils.MockSparseArray;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static solid.converters.ToSparseArray.toSparseArray;
 import static solid.stream.Stream.stream;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({SparseArray.class, ToSparseArray.class})
+@RunWith(AndroidJUnit4.class)
 public class ToSparseArrayTest {
     @Test
     public void testToSparseArray() throws Exception {
-        MockSparseArray.powerMockNew();
-
         assert123(stream(asList("1", "2", "3"))
             .collect(toSparseArray(new Func1<String, Integer>() {
                 @Override

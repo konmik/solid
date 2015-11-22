@@ -30,12 +30,15 @@ public class ToSparseArray {
      * @param initialCapacity initial capacity on the sparse array.
      * @return a method that converts an iterable into a {@link SparseArray}.
      */
-    public static <T> Func1<Iterable<T>, SparseArray<T>> toSparseArray(Func1<T, Integer> itemToKey, int initialCapacity) {
-        return iterable -> {
-            SparseArray<T> array = new SparseArray<>(initialCapacity);
-            for (T value : iterable)
-                array.put(itemToKey.call(value), value);
-            return array;
+    public static <T> Func1<Iterable<T>, SparseArray<T>> toSparseArray(final Func1<T, Integer> itemToKey, final int initialCapacity) {
+        return new Func1<Iterable<T>, SparseArray<T>>() {
+            @Override
+            public SparseArray<T> call(Iterable<T> iterable) {
+                SparseArray<T> array = new SparseArray<>(initialCapacity);
+                for (T value : iterable)
+                    array.put(itemToKey.call(value), value);
+                return array;
+            }
         };
     }
 }

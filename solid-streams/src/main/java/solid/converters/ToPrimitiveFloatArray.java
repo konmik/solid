@@ -6,13 +6,16 @@ import solid.functions.Func1;
 
 public class ToPrimitiveFloatArray {
 
-    private static final Func1<Iterable<Float>, float[]> TO_PRIMITIVE_FLOAT_ARRAY = value -> {
-        ArrayList<Float> objects = ToArrayList.<Float>toArrayList().call(value);
-        float[] primitives = new float[objects.size()];
-        int i = 0;
-        for (Float object : objects)
-            primitives[i++] = object;
-        return primitives;
+    private static final Func1<Iterable<Float>, float[]> TO_PRIMITIVE_FLOAT_ARRAY = new Func1<Iterable<Float>, float[]>() {
+        @Override
+        public float[] call(Iterable<Float> value) {
+            ArrayList<Float> objects = ToArrayList.<Float>toArrayList().call(value);
+            float[] primitives = new float[objects.size()];
+            int i = 0;
+            for (Float object : objects)
+                primitives[i++] = object;
+            return primitives;
+        }
     };
 
     /**

@@ -31,12 +31,15 @@ public class ToArrayList {
      * @param initialCapacity initial capacity of the list.
      * @return a method that converts an iterable into {@link List}.
      */
-    public static <T> Func1<Iterable<? extends T>, ArrayList<T>> toArrayList(int initialCapacity) {
-        return iterable -> {
-            ArrayList<T> list = new ArrayList<>(initialCapacity);
-            for (T value : iterable)
-                list.add(value);
-            return list;
+    public static <T> Func1<Iterable<? extends T>, ArrayList<T>> toArrayList(final int initialCapacity) {
+        return new Func1<Iterable<? extends T>, ArrayList<T>>() {
+            @Override
+            public ArrayList<T> call(Iterable<? extends T> iterable) {
+                ArrayList<T> list = new ArrayList<>(initialCapacity);
+                for (T value : iterable)
+                    list.add(value);
+                return list;
+            }
         };
     }
 }

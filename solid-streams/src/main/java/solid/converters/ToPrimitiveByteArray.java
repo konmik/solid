@@ -6,13 +6,16 @@ import solid.functions.Func1;
 
 public class ToPrimitiveByteArray {
 
-    private static final Func1<Iterable<Byte>, byte[]> TO_PRIMITIVE_BYTE_ARRAY = value -> {
-        List<Byte> objects = ToArrayList.<Byte>toArrayList().call(value);
-        byte[] primitives = new byte[objects.size()];
-        int i = 0;
-        for (Byte object : objects)
-            primitives[i++] = object;
-        return primitives;
+    private static final Func1<Iterable<Byte>, byte[]> TO_PRIMITIVE_BYTE_ARRAY = new Func1<Iterable<Byte>, byte[]>() {
+        @Override
+        public byte[] call(Iterable<Byte> value) {
+            List<Byte> objects = ToArrayList.<Byte>toArrayList().call(value);
+            byte[] primitives = new byte[objects.size()];
+            int i = 0;
+            for (Byte object : objects)
+                primitives[i++] = object;
+            return primitives;
+        }
     };
 
     /**

@@ -29,7 +29,10 @@ public class ToJoinedString {
      * @param delimiter a delimiter
      * @return a method that converts an iterable stream of {@link String} type into a joined string.
      */
-    public static Func1<Iterable<String>, String> toJoinedString(String delimiter) {
-        return iterable -> TextUtils.join(delimiter, iterable);
+    public static Func1<Iterable<String>, String> toJoinedString(final String delimiter) {
+        return new Func1<Iterable<String>, String>() {
+            @Override
+            public String call(Iterable<String> iterable) {return TextUtils.join(delimiter, iterable);}
+        };
     }
 }

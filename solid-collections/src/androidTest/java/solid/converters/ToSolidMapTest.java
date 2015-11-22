@@ -1,12 +1,16 @@
 package solid.converters;
 
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Pair;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.HashMap;
+import java.util.Map;
 
+import solid.collections.SolidEntry;
+import solid.collections.SolidList;
 import solid.collections.SolidMap;
 import solid.functions.Func1;
 import solid.stream.Stream;
@@ -37,17 +41,23 @@ public class ToSolidMapTest {
 
     @Test
     public void testToSolidMapType() throws Exception {
-//        SolidMap<String, Integer> converted = Stream.range(1, 4)
-//            .map(it -> (Map.Entry<String, Integer>) new SolidEntry<>("" + it, it.intValue()))
-//            .collect(ToSolidMap.toSolidMap());
-//        assertIterableEquals(MAP, converted);
+        SolidMap<String, Integer> converted = Stream.range(1, 4)
+            .map(new Func1<Long, Map.Entry<String, Integer>>() {
+                @Override
+                public Map.Entry<String, Integer> call(Long it) {return (Map.Entry<String, Integer>) new SolidEntry<>("" + it, it.intValue());}
+            })
+            .collect(ToSolidMap.<String, Integer>toSolidMap());
+        assertIterableEquals(MAP, converted);
     }
 
 //    @Test
 //    public void testToSolidMapFromPairs() throws Exception {
 //        SolidList<Pair<String, Integer>> list =
 //            new SolidList<>(Stream.range(1, 4)
-//                .map(it -> new Pair<>("" + it, it.intValue())));
+//                .map(new Func1<Long, Object>() {
+//                    @Override
+//                    public Object call(Long it) {return new Pair<>("" + it, it.intValue());}
+//                }));
 //
 //        Pair p = new Pair("1", 1);
 //

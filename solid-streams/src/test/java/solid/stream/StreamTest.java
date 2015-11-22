@@ -5,8 +5,12 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+
+import solid.functions.Func1;
+import solid.functions.Func2;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
@@ -71,22 +75,27 @@ public class StreamTest {
     @Test
     public void testLift() throws Exception {
         assertIterableEquals(asList(1, 3, 6), stream(asList(1, 2, 3))
-            .compose(value -> new Stream<Integer>() {
+            .compose(new Func1<Stream<Integer>, Stream<Integer>>() {
                 @Override
-                public Iterator<Integer> iterator() {
-                    return new ReadOnlyIterator<Integer>() {
-
-                        Iterator<Integer> source = value.iterator();
-                        int count;
-
+                public Stream<Integer> call(final Stream<Integer> value) {
+                    return new Stream<Integer>() {
                         @Override
-                        public boolean hasNext() {
-                            return source.hasNext();
-                        }
+                        public Iterator<Integer> iterator() {
+                            return new ReadOnlyIterator<Integer>() {
 
-                        @Override
-                        public Integer next() {
-                            return count += source.next();
+                                Iterator<Integer> source = value.iterator();
+                                int count;
+
+                                @Override
+                                public boolean hasNext() {
+                                    return source.hasNext();
+                                }
+
+                                @Override
+                                public Integer next() {
+                                    return count += source.next();
+                                }
+                            };
                         }
                     };
                 }
@@ -95,29 +104,71 @@ public class StreamTest {
 
     @Test
     public void testMap() throws Exception {
-        assertIterableEquals(asList("1", "2", "3"), of(1, 2, 3).map(Object::toString));
-        assertIterableEquals(Arrays.<Integer>asList(null, null), of(null, null).map(value -> null));
-        assertIterableEquals(emptyList(), of().map(value -> null));
+        assertIterableEquals(asList("1", "2", "3"), of(1, 2, 3).map(new Func1<Integer, String>() {
+            @Override
+            public String call(Integer integer) {return integer.toString();}
+        }));
+        assertIterableEquals(Arrays.<Integer>asList(null, null), of(null, null).map(new Func1<Object, Integer>() {
+            @Override
+            public Integer call(Object value) {return null;}
+        }));
+        assertIterableEquals(emptyList(), of().map(new Func1<Object, Object>() {
+            @Override
+            public Object call(Object value) {return null;}
+        }));
     }
 
     @Test
     public void testFlatMap() throws Exception {
-        assertIterableEquals(asList("2", "3", "4", "3", "4", "5", "4", "5", "6"), of(1, 2, 3).flatMap(value -> asList("" + (value + 1), "" + (value + 2), "" + (value + 3))));
-        assertIterableEquals(Arrays.<Integer>asList(null, null, null, null), of(null, null).flatMap(value -> Arrays.asList(null, null)));
-        assertIterableEquals(emptyList(), of().flatMap(value -> null));
+        assertIterableEquals(asList("2", "3", "4", "3", "4", "5", "4", "5", "6"), of(1, 2, 3).flatMap(new Func1<Integer, Iterable<String>>() {
+            @Override
+            public Iterable<String> call(Integer value) {return asList("" + (value + 1), "" + (value + 2), "" + (value + 3));}
+        }));
+        assertIterableEquals(Arrays.asList(null, null, null, null), of(null, null).flatMap(new Func1<Object, Iterable<Object>>() {
+            @Override
+            public Iterable<Object> call(Object value) {return Arrays.asList(null, null);}
+        }));
+        assertIterableEquals(emptyList(), of().flatMap(new Func1<Object, Iterable<Object>>() {
+            @Override
+            public Iterable<Object> call(Object value) {return null;}
+        }));
     }
 
     @Test
     public void testFilter() throws Exception {
-        assertIterableEquals(asList(1, 2, 3), stream(asList(1, 2, 3, 4)).filter(value -> value != 4));
+        assertIterableEquals(asList(1, 2, 3), stream(asList(1, 2, 3, 4)).filter(new Func1<Integer, Boolean>() {
+            @Override
+            public Boolean call(Integer value) {return value != 4;}
+        }));
         List<Integer> list123 = asList(1, 2, 3);
-        assertIterableEquals(list123, of(1, 2, 3, 4).filter(value -> value != 4));
-        assertIterableEquals(list123, of(4, 1, 2, 3).filter(value -> value != 4));
-        assertIterableEquals(list123, of(1, 2, 4, 3).filter(value -> value != 4));
-        assertIterableEquals(list123, of(1, 2, 3).filter(value -> true));
-        assertIterableEquals(Collections.<Integer>emptyList(), of(1, 2, 4, 3).filter(value -> false));
-        assertIterableEquals(Collections.<Integer>emptyList(), Stream.<Integer>of().filter(value -> true));
-        assertIterableEquals(Collections.<Integer>emptyList(), Stream.<Integer>of(null, null).filter(value -> false));
+        assertIterableEquals(list123, of(1, 2, 3, 4).filter(new Func1<Integer, Boolean>() {
+            @Override
+            public Boolean call(Integer value) {return value != 4;}
+        }));
+        assertIterableEquals(list123, of(4, 1, 2, 3).filter(new Func1<Integer, Boolean>() {
+            @Override
+            public Boolean call(Integer value) {return value != 4;}
+        }));
+        assertIterableEquals(list123, of(1, 2, 4, 3).filter(new Func1<Integer, Boolean>() {
+            @Override
+            public Boolean call(Integer value) {return value != 4;}
+        }));
+        assertIterableEquals(list123, of(1, 2, 3).filter(new Func1<Integer, Boolean>() {
+            @Override
+            public Boolean call(Integer value) {return true;}
+        }));
+        assertIterableEquals(Collections.<Integer>emptyList(), of(1, 2, 4, 3).filter(new Func1<Integer, Boolean>() {
+            @Override
+            public Boolean call(Integer value) {return false;}
+        }));
+        assertIterableEquals(Collections.<Integer>emptyList(), Stream.<Integer>of().filter(new Func1<Integer, Boolean>() {
+            @Override
+            public Boolean call(Integer value) {return true;}
+        }));
+        assertIterableEquals(Collections.<Integer>emptyList(), Stream.<Integer>of(null, null).filter(new Func1<Integer, Boolean>() {
+            @Override
+            public Boolean call(Integer value) {return false;}
+        }));
     }
 
     @Test
@@ -130,8 +181,8 @@ public class StreamTest {
     public void testMerge() throws Exception {
         assertIterableEquals(asList(1, 2, 3, 4), of(1, 2).merge(of(3, 4)));
         assertIterableEquals(asList(1, 2, 3, 4, 5, 6), of(1, 2, 3).merge(of(4, 5, 6)));
-        assertIterableEquals(asList(1, 2, 3), of(1, 2, 3).merge(of()));
-        assertIterableEquals(asList(4, 5, 6), of().merge(of(4, 5, 6)));
+        assertIterableEquals(asList(1, 2, 3), of(1, 2, 3).merge(Stream.<Integer>of()));
+        assertIterableEquals(asList(4, 5, 6), Stream.<Integer>of().merge(Stream.of(4, 5, 6)));
         assertIterableEquals(Collections.emptyList(), of().merge(of()));
         assertIterableEquals(asList(null, null, null, null), of(null, null).merge(of(null, null)));
     }
@@ -169,10 +220,22 @@ public class StreamTest {
 
     @Test
     public void testSort() throws Exception {
-        assertIterableEquals(asList(1, 2, 3), stream(asList(3, 2, 1)).sorted((lhs, rhs) -> lhs < rhs ? -1 : (lhs.equals(rhs) ? 0 : 1)));
-        assertIterableEquals(asList(1, 2, 3), of(3, 2, 1).sorted((lhs, rhs) -> lhs < rhs ? -1 : (lhs.equals(rhs) ? 0 : 1)));
-        assertIterableEquals(asList(null, null), of(null, null).sorted((lhs, rhs) -> 0));
-        assertIterableEquals(emptyList(), of().sorted((lhs, rhs) -> 0));
+        assertIterableEquals(asList(1, 2, 3), stream(asList(3, 2, 1)).sorted(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer lhs, Integer rhs) {return lhs < rhs ? -1 : (lhs.equals(rhs) ? 0 : 1);}
+        }));
+        assertIterableEquals(asList(1, 2, 3), of(3, 2, 1).sorted(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer lhs, Integer rhs) {return lhs < rhs ? -1 : (lhs.equals(rhs) ? 0 : 1);}
+        }));
+        assertIterableEquals(asList(null, null), of(null, null).sorted(new Comparator<Object>() {
+            @Override
+            public int compare(Object lhs, Object rhs) {return 0;}
+        }));
+        assertIterableEquals(emptyList(), of().sorted(new Comparator<Object>() {
+            @Override
+            public int compare(Object lhs, Object rhs) {return 0;}
+        }));
     }
 
     @Test
@@ -186,10 +249,13 @@ public class StreamTest {
     @Test
     public void testCollect() throws Exception {
         final ArrayList<Integer> target = new ArrayList<>();
-        ArrayList<Integer> result = stream(asList(1, 2, 3)).collect(value -> {
-            for (Integer v : value)
-                target.add(v);
-            return target;
+        ArrayList<Integer> result = stream(asList(1, 2, 3)).collect(new Func1<Iterable<Integer>, ArrayList<Integer>>() {
+            @Override
+            public ArrayList<Integer> call(Iterable<Integer> value) {
+                for (Integer v : value)
+                    target.add(v);
+                return target;
+            }
         });
         assertTrue(target == result);
         assertEquals(target, result);
@@ -197,9 +263,18 @@ public class StreamTest {
 
     @Test
     public void testFold() throws Exception {
-        assertEquals(null, Stream.of().fold(null, (it, that) -> null));
-        assertEquals(null, Stream.of(null, null).fold(null, (value1, value2) -> null));
-        assertEquals((Integer) 10, Stream.of(2, 3, 4).fold(1, (value1, value2) -> value1 + value2));
+        assertEquals(null, Stream.of().fold(null, new Func2<Object, Object, Object>() {
+            @Override
+            public Object call(Object it, Object that) {return null;}
+        }));
+        assertEquals(null, Stream.of(null, null).fold(null, new Func2<Object, Object, Object>() {
+            @Override
+            public Object call(Object value1, Object value2) {return null;}
+        }));
+        assertEquals((Integer) 10, Stream.of(2, 3, 4).fold(1, new Func2<Integer, Integer, Integer>() {
+            @Override
+            public Integer call(Integer value1, Integer value2) {return value1 + value2;}
+        }));
     }
 
     @Test
@@ -208,8 +283,14 @@ public class StreamTest {
         assertFalse(Stream.of().reduce(null).isPresent());
 
         assertEquals((Integer) 9, Stream.of(9).reduce(null).get());
-        assertFalse(null, Stream.of(null, null, null).reduce((value1, value2) -> null).isPresent());
-        assertEquals((Integer) 9, Stream.of(2, 3, 4).reduce((value1, value2) -> value1 + value2).get());
+        assertFalse(null, Stream.of(null, null, null).reduce(new Func2<Object, Object, Object>() {
+            @Override
+            public Object call(Object value1, Object value2) {return null;}
+        }).isPresent());
+        assertEquals((Integer) 9, Stream.of(2, 3, 4).reduce(new Func2<Integer, Integer, Integer>() {
+            @Override
+            public Integer call(Integer value1, Integer value2) {return value1 + value2;}
+        }).get());
     }
 
     @Test
