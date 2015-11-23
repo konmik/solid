@@ -1,1 +1,1 @@
-include ':solid-streams', ':solid-collections'
+include ':streams', ':collections'
