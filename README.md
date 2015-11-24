@@ -71,6 +71,8 @@ a non-event based usage pattern. My tests say that *Solid* streams are about 5 t
 These streams are passive and do not emit items, they are not thread-safe, so they are much simpler.
 If you're stuck with studying *RxJava* you may try to understand these streams first.
 
+Solid streams are sequential.
+
 ### How to use
 
 All examples here with Java 8 syntax on. I recommend using [Gradle Retrolambda Plugin](https://github.com/evant/gradle-retrolambda)

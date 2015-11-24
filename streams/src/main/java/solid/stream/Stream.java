@@ -27,24 +27,10 @@ public abstract class Stream<T> implements Iterable<T> {
      * @return a {@link Stream} that represents source array's elements.
      */
     public static <T> Stream<T> stream(final T[] array) {
-        return from(new Func0<Iterator<T>>() {
+        return new FixedSizeStream<>(array.length, new Func1<Integer, T>() {
             @Override
-            public Iterator<T> call() {
-                return new ReadOnlyIterator<T>() {
-
-                    int length = array.length;
-                    int index;
-
-                    @Override
-                    public boolean hasNext() {
-                        return index < length;
-                    }
-
-                    @Override
-                    public T next() {
-                        return array[index++];
-                    }
-                };
+            public T call(Integer index) {
+                return array[index];
             }
         });
     }
@@ -104,6 +90,23 @@ public abstract class Stream<T> implements Iterable<T> {
         return stream(values);
     }
 
+    /**
+     * Returns an empty stream.
+     *
+     * @param <T> the type of the stream.
+     * @return an empty stream.
+     */
+    public static <T> Stream<T> of() {
+        return EMPTY;
+    }
+
+    /**
+     * Returns a stream from a given iterator factory.
+     *
+     * @param func an iterator factory.
+     * @param <T>  the type of the stream.
+     * @return a stream from a given iterator factory.
+     */
     public static <T> Stream<T> from(final Func0<Iterator<T>> func) {
         return new Stream<T>() {
             @Override
@@ -111,42 +114,6 @@ public abstract class Stream<T> implements Iterable<T> {
                 return func.call();
             }
         };
-    }
-
-    public static <T> Stream<T> of() {
-        return from(new Func0<Iterator<T>>() {
-            @Override
-            public Iterator<T> call() {return EMPTY_ITERATOR;}
-        });
-    }
-
-    /**
-     * Creates a stream that contains a given number of integers starting from a given number.
-     *
-     * @param from a staring value
-     * @param to   an ending value, exclusive
-     * @return a stream that contains a given number of integers starting from a given number.
-     */
-    public static Stream<Long> range(final long from, final long to) {
-        return from(new Func0<Iterator<Long>>() {
-            @Override
-            public Iterator<Long> call() {
-                return new ReadOnlyIterator<Long>() {
-
-                    long value = from;
-
-                    @Override
-                    public boolean hasNext() {
-                        return value < to;
-                    }
-
-                    @Override
-                    public Long next() {
-                        return value++;
-                    }
-                };
-            }
-        });
     }
 
     /**
@@ -514,7 +481,7 @@ public abstract class Stream<T> implements Iterable<T> {
         });
     }
 
-    private static ReadOnlyIterator EMPTY_ITERATOR = new ReadOnlyIterator() {
+    private static final ReadOnlyIterator EMPTY_ITERATOR = new ReadOnlyIterator() {
         @Override
         public boolean hasNext() {
             return false;
@@ -522,7 +489,14 @@ public abstract class Stream<T> implements Iterable<T> {
 
         @Override
         public Object next() {
-            throw new IllegalStateException("Can't get a value from an empty iterator.");
+            return null;
+        }
+    };
+
+    private static final Stream EMPTY = new Stream() {
+        @Override
+        public Iterator iterator() {
+            return EMPTY_ITERATOR;
         }
     };
 }
