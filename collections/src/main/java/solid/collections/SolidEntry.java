@@ -5,11 +5,8 @@ import android.os.Parcelable;
 
 import java.util.Map;
 
-import solid.functions.Func1;
-
 /**
- * This is a Parcelable implementation of {@link Map.Entry} which can be used by
- * {@link SolidMap} and {@link solid.stream.Stream#groupBy(Func1)}.
+ * This is a Parcelable implementation of {@link Map.Entry} which can be used by {@link SolidMap}.
  */
 public class SolidEntry<K, V> implements Map.Entry<K, V>, Parcelable {
 

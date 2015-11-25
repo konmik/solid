@@ -16,8 +16,8 @@ import solid.stream.Stream;
  * Represents an immutable parcelable map.
  * This is basically a decorator around {@link java.util.LinkedHashMap}.
  *
- * {@link SolidMap} does not extend {@link Map} because of
- * {@link Map} has a higher priority over {@link Parcelable} when putting into
+ * {@link SolidMap} does not extend {@link java.util.Map} because of
+ * {@link java.util.Map} interferes with {@link Parcelable} when putting into
  * {@link Parcel}, see {@link Parcel#writeValue(Object)}.
  *
  * Use {@link SolidMap#asMap()}.
@@ -27,7 +27,7 @@ import solid.stream.Stream;
  */
 public class SolidMap<K, V> extends Stream<Map.Entry<K, V>> implements Parcelable {
 
-    private static final SolidMap<Object, Object> EMPTY = new SolidMap<>(new LinkedHashMap<>());
+    private static final SolidMap<Object, Object> EMPTY = new SolidMap<>(Collections.emptyMap());
 
     private final Map<K, V> map;
 

@@ -15,10 +15,10 @@ import static solid.stream.Stream.of;
 public class SolidListTest {
     @Test
     public void testParcelable() throws Exception {
-        SolidList<Integer> list = of(1, 2, 3).collect((solid.functions.Func1<Iterable<Integer>, SolidList<Integer>>) new Func1<Iterable<Integer>, SolidList<Integer>>() {
+        SolidList<Integer> list = of(1, 2, 3).collect(new Func1<Iterable<Integer>, SolidList<Integer>>() {
             @Override
             public SolidList<Integer> call(Iterable<Integer> iterable) {
-                return new SolidList<Integer>(iterable);
+                return new SolidList<>(iterable);
             }
         });
         assertEquals(list, ParcelFn.unmarshall(ParcelFn.marshall(list)));

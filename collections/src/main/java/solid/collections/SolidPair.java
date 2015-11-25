@@ -3,6 +3,9 @@ package solid.collections;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/**
+ * This is a duplicate of the {@link android.util.Pair} but implementing {@link Parcelable}.
+ */
 public class SolidPair<T1, T2> implements Parcelable {
 
     public final T1 first;

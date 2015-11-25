@@ -22,14 +22,8 @@ public class SolidListTest {
         assert123(new SolidList<>(new Integer[]{1, 2, 3}));
         assert123(new SolidList<>((Iterable<Integer>) Arrays.asList(1, 2, 3)));
         assert123(new SolidList<>(Arrays.asList(1, 2, 3)));
-        assert123(SolidList.copyOf(new Integer[]{1, 2, 3}));
-        assert123(SolidList.copyOf(Arrays.asList(new Integer[]{1, 2, 3})));
 
-        SolidList<Integer> list = SolidList.single(1);
-        assertEquals(1, list.size());
-        assertEquals(1, (int) list.get(0));
-
-        list = SolidList.empty();
+        SolidList<Integer> list = SolidList.empty();
         assertEquals(0, list.size());
         assertTrue(list.isEmpty());
     }
@@ -126,7 +120,7 @@ public class SolidListTest {
 
     @Test
     public void testToString() throws Exception {
-        assertEquals("SolidList{array=[1, 2, 3]}", new SolidList<>(new Integer[]{1, 2, 3}).toString());
+        assertEquals("SolidList{list=[1, 2, 3]}", new SolidList<>(new Integer[]{1, 2, 3}).toString());
     }
 
     @Test

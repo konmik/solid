@@ -9,14 +9,19 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 import solid.stream.Stream;
 
+/**
+ * Represents an immutable parcelable set.
+ * This is basically a decorator around LinkedHashSet.
+ *
+ * @param <T> A type of data in the list.
+ */
 public class SolidSet<T> extends Stream<T> implements Set<T>, Parcelable {
 
-    private static final Set<Object> EMPTY = new SolidSet<>(new Object[0]);
+    private static final Set<Object> EMPTY = new SolidSet<>(Collections.emptySet());
 
     private final Set<T> set;
 
@@ -33,10 +38,10 @@ public class SolidSet<T> extends Stream<T> implements Set<T>, Parcelable {
     }
 
     public SolidSet(Iterable<T> iterable, int initialCapacity) {
-        List<T> list = new ArrayList<>(initialCapacity);
+        Set<T> set = new LinkedHashSet<>(initialCapacity);
         for (T value : iterable)
-            list.add(value);
-        this.set = Collections.unmodifiableSet(new LinkedHashSet<>(list));
+            set.add(value);
+        this.set = Collections.unmodifiableSet(set);
     }
 
     public static <T> SolidSet<T> empty() {
@@ -118,7 +123,7 @@ public class SolidSet<T> extends Stream<T> implements Set<T>, Parcelable {
     private static final ClassLoader CLASS_LOADER = SolidSet.class.getClassLoader();
 
     protected SolidSet(Parcel in) {
-        set = new LinkedHashSet<>(in.readArrayList(CLASS_LOADER));
+        set = Collections.unmodifiableSet(new LinkedHashSet<>(in.readArrayList(CLASS_LOADER)));
     }
 
     @Override
