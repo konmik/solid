@@ -1,4 +1,4 @@
-package solid.converters;
+package solid.collectors;
 
 import java.util.ArrayList;
 import java.util.List;

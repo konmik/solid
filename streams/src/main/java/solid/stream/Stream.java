@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 
-import solid.converters.ToArrayList;
+import solid.collectors.ToArrayList;
 import solid.functions.Func0;
 import solid.functions.Func1;
 import solid.functions.Func2;
@@ -355,7 +355,7 @@ public abstract class Stream<T> implements Iterable<T> {
      * @return a stream that includes only that items of the current stream that do not
      * exist in a given stream.
      */
-    public Stream<T> separate(Iterable<? extends T> from) {
+    public Stream<T> separate(Iterable<T> from) {
         final ArrayList<T> list = ToArrayList.<T>toArrayList().call(from);
         return filter(new Func1<T, Boolean>() {
             @Override

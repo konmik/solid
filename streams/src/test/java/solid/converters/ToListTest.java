@@ -5,6 +5,8 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.Collections;
 
+import solid.collectors.ToList;
+
 import static test_utils.AssertIterableEquals.assertIterableEquals;
 
 public class ToListTest {

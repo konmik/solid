@@ -8,13 +8,14 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import solid.collectors.ToJoinedString;
 import solid.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.powermock.api.mockito.PowerMockito.when;
-import static solid.converters.ToJoinedString.toJoinedString;
+import static solid.collectors.ToJoinedString.toJoinedString;
 import static solid.stream.Stream.of;
 
 @RunWith(PowerMockRunner.class)

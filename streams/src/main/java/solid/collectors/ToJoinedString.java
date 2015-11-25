@@ -1,4 +1,4 @@
-package solid.converters;
+package solid.collectors;
 
 import android.text.TextUtils;
 

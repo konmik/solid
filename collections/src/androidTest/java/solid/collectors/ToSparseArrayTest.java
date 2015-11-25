@@ -1,8 +1,9 @@
-package solid.converters;
+package solid.collectors;
 
 import android.support.test.runner.AndroidJUnit4;
 import android.util.SparseArray;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -12,7 +13,7 @@ import solid.functions.Func1;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
-import static solid.converters.ToSparseArray.toSparseArray;
+import static solid.collectors.ToSparseArray.toSparseArray;
 import static solid.stream.Stream.stream;
 
 @RunWith(AndroidJUnit4.class)
@@ -20,7 +21,7 @@ public class ToSparseArrayTest {
     @Test
     public void testToSparseArray() throws Exception {
         assert123(stream(asList("1", "2", "3"))
-            .collect(toSparseArray(new Func1<String, Integer>() {
+            .collect(ToSparseArray.toSparseArray(new Func1<String, Integer>() {
                 @Override
                 public Integer call(String value) {
                     return Integer.parseInt(value);
@@ -28,14 +29,14 @@ public class ToSparseArrayTest {
             })));
 
         assert123(stream(asList("1", "2", "3"))
-            .collect(toSparseArray(new Func1<String, Integer>() {
+            .collect(ToSparseArray.toSparseArray(new Func1<String, Integer>() {
                 @Override
                 public Integer call(String value) {
                     return Integer.parseInt(value);
                 }
             }, 10)));
 
-        assertEquals(0, stream(new ArrayList<>()).collect(toSparseArray(null)).size());
+        Assert.assertEquals(0, stream(new ArrayList<>()).collect(ToSparseArray.toSparseArray(null)).size());
     }
 
     private void assert123(SparseArray<String> array4) {

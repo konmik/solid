@@ -1,4 +1,4 @@
-package solid.converters;
+package solid.collectors;
 
 import android.support.test.runner.AndroidJUnit4;
 
@@ -12,9 +12,7 @@ import solid.collections.SolidEntry;
 import solid.collections.SolidMap;
 import solid.collections.SolidPair;
 import solid.functions.Func1;
-import solid.stream.Primitives;
 import solid.stream.Range;
-import solid.stream.Stream;
 
 import static testkit.AssertIterableEquals.assertIterableEquals;
 

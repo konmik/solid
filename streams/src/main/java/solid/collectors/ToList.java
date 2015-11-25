@@ -1,10 +1,10 @@
-package solid.converters;
+package solid.collectors;
 
 import java.util.List;
 
 import solid.functions.Func1;
 
-import static solid.converters.ToArrayList.toArrayList;
+import static solid.collectors.ToArrayList.toArrayList;
 
 public class ToList {
 
@@ -15,7 +15,7 @@ public class ToList {
      * @param <T> a type of {@link List} items.
      * @return a method that converts an iterable into {@link List}.
      */
-    public static <T> Func1<Iterable<? extends T>, List<T>> toList() {
+    public static <T> Func1<Iterable<T>, List<T>> toList() {
         return (Func1) toArrayList();
     }
 
@@ -30,7 +30,7 @@ public class ToList {
      * @param initialCapacity initial capacity of the list.
      * @return a method that converts an iterable into {@link List}.
      */
-    public static <T> Func1<Iterable<? extends T>, List<T>> toList(int initialCapacity) {
+    public static <T> Func1<Iterable<T>, List<T>> toList(int initialCapacity) {
         return (Func1) toArrayList(initialCapacity);
     }
 }

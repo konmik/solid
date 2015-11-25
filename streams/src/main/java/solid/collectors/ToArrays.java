@@ -1,10 +1,10 @@
-package solid.converters;
+package solid.collectors;
 
 import java.util.Arrays;
 
 import solid.functions.Func1;
 
-public class ToNumbers {
+public class ToArrays {
 
     /**
      * Returns a method that can be used with {@link solid.stream.Stream#collect(Func1)}
@@ -12,10 +12,10 @@ public class ToNumbers {
      *
      * @return a method that converts an iterable stream of {@link Number} type into a primitive byte[] array.
      */
-    public static Func1<Iterable<? extends Number>, byte[]> toBytes() {
-        return new Func1<Iterable<? extends Number>, byte[]>() {
+    public static Func1<Iterable<Byte>, byte[]> toBytes() {
+        return new Func1<Iterable<Byte>, byte[]>() {
             @Override
-            public byte[] call(Iterable<? extends Number> value) {
+            public byte[] call(Iterable<Byte> value) {
                 return new QuickNumberArray(value).toBytes();
             }
         };
@@ -27,10 +27,10 @@ public class ToNumbers {
      *
      * @return a method that converts an iterable stream of {@link Number} type into a primitive double[] array.
      */
-    public static Func1<Iterable<? extends Number>, double[]> toDoubles() {
-        return new Func1<Iterable<? extends Number>, double[]>() {
+    public static Func1<Iterable<Double>, double[]> toDoubles() {
+        return new Func1<Iterable<Double>, double[]>() {
             @Override
-            public double[] call(Iterable<? extends Number> value) {
+            public double[] call(Iterable<Double> value) {
                 return new QuickNumberArray(value).toDoubles();
             }
         };
@@ -42,10 +42,10 @@ public class ToNumbers {
      *
      * @return a method that converts an iterable stream of {@link Number} type into a primitive float[] array.
      */
-    public static Func1<Iterable<? extends Number>, float[]> toFloats() {
-        return new Func1<Iterable<? extends Number>, float[]>() {
+    public static Func1<Iterable<Float>, float[]> toFloats() {
+        return new Func1<Iterable<Float>, float[]>() {
             @Override
-            public float[] call(Iterable<? extends Number> value) {
+            public float[] call(Iterable<Float> value) {
                 return new QuickNumberArray(value).toFloats();
             }
         };
@@ -57,10 +57,10 @@ public class ToNumbers {
      *
      * @return a method that converts an iterable stream of {@link Number} type into a primitive int[] array.
      */
-    public static Func1<Iterable<? extends Number>, int[]> toInts() {
-        return new Func1<Iterable<? extends Number>, int[]>() {
+    public static Func1<Iterable<Integer>, int[]> toInts() {
+        return new Func1<Iterable<Integer>, int[]>() {
             @Override
-            public int[] call(Iterable<? extends Number> value) {
+            public int[] call(Iterable<Integer> value) {
                 return new QuickNumberArray(value).toInts();
             }
         };
@@ -72,10 +72,10 @@ public class ToNumbers {
      *
      * @return a method that converts an iterable stream of {@link Number} type into a primitive long[] array.
      */
-    public static Func1<Iterable<? extends Number>, long[]> toLongs() {
-        return new Func1<Iterable<? extends Number>, long[]>() {
+    public static Func1<Iterable<Long>, long[]> toLongs() {
+        return new Func1<Iterable<Long>, long[]>() {
             @Override
-            public long[] call(Iterable<? extends Number> value) {
+            public long[] call(Iterable<Long> value) {
                 return new QuickNumberArray(value).toLongs();
             }
         };
@@ -87,10 +87,10 @@ public class ToNumbers {
      *
      * @return a method that converts an iterable stream of {@link Number} type into a primitive short[] array.
      */
-    public static Func1<Iterable<? extends Number>, short[]> toShorts() {
-        return new Func1<Iterable<? extends Number>, short[]>() {
+    public static Func1<Iterable<Short>, short[]> toShorts() {
+        return new Func1<Iterable<Short>, short[]>() {
             @Override
-            public short[] call(Iterable<? extends Number> value) {
+            public short[] call(Iterable<Short> value) {
                 return new QuickNumberArray(value).toShorts();
             }
         };
