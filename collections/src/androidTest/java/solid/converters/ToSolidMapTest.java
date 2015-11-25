@@ -12,6 +12,8 @@ import solid.collections.SolidEntry;
 import solid.collections.SolidMap;
 import solid.collections.SolidPair;
 import solid.functions.Func1;
+import solid.stream.Primitives;
+import solid.stream.Range;
 import solid.stream.Stream;
 
 import static testkit.AssertIterableEquals.assertIterableEquals;
@@ -27,23 +29,23 @@ public class ToSolidMapTest {
 
     @Test
     public void testToSolidMap() throws Exception {
-        assertIterableEquals(MAP, Stream.range(1, 4).collect(ToSolidMap.toSolidMap(new Func1<Long, String>() {
+        assertIterableEquals(MAP, Range.range(1, 4).collect(ToSolidMap.toSolidMap(new Func1<Integer, String>() {
             @Override
-            public String call(Long it) {return "" + it;}
-        }, new Func1<Long, Integer>() {
+            public String call(Integer it) {return "" + it;}
+        }, new Func1<Integer, Integer>() {
             @Override
-            public Integer call(Long value) {
-                return value.intValue();
+            public Integer call(Integer value) {
+                return value;
             }
         })));
     }
 
     @Test
     public void testToSolidMapType() throws Exception {
-        SolidMap<String, Integer> converted = Stream.range(1, 4)
-            .map(new Func1<Long, Map.Entry<String, Integer>>() {
+        SolidMap<String, Integer> converted = Range.range(1, 4)
+            .map(new Func1<Integer, Map.Entry<String, Integer>>() {
                 @Override
-                public Map.Entry<String, Integer> call(Long it) {return new SolidEntry<>("" + it, it.intValue());}
+                public Map.Entry<String, Integer> call(Integer it) {return new SolidEntry<>("" + it, it.intValue());}
             })
             .collect(ToSolidMap.<String, Integer>toSolidMap());
         assertIterableEquals(MAP, converted);
@@ -51,12 +53,12 @@ public class ToSolidMapTest {
 
     @Test
     public void testToSolidMapFromPairs() throws Exception {
-        SolidMap<String, Integer> converted = Stream.range(1, 4)
-            .map(new Func1<Long, SolidPair<String, Integer>>() {
+        SolidMap<String, Integer> converted = Range.range(1, 4)
+            .map(new Func1<Integer, SolidPair<String, Integer>>() {
                 @Override
-                public SolidPair<String, Integer> call(Long it) {return new SolidPair<>("" + it, it.intValue());}
+                public SolidPair<String, Integer> call(Integer it) {return new SolidPair<>("" + it, it.intValue());}
             })
-            .collect(ToSolidMap.<String, Integer>fromPairs());
+            .collect(ToSolidMap.<String, Integer>pairsToSolidMap());
 
         assertIterableEquals(MAP, converted);
     }

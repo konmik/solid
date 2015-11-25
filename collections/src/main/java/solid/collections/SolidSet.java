@@ -29,15 +29,15 @@ public class SolidSet<T> extends Stream<T> implements Set<T>, Parcelable {
         this(Arrays.asList(array));
     }
 
-    public SolidSet(Collection<T> collection) {
+    public SolidSet(Collection<? extends T> collection) {
         this.set = Collections.unmodifiableSet(new LinkedHashSet<>(collection));
     }
 
-    public SolidSet(Iterable<T> iterable) {
+    public SolidSet(Iterable<? extends T> iterable) {
         this(iterable, 0);
     }
 
-    public SolidSet(Iterable<T> iterable, int initialCapacity) {
+    public SolidSet(Iterable<? extends T> iterable, int initialCapacity) {
         Set<T> set = new LinkedHashSet<>(initialCapacity);
         for (T value : iterable)
             set.add(value);

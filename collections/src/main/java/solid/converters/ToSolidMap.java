@@ -32,7 +32,7 @@ public class ToSolidMap {
         };
     }
 
-    public static <K, V> Func1<Iterable<SolidPair<K, V>>, SolidMap<K, V>> fromPairs() {
+    public static <K, V> Func1<Iterable<SolidPair<K, V>>, SolidMap<K, V>> pairsToSolidMap() {
         return new Func1<Iterable<SolidPair<K, V>>, SolidMap<K, V>>() {
             @Override
             public SolidMap<K, V> call(Iterable<SolidPair<K, V>> iterable) {
