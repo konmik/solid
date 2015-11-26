@@ -45,10 +45,10 @@ public class SolidMap<K, V> extends Stream<Map.Entry<K, V>> implements Parcelabl
      *
      * @param iterable a source iterable.
      */
-    public SolidMap(Iterable<? extends Map.Entry<? extends K, ? extends V>> iterable) {
+    public SolidMap(Iterable<Pair<K, V>> iterable) {
         LinkedHashMap<K, V> m = new LinkedHashMap<>();
-        for (Map.Entry<? extends K, ? extends V> entry : iterable)
-            m.put(entry.getKey(), entry.getValue());
+        for (Pair<K, V> pair : iterable)
+            m.put(pair.first, pair.second);
         this.map = Collections.unmodifiableMap(m);
     }
 

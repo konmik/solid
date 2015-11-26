@@ -6,11 +6,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.HashMap;
-import java.util.Map;
 
-import solid.collections.SolidEntry;
-import solid.collections.SolidMap;
 import solid.collections.Pair;
+import solid.collections.SolidMap;
 import solid.functions.Func1;
 import solid.stream.Range;
 
@@ -49,11 +47,11 @@ public class ToSolidMapTest {
     @Test
     public void testToSolidMapType() throws Exception {
         SolidMap<String, Integer> converted = Range.range(1, 4)
-            .map(new Func1<Integer, Map.Entry<String, Integer>>() {
+            .map(new Func1<Integer, Pair<String, Integer>>() {
                 @Override
-                public Map.Entry<String, Integer> call(Integer it) {return new SolidEntry<>("" + it, it.intValue());}
+                public Pair<String, Integer> call(Integer it) {return new Pair<>("" + it, it.intValue());}
             })
-            .collect(ToSolidMap.<String, Integer>toSolidMap());
+            .collect(ToSolidMap.<String, Integer>pairsToSolidMap());
         assertIterableEquals(MAP, converted);
     }
 

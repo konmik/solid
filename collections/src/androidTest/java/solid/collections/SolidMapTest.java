@@ -46,11 +46,6 @@ public class SolidMapTest {
     }
 
     @Test
-    public void testIteratorConstructor() throws Exception {
-        assertEquals(new SolidMap<>(create123map234()), new SolidMap<>(create123map234().entrySet()));
-    }
-
-    @Test
     public void testEmpty() throws Exception {
         assertEquals(0, SolidMap.empty().size());
     }

@@ -3,10 +3,10 @@ package solid.collectors;
 import java.util.Map;
 
 import solid.collections.Pair;
-import solid.collections.SolidEntry;
 import solid.collections.SolidMap;
 import solid.functions.Func1;
-import solid.stream.Stream;
+
+import static solid.stream.Stream.stream;
 
 public class ToSolidMap {
 
@@ -18,10 +18,10 @@ public class ToSolidMap {
             @Override
             public SolidMap<K, V> call(final Iterable<T> iterable) {
                 return new SolidMap<>(
-                    Stream.stream(iterable).map(new Func1<T, Map.Entry<K, V>>() {
+                    stream(iterable).map(new Func1<T, Pair<K, V>>() {
                         @Override
-                        public Map.Entry<K, V> call(T value) {
-                            return new SolidEntry<>(keyExtractor.call(value), valueExtractor.call(value));
+                        public Pair<K, V> call(T value) {
+                            return new Pair<>(keyExtractor.call(value), valueExtractor.call(value));
                         }
                     }));
             }
@@ -46,7 +46,14 @@ public class ToSolidMap {
     public static <K, V> Func1<Iterable<Map.Entry<K, V>>, SolidMap<K, V>> toSolidMap() {
         return new Func1<Iterable<Map.Entry<K, V>>, SolidMap<K, V>>() {
             @Override
-            public SolidMap<K, V> call(Iterable<Map.Entry<K, V>> iterable) {return new SolidMap<>(iterable);}
+            public SolidMap<K, V> call(Iterable<Map.Entry<K, V>> iterable) {
+                return new SolidMap<>(stream(iterable).map(new Func1<Map.Entry<K, V>, Pair<K, V>>() {
+                    @Override
+                    public Pair<K, V> call(Map.Entry<K, V> value) {
+                        return new Pair<>(value.getKey(), value.getValue());
+                    }
+                }));
+            }
         };
     }
 
@@ -57,11 +64,7 @@ public class ToSolidMap {
         return new Func1<Iterable<Pair<K, V>>, SolidMap<K, V>>() {
             @Override
             public SolidMap<K, V> call(Iterable<Pair<K, V>> iterable) {
-                return new SolidMap<>(
-                    Stream.stream(iterable).map(new Func1<Pair<K, V>, SolidEntry<K, V>>() {
-                        @Override
-                        public SolidEntry<K, V> call(Pair<K, V> pair) {return new SolidEntry<>(pair.first, pair.second);}
-                    }));
+                return new SolidMap<>(iterable);
             }
         };
     }
