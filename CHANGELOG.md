@@ -1,5 +1,9 @@
 # Changelog
 
+##### 2.0.0 version (?)
+
+* a complete library rework
+
 ##### 1.0.14 version (14.11.2015)
 
 * `accumulate` operator.
