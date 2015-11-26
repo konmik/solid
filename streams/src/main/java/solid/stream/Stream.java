@@ -3,10 +3,15 @@ package solid.stream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
+import solid.collections.Grouped;
+import solid.collections.Indexed;
 import solid.collectors.ToArrayList;
-import solid.functions.Func0;
+import solid.functions.Action1;
 import solid.functions.Func1;
 import solid.functions.Func2;
 import solid.optional.Optional;
@@ -43,10 +48,12 @@ public abstract class Stream<T> implements Iterable<T> {
      * @return a {@link Stream} that represents source {@link Iterable} elements
      */
     public static <T> Stream<T> stream(final Iterable<T> source) {
-        return from(new Func0<Iterator<T>>() {
+        return new Stream<T>() {
             @Override
-            public Iterator<T> call() {return source.iterator();}
-        });
+            public Iterator<T> iterator() {
+                return source.iterator();
+            }
+        };
     }
 
     /**
@@ -57,9 +64,9 @@ public abstract class Stream<T> implements Iterable<T> {
      * @return a stream with just one given element.
      */
     public static <T> Stream<T> of(final T value) {
-        return from(new Func0<Iterator<T>>() {
+        return new Stream<T>() {
             @Override
-            public Iterator<T> call() {
+            public Iterator<T> iterator() {
                 return new ReadOnlyIterator<T>() {
 
                     boolean has = true;
@@ -76,7 +83,7 @@ public abstract class Stream<T> implements Iterable<T> {
                     }
                 };
             }
-        });
+        };
     }
 
     /**
@@ -101,22 +108,6 @@ public abstract class Stream<T> implements Iterable<T> {
     }
 
     /**
-     * Returns a stream from a given iterator factory.
-     *
-     * @param func an iterator factory.
-     * @param <T>  the type of the stream.
-     * @return a stream from a given iterator factory.
-     */
-    public static <T> Stream<T> from(final Func0<Iterator<T>> func) {
-        return new Stream<T>() {
-            @Override
-            public Iterator<T> iterator() {
-                return func.call();
-            }
-        };
-    }
-
-    /**
      * Converts the current stream into any value with a given method.
      *
      * @param collector a method that should be used to return value.
@@ -131,14 +122,14 @@ public abstract class Stream<T> implements Iterable<T> {
      * Returns a value that has been received by applying an accumulating function to each item of the current stream.
      * An initial value should be provided.
      *
-     * @param <R>       a type of the returning and initial values.
-     * @param operation a function to apply to the each stream item.
+     * @param <R>         a type of the returning and initial values.
+     * @param accumulator a function to apply to each stream item.
      * @return a value that has been received by applying an accumulating function to each item of the current stream.
      */
-    public <R> R fold(R initial, Func2<R, T, R> operation) {
+    public <R> R reduce(R initial, Func2<R, T, R> accumulator) {
         R value = initial;
         for (T anIt : this)
-            value = operation.call(value, anIt);
+            value = accumulator.call(value, anIt);
         return value;
     }
 
@@ -148,17 +139,17 @@ public abstract class Stream<T> implements Iterable<T> {
      *
      * If the stream is empty an {@link UnsupportedOperationException} will be thrown.
      *
-     * @param operation a function to apply to the each (except the first one) stream item.
+     * @param accumulator a function to apply to each (except the first one) stream item.
      * @return a value that has been received by applying an accumulating function to each item of the current stream.
      */
-    public Optional<T> reduce(Func2<T, T, T> operation) {
+    public Optional<T> reduce(Func2<T, T, T> accumulator) {
         Iterator<T> iterator = iterator();
         if (!iterator.hasNext())
             return Optional.empty();
 
         T result = iterator.next();
         while (iterator.hasNext())
-            result = operation.call(result, iterator.next());
+            result = accumulator.call(result, iterator.next());
         return Optional.of(result);
     }
 
@@ -205,12 +196,12 @@ public abstract class Stream<T> implements Iterable<T> {
      * @return a new stream that contains items that has been returned by a given function for each item in the current stream.
      */
     public <R> Stream<R> map(final Func1<T, R> func) {
-        return from(new Func0<Iterator<R>>() {
+        return new Stream<R>() {
             @Override
-            public Iterator<R> call() {
+            public Iterator<R> iterator() {
                 return new ReadOnlyIterator<R>() {
 
-                    Iterator<T> iterator = iterator();
+                    Iterator<T> iterator = Stream.this.iterator();
 
                     @Override
                     public boolean hasNext() {
@@ -223,7 +214,7 @@ public abstract class Stream<T> implements Iterable<T> {
                     }
                 };
             }
-        });
+        };
     }
 
     /**
@@ -236,12 +227,12 @@ public abstract class Stream<T> implements Iterable<T> {
      * @return a new stream that contains items that has been returned by a given function for each item in the current stream.
      */
     public <R> Stream<R> flatMap(final Func1<T, Iterable<R>> func) {
-        return from(new Func0<Iterator<R>>() {
+        return new Stream<R>() {
             @Override
-            public Iterator<R> call() {
+            public Iterator<R> iterator() {
                 return new ReadOnlyIterator<R>() {
 
-                    Iterator<T> iterator = iterator();
+                    Iterator<T> iterator = Stream.this.iterator();
                     Iterator<R> next;
 
                     @Override
@@ -260,7 +251,7 @@ public abstract class Stream<T> implements Iterable<T> {
                     }
                 };
             }
-        });
+        };
     }
 
     /**
@@ -270,17 +261,17 @@ public abstract class Stream<T> implements Iterable<T> {
      * @return a new stream that contains all items of the current stream for which a given function returned {@link Boolean#TRUE}.
      */
     public Stream<T> filter(final Func1<T, Boolean> func) {
-        return from(new Func0<Iterator<T>>() {
+        return new Stream<T>() {
             @Override
-            public Iterator<T> call() {
+            public Iterator<T> iterator() {
                 return new ReadOnlyIterator<T>() {
-                    Iterator<? extends T> iterator = iterator();
+                    Iterator<? extends T> iterator = Stream.this.iterator();
                     T next;
                     boolean hasNext;
 
                     private void process() {
                         while (!hasNext && iterator.hasNext()) {
-                            T n = iterator.next();
+                            final T n = iterator.next();
                             if (func.call(n)) {
                                 next = n;
                                 hasNext = true;
@@ -302,7 +293,7 @@ public abstract class Stream<T> implements Iterable<T> {
                     }
                 };
             }
-        });
+        };
     }
 
     /**
@@ -325,12 +316,12 @@ public abstract class Stream<T> implements Iterable<T> {
      * @return a new stream that contains items from both streams.
      */
     public Stream<T> merge(final Iterable<? extends T> with) {
-        return from(new Func0<Iterator<T>>() {
+        return new Stream<T>() {
             @Override
-            public Iterator<T> call() {
+            public Iterator<T> iterator() {
                 return new ReadOnlyIterator<T>() {
 
-                    Iterator<T> sourceI = iterator();
+                    Iterator<T> sourceI = Stream.this.iterator();
                     Iterator<? extends T> withI = with.iterator();
 
                     @Override
@@ -344,7 +335,7 @@ public abstract class Stream<T> implements Iterable<T> {
                     }
                 };
             }
-        });
+        };
     }
 
     /**
@@ -370,12 +361,12 @@ public abstract class Stream<T> implements Iterable<T> {
      * @return a new stream that contains only the first given amount of items of the current stream.
      */
     public Stream<T> take(final int count) {
-        return from(new Func0<Iterator<T>>() {
+        return new Stream<T>() {
             @Override
-            public Iterator<T> call() {
+            public Iterator<T> iterator() {
                 return new ReadOnlyIterator<T>() {
 
-                    Iterator<T> iterator = iterator();
+                    Iterator<T> iterator = Stream.this.iterator();
                     int left = count;
 
                     @Override
@@ -390,7 +381,7 @@ public abstract class Stream<T> implements Iterable<T> {
                     }
                 };
             }
-        });
+        };
     }
 
     /**
@@ -400,15 +391,15 @@ public abstract class Stream<T> implements Iterable<T> {
      * @return a new stream that contains elements of the current stream with a given number of them skipped from the beginning.
      */
     public Stream<T> skip(final int count) {
-        return from(new Func0<Iterator<T>>() {
+        return new Stream<T>() {
             @Override
-            public Iterator<T> call() {
+            public Iterator<T> iterator() {
                 Iterator<T> iterator = Stream.this.iterator();
                 for (int skip = count; skip > 0 && iterator.hasNext(); skip--)
                     iterator.next();
                 return iterator;
             }
-        });
+        };
     }
 
     /**
@@ -440,14 +431,14 @@ public abstract class Stream<T> implements Iterable<T> {
      * @return a new stream that contains all items of the current stream in sorted order.
      */
     public Stream<T> sorted(final Comparator<T> comparator) {
-        return Stream.from(new Func0<Iterator<T>>() {
+        return new Stream<T>() {
             @Override
-            public Iterator<T> call() {
-                ArrayList<T> array = ToArrayList.<T>toArrayList().call(Stream.this);
+            public Iterator<T> iterator() {
+                final ArrayList<T> array = ToArrayList.<T>toArrayList().call(Stream.this);
                 Collections.sort(array, comparator);
                 return array.iterator();
             }
-        });
+        };
     }
 
     /**
@@ -457,14 +448,14 @@ public abstract class Stream<T> implements Iterable<T> {
      * @return a new stream that emits all items of the current stream in reverse order.
      */
     public Stream<T> reverse() {
-        return Stream.from(new Func0<Iterator<T>>() {
+        return new Stream<T>() {
             @Override
-            public Iterator<T> call() {
-                ArrayList<T> array = ToArrayList.<T>toArrayList().call(Stream.this);
+            public Iterator<T> iterator() {
+                final ArrayList<T> array = ToArrayList.<T>toArrayList().call(Stream.this);
                 Collections.reverse(array);
                 return array.iterator();
             }
-        });
+        };
     }
 
     /**
@@ -479,6 +470,115 @@ public abstract class Stream<T> implements Iterable<T> {
             @Override
             public R call(T obj) {return c.cast(obj);}
         });
+    }
+
+    /**
+     * Returns a new stream of {@link Grouped} that is composed from keys and values that has been
+     * extracted from each source stream item.
+     *
+     * @param groupSelector a function that extracts a key from a given item.
+     * @param valueSelector a function that extracts a value from a given item.
+     * @param <K>           a type of key value.
+     * @return a new stream of {@link Grouped} that is grouped by a key extracted from each source stream item.
+     */
+    public <K, V> Stream<Grouped<K, V>> groupBy(final Func1<T, K> groupSelector, final Func1<T, V> valueSelector) {
+        return new Stream<Grouped<K, V>>() {
+            @Override
+            public Iterator<Grouped<K, V>> iterator() {
+                List<K> keys = new ArrayList<>();
+                final Map<K, ArrayList<V>> map = new HashMap<>();
+                for (T item : Stream.this) {
+                    K key = groupSelector.call(item);
+                    ArrayList<V> list = map.get(key);
+                    if (list == null) {
+                        keys.add(key);
+                        map.put(key, list = new ArrayList<>());
+                    }
+                    list.add(valueSelector.call(item));
+                }
+                return stream(keys)
+                    .map(new Func1<K, Grouped<K, V>>() {
+                        @Override
+                        public Grouped<K, V> call(K key) {
+                            return new Grouped<>(key, Collections.unmodifiableList(map.get(key)));
+                        }
+                    })
+                    .iterator();
+            }
+        };
+    }
+
+    /**
+     * Returns a new stream of {@link Grouped} that is composed from keys that has been
+     * extracted from each source stream item.
+     *
+     * @param groupSelector a function that extracts a key from a given item.
+     * @param <K>           a type of key value.
+     * @return a new stream of {@link Grouped} that is grouped by a key extracted from each source stream item.
+     */
+    public <K> Stream<Grouped<K, T>> groupBy(final Func1<T, K> groupSelector) {
+        return groupBy(groupSelector, new Func1<T, T>() {
+            @Override
+            public T call(T value) {
+                return value;
+            }
+        });
+    }
+
+    /**
+     * Returns a new stream of {@link Indexed} that where each item's index is equal to its sequence number.
+     *
+     * @return a new stream of {@link Indexed} that where each item's index is equal to its sequence number.
+     */
+    public Stream<Indexed<T>> index() {
+        return map(new Func1<T, Indexed<T>>() {
+
+            int i;
+
+            @Override
+            public Indexed<T> call(T value) {
+                return new Indexed<>(i++, value);
+            }
+        });
+    }
+
+    /**
+     * Executes an action for each item in the stream.
+     *
+     * @param action an action to execute for each item in the stream.
+     */
+    public void forEach(Action1<T> action) {
+        for (T value : this)
+            action.call(value);
+    }
+
+    /**
+     * Executes an action for each item in the stream.
+     *
+     * @param action an action to execute for each item in the stream.
+     */
+    public Stream<T> onNext(final Action1<T> action) {
+        return new Stream<T>() {
+            @Override
+            public Iterator<T> iterator() {
+                return new ReadOnlyIterator<T>() {
+
+                    Iterator<T> iterator = Stream.this.iterator();
+
+                    @Override
+                    public boolean hasNext() {
+                        return iterator.hasNext();
+                    }
+
+                    @Override
+                    public T next() {
+                        final T next = iterator.next();
+                        action.call(next);
+                        return next;
+                    }
+                };
+            }
+        };
     }
 
     private static final ReadOnlyIterator EMPTY_ITERATOR = new ReadOnlyIterator() {

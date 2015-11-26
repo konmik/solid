@@ -8,7 +8,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
+import solid.collections.Grouped;
+import solid.collections.Indexed;
+import solid.functions.Action1;
 import solid.functions.Func1;
 import solid.functions.Func2;
 
@@ -249,15 +253,15 @@ public class StreamTest {
 
     @Test
     public void testFold() throws Exception {
-        assertEquals(null, Stream.of().fold(null, new Func2<Object, Object, Object>() {
+        assertEquals(null, Stream.of().reduce(null, new Func2<Object, Object, Object>() {
             @Override
             public Object call(Object it, Object that) {return null;}
         }));
-        assertEquals(null, Stream.of(null, null).fold(null, new Func2<Object, Object, Object>() {
+        assertEquals(null, Stream.of(null, null).reduce(null, new Func2<Object, Object, Object>() {
             @Override
             public Object call(Object value1, Object value2) {return null;}
         }));
-        assertEquals((Integer) 10, Stream.of(2, 3, 4).fold(1, new Func2<Integer, Integer, Integer>() {
+        assertEquals((Integer) 10, Stream.of(2, 3, 4).reduce(1, new Func2<Integer, Integer, Integer>() {
             @Override
             public Integer call(Integer value1, Integer value2) {return value1 + value2;}
         }));
@@ -308,5 +312,116 @@ public class StreamTest {
         List<Integer> numbers = asList(1, 2, 3);
         //noinspection unchecked
         assertIterableEquals(numbers, of("1").cast(Integer.class));
+    }
+
+    @Test
+    public void testGroupBy2() {
+        assertIterableEquals(of(new Grouped<>(0, asList(1, 3)), new Grouped<>(10, asList(2, 3))),
+            of(1, 12, 3, 13)
+                .groupBy(
+                    new Func1<Integer, Integer>() {
+                        @Override
+                        public Integer call(Integer value) {
+                            return value - value % 10;
+                        }
+                    },
+                    new Func1<Integer, Integer>() {
+                        @Override
+                        public Integer call(Integer value) {
+                            return value % 10;
+                        }
+                    }));
+        assertIterableEquals(Stream.<Grouped<Object, Object>>of(), Stream.of().groupBy(null, null));
+        assertIterableEquals(Stream.of(new Grouped<>(null, singletonList(null))), Stream.of((Object) null).groupBy(new Func1<Object, Object>() {
+            @Override
+            public Object call(Object value) {
+                return null;
+            }
+        }, new Func1<Object, Object>() {
+            @Override
+            public Object call(Object value) {
+                return null;
+            }
+        }));
+    }
+
+    @Test
+    public void testGroupBy1() throws Exception {
+        assertIterableEquals(of(new Grouped<>(0, asList(1, 3)), new Grouped<>(10, asList(12, 13))),
+            of(1, 12, 3, 13)
+                .groupBy(new Func1<Integer, Integer>() {
+                    @Override
+                    public Integer call(Integer value) {
+                        return value - value % 10;
+                    }
+                }));
+    }
+
+    @Test
+    public void testIndex() throws Exception {
+        assertIterableEquals(of(new Indexed<>(0, 1), new Indexed<>(1, 12), new Indexed<>(2, 3), new Indexed<>(3, 13)),
+            of(1, 12, 3, 13).index());
+        assertIterableEquals(of(new Indexed<>(0, 1), new Indexed<Integer>(1, null)),
+            of(1, null).index());
+        assertIterableEquals(Stream.<Indexed<Object>>of(), of().index());
+    }
+
+    @Test
+    public void testForEach() throws Exception {
+
+        Stream<Integer> stream = of(1, 12, 3, 13);
+        final ArrayList<Integer> collected = new ArrayList<>();
+        stream.forEach(new Action1<Integer>() {
+            @Override
+            public void call(Integer value) {
+                collected.add(value);
+            }
+        });
+        assertIterableEquals(stream, collected);
+
+        final AtomicBoolean called = new AtomicBoolean();
+        of().forEach(new Action1<Object>() {
+            @Override
+            public void call(Object value) {
+                called.set(true);
+            }
+        });
+        assertFalse(called.get());
+
+        final ArrayList<Integer> collected2 = new ArrayList<>();
+        Stream<Integer> stream2 = of(null, 3);
+        stream2.forEach(new Action1<Integer>() {
+            @Override
+            public void call(Integer value) {
+                collected2.add(value);
+            }
+        });
+        assertIterableEquals(stream2, collected2);
+    }
+
+    @Test
+    public void testOnNext() throws Exception {
+        final ArrayList<Integer> collected = new ArrayList<>();
+        of(1, 2, 3)
+            .filter(new Func1<Integer, Boolean>() {
+                @Override
+                public Boolean call(Integer value) {
+                    return value > 1;
+                }
+            })
+            .onNext(new Action1<Integer>() {
+                @Override
+                public void call(Integer value) {
+                    collected.add(value);
+                }
+            })
+            .filter(new Func1<Integer, Boolean>() {
+                @Override
+                public Boolean call(Integer value) {
+                    return value < 3;
+                }
+            })
+            .last();
+        assertIterableEquals(of(2, 3), collected);
     }
 }

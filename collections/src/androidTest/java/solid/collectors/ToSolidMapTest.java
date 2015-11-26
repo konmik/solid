@@ -10,7 +10,7 @@ import java.util.Map;
 
 import solid.collections.SolidEntry;
 import solid.collections.SolidMap;
-import solid.collections.SolidPair;
+import solid.collections.Pair;
 import solid.functions.Func1;
 import solid.stream.Range;
 
@@ -26,7 +26,7 @@ public class ToSolidMapTest {
     }});
 
     @Test
-    public void testToSolidMap() throws Exception {
+    public void testToSolidMap2() throws Exception {
         assertIterableEquals(MAP, Range.range(1, 4).collect(ToSolidMap.toSolidMap(new Func1<Integer, String>() {
             @Override
             public String call(Integer it) {return "" + it;}
@@ -35,6 +35,14 @@ public class ToSolidMapTest {
             public Integer call(Integer value) {
                 return value;
             }
+        })));
+    }
+
+    @Test
+    public void testToSolidMap1() throws Exception {
+        assertIterableEquals(MAP, Range.range(1, 4).collect(ToSolidMap.toSolidMap(new Func1<Integer, String>() {
+            @Override
+            public String call(Integer it) {return "" + it;}
         })));
     }
 
@@ -52,9 +60,9 @@ public class ToSolidMapTest {
     @Test
     public void testToSolidMapFromPairs() throws Exception {
         SolidMap<String, Integer> converted = Range.range(1, 4)
-            .map(new Func1<Integer, SolidPair<String, Integer>>() {
+            .map(new Func1<Integer, Pair<String, Integer>>() {
                 @Override
-                public SolidPair<String, Integer> call(Integer it) {return new SolidPair<>("" + it, it.intValue());}
+                public Pair<String, Integer> call(Integer it) {return new Pair<>("" + it, it.intValue());}
             })
             .collect(ToSolidMap.<String, Integer>pairsToSolidMap());
 

@@ -2,10 +2,6 @@ package solid.stream;
 
 import java.util.Iterator;
 
-import solid.functions.Func0;
-import solid.stream.ReadOnlyIterator;
-import solid.stream.Stream;
-
 public class Range {
 
     /**
@@ -17,9 +13,9 @@ public class Range {
      * @return a stream that contains a given number of integers starting from a given number.
      */
     public static Stream<Integer> range(final int from, final int to, final int step) {
-        return Stream.from(new Func0<Iterator<Integer>>() {
+        return new Stream<Integer>() {
             @Override
-            public Iterator<Integer> call() {
+            public Iterator<Integer> iterator() {
                 return new ReadOnlyIterator<Integer>() {
 
                     int value = from;
@@ -31,13 +27,13 @@ public class Range {
 
                     @Override
                     public Integer next() {
-                        int v = value;
+                        final int v = value;
                         value += step;
                         return v;
                     }
                 };
             }
-        });
+        };
     }
 
     /**
