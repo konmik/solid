@@ -24,6 +24,7 @@ import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 import static solid.stream.Stream.of;
 import static solid.stream.Stream.stream;
+import static test_utils.AssertIterableEquals.assertGroupedEquals;
 import static test_utils.AssertIterableEquals.assertIterableEquals;
 
 public class StreamTest {
@@ -316,7 +317,7 @@ public class StreamTest {
 
     @Test
     public void testGroupBy2() {
-        assertIterableEquals(of(new Grouped<>(0, asList(1, 3)), new Grouped<>(10, asList(2, 3))),
+        assertGroupedEquals(of(new Grouped<>(0, of(1, 3)), new Grouped<>(10, of(2, 3))),
             of(1, 12, 3, 13)
                 .groupBy(
                     new Func1<Integer, Integer>() {
@@ -331,8 +332,8 @@ public class StreamTest {
                             return value % 10;
                         }
                     }));
-        assertIterableEquals(Stream.<Grouped<Object, Object>>of(), Stream.of().groupBy(null, null));
-        assertIterableEquals(Stream.of(new Grouped<>(null, singletonList(null))), Stream.of((Object) null).groupBy(new Func1<Object, Object>() {
+        assertGroupedEquals(Stream.<Grouped<Object, Object>>of(), Stream.of().groupBy(null, null));
+        assertGroupedEquals(Stream.of(new Grouped<>(null, of((Object) null))), Stream.of((Object) null).groupBy(new Func1<Object, Object>() {
             @Override
             public Object call(Object value) {
                 return null;
@@ -347,7 +348,7 @@ public class StreamTest {
 
     @Test
     public void testGroupBy1() throws Exception {
-        assertIterableEquals(of(new Grouped<>(0, asList(1, 3)), new Grouped<>(10, asList(12, 13))),
+        assertGroupedEquals(of(new Grouped<>(0, of(1, 3)), new Grouped<>(10, of(12, 13))),
             of(1, 12, 3, 13)
                 .groupBy(new Func1<Integer, Integer>() {
                     @Override

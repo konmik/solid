@@ -500,7 +500,7 @@ public abstract class Stream<T> implements Iterable<T> {
                     .map(new Func1<K, Grouped<K, V>>() {
                         @Override
                         public Grouped<K, V> call(K key) {
-                            return new Grouped<>(key, Collections.unmodifiableList(map.get(key)));
+                            return new Grouped<>(key, stream(map.get(key)));
                         }
                     })
                     .iterator();

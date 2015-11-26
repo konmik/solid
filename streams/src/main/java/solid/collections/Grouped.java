@@ -1,6 +1,6 @@
 package solid.collections;
 
-import java.util.List;
+import solid.stream.Stream;
 
 /**
  * Group - list pair.
@@ -8,11 +8,11 @@ import java.util.List;
 public class Grouped<G, T> {
 
     public final G group;
-    public final List<T> list;
+    public final Stream<T> stream;
 
-    public Grouped(G group, List<T> list) {
+    public Grouped(G group, Stream<T> stream) {
         this.group = group;
-        this.list = list;
+        this.stream = stream;
     }
 
     @Override
@@ -23,13 +23,13 @@ public class Grouped<G, T> {
         Grouped<?, ?> grouped = (Grouped<?, ?>) o;
 
         if (group != null ? !group.equals(grouped.group) : grouped.group != null) return false;
-        return !(list != null ? !list.equals(grouped.list) : grouped.list != null);
+        return !(stream != null ? !stream.equals(grouped.stream) : grouped.stream != null);
     }
 
     @Override
     public int hashCode() {
         int result = group != null ? group.hashCode() : 0;
-        result = 31 * result + (list != null ? list.hashCode() : 0);
+        result = 31 * result + (stream != null ? stream.hashCode() : 0);
         return result;
     }
 
@@ -37,7 +37,7 @@ public class Grouped<G, T> {
     public String toString() {
         return "Grouped{" +
             "group=" + group +
-            ", list=" + list +
+            ", list=" + stream +
             '}';
     }
 }
