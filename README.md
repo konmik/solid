@@ -13,8 +13,6 @@ It provides:
 
 * `SolidList`, `SolidMap`, `SolidSet` - immutable, parcelable collections.
 
-*Note: `SolidMap` is not `java.util.Collection` due to Android Parcelable Map issue.*
-
 ### Philosophy
 
 *Solid* library adheres to the philosophy: "transform it as a stream, keep it as immutable".
@@ -35,12 +33,7 @@ dependencies {
 
 *Solid* streams are similar to Java 8 streams but they are released under the MIT license and are absolutely free.
 
-The usual approach on Android is to use RxJava for functional data handling, but it is too verbose and too heavy for
-a non-event based usage pattern. My tests say that *Solid* streams are about 5 times faster than RxJava and take about
-5 times less memory the same time on small data sets.
-
 These streams are passive and do not emit items, they are not thread-safe, so they are much simpler.
-If you're stuck with studying *RxJava* you may try to understand these streams first.
 
 All Solid streams are sequential.
 
@@ -124,7 +117,7 @@ The full list of possible converters is here: [converters](https://github.com/ko
 # Solid collections
 
 If you're a big fan of immutable data structures like me then you also probably miss `Parcelable` interface
-implementation in *Guava*'s `ImmutableList`.
+implementation in *Guava*'s immutable collections.
 
 If you're not a big fan of immutability then you should be.
 
@@ -133,7 +126,7 @@ The library has a very good Android port with `Parcelable` implementation: [Auto
 
 There is yet another library that makes a good combo with `SolidList` - [Icepick](https://github.com/frankiesardo/icepick).
 *Solid* collections can be safely passed between activities, services, intents
-and threads, and it can be automatically saved into an activity/fragment `Bundle` with just one annotation. Amazing.
+and threads, and they can be automatically saved into an activity/fragment `Bundle` with just one annotation. Amazing.
 
 ### Details
 
@@ -143,3 +136,6 @@ so I do not think that any docs are needed.
 
 If you're familiar with Guava's immutable collections - there is a difference that is good to know. *Solid* collections do
 not have a support for *Builder* pattern - use `ArrayList`, `Stream`, `Map` and `Set` to prepare them.
+
+Note that `SolidMap` is not `java.util.Collection` due to Android Parcelable Map issue (`Map` can not implement `Parcelable`).
+
