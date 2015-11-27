@@ -237,9 +237,8 @@ public abstract class Stream<T> implements Iterable<T> {
 
                     @Override
                     public boolean hasNext() {
-                        if (next == null || !next.hasNext()) {
-                            if (iterator.hasNext())
-                                next = func.call(iterator.next()).iterator();
+                        while ((next == null || !next.hasNext()) && iterator.hasNext()) {
+                            next = func.call(iterator.next()).iterator();
                         }
 
                         return next != null && next.hasNext();

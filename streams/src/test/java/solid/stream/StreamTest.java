@@ -6,8 +6,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import solid.collections.Grouped;
@@ -122,6 +125,34 @@ public class StreamTest {
         assertIterableEquals(emptyList(), of().flatMap(new Func1<Object, Iterable<Object>>() {
             @Override
             public Iterable<Object> call(Object value) {return null;}
+        }));
+
+        HashMap<Integer, List<String>> map = new HashMap<Integer, List<String>>() {{
+            put(0, asList("1", "2"));
+            put(1, Collections.<String>emptyList());
+            put(2, Collections.<String>emptyList());
+            put(3, Collections.<String>emptyList());
+            put(4, asList("3"));
+        }};
+        assertIterableEquals(asList("1", "2", "3"), stream(map.entrySet()).flatMap(new Func1<Map.Entry<Integer, List<String>>, Iterable<String>>() {
+            @Override
+            public Iterable<String> call(Map.Entry<Integer, List<String>> value) {
+                return value.getValue();
+            }
+        }));
+
+        HashMap<Integer, List<String>> map2 = new HashMap<Integer, List<String>>() {{
+            put(1, Collections.<String>emptyList());
+            put(2, Collections.<String>emptyList());
+            put(3, Collections.<String>emptyList());
+            put(0, asList("1", "2"));
+            put(4, asList("3"));
+        }};
+        assertIterableEquals(asList("1", "2", "3"), stream(map2.entrySet()).flatMap(new Func1<Map.Entry<Integer, List<String>>, Iterable<String>>() {
+            @Override
+            public Iterable<String> call(Map.Entry<Integer, List<String>> value) {
+                return value.getValue();
+            }
         }));
     }
 
