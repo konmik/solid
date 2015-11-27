@@ -301,10 +301,44 @@ public abstract class Stream<T> implements Iterable<T> {
      * @param value a value to filter out.
      * @return a new stream that contains all items of the current stream except of a given item.
      */
+    public Stream<T> with(final T value) {
+        return new Stream<T>() {
+            @Override
+            public Iterator<T> iterator() {
+                return new ReadOnlyIterator<T>() {
+
+                    Iterator<T> iterator = Stream.this.iterator();
+                    boolean completed;
+
+                    @Override
+                    public boolean hasNext() {
+                        return iterator.hasNext() || !completed;
+                    }
+
+                    @Override
+                    public T next() {
+                        if (iterator.hasNext())
+                            return iterator.next();
+                        completed = true;
+                        return value;
+                    }
+                };
+            }
+        };
+    }
+
+    /**
+     * Returns a new stream that contains all items of the current stream except of a given item.
+     *
+     * @param value a value to filter out.
+     * @return a new stream that contains all items of the current stream except of a given item.
+     */
     public Stream<T> without(final T value) {
         return filter(new Func1<T, Boolean>() {
             @Override
-            public Boolean call(T it) {return ((it == null) ? (value != null) : !it.equals(value));}
+            public Boolean call(T it) {
+                return ((it == null) ? (value != null) : !it.equals(value));
+            }
         });
     }
 
@@ -314,23 +348,23 @@ public abstract class Stream<T> implements Iterable<T> {
      * @param with an {@link Iterable} that should be used to emit items after items in the current stream ran out.
      * @return a new stream that contains items from both streams.
      */
-    public Stream<T> merge(final Iterable<? extends T> with) {
+    public Stream<T> with(final Iterable<? extends T> with) {
         return new Stream<T>() {
             @Override
             public Iterator<T> iterator() {
                 return new ReadOnlyIterator<T>() {
 
-                    Iterator<T> sourceI = Stream.this.iterator();
-                    Iterator<? extends T> withI = with.iterator();
+                    Iterator<T> iterator = Stream.this.iterator();
+                    Iterator<? extends T> withIterator = with.iterator();
 
                     @Override
                     public boolean hasNext() {
-                        return sourceI.hasNext() || withI.hasNext();
+                        return iterator.hasNext() || withIterator.hasNext();
                     }
 
                     @Override
                     public T next() {
-                        return sourceI.hasNext() ? sourceI.next() : withI.next();
+                        return iterator.hasNext() ? iterator.next() : withIterator.next();
                     }
                 };
             }
@@ -345,7 +379,7 @@ public abstract class Stream<T> implements Iterable<T> {
      * @return a stream that includes only that items of the current stream that do not
      * exist in a given stream.
      */
-    public Stream<T> separate(Iterable<T> from) {
+    public Stream<T> without(Iterable<T> from) {
         final ArrayList<T> list = ToArrayList.<T>toArrayList().call(from);
         return filter(new Func1<T, Boolean>() {
             @Override

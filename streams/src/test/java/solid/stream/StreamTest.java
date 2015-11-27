@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import solid.collections.Grouped;
@@ -194,24 +193,30 @@ public class StreamTest {
     }
 
     @Test
+    public void testWith() throws Exception {
+        assertIterableEquals(asList(1, 2, 3), stream(asList(1, 2)).with(3));
+        assertIterableEquals(asList(1, 2, null), stream(asList(1, 2)).with((Integer) null));
+    }
+
+    @Test
     public void testWithout() throws Exception {
         assertIterableEquals(asList(1, 2, 3), stream(asList(1, 2, 3, 4)).without(4));
-        assertIterableEquals(asList(1, 2, 3), stream(asList(1, 2, 3, null)).without(null));
+        assertIterableEquals(asList(1, 2, 3), stream(asList(1, 2, 3, null)).without((Integer) null));
     }
 
     @Test
     public void testMerge() throws Exception {
-        assertIterableEquals(asList(1, 2, 3, 4), of(1, 2).merge(of(3, 4)));
-        assertIterableEquals(asList(1, 2, 3, 4, 5, 6), of(1, 2, 3).merge(of(4, 5, 6)));
-        assertIterableEquals(asList(1, 2, 3), of(1, 2, 3).merge(Stream.<Integer>of()));
-        assertIterableEquals(asList(4, 5, 6), Stream.<Integer>of().merge(Stream.of(4, 5, 6)));
-        assertIterableEquals(Collections.emptyList(), of().merge(of()));
-        assertIterableEquals(asList(null, null, null, null), of(null, null).merge(of(null, null)));
+        assertIterableEquals(asList(1, 2, 3, 4), of(1, 2).with(of(3, 4)));
+        assertIterableEquals(asList(1, 2, 3, 4, 5, 6), of(1, 2, 3).with(of(4, 5, 6)));
+        assertIterableEquals(asList(1, 2, 3), of(1, 2, 3).with(Stream.<Integer>of()));
+        assertIterableEquals(asList(4, 5, 6), Stream.<Integer>of().with(Stream.of(4, 5, 6)));
+        assertIterableEquals(Collections.emptyList(), of().with(of()));
+        assertIterableEquals(asList(null, null, null, null), of(null, null).with(of(null, null)));
     }
 
     @Test
     public void testSeparate() throws Exception {
-        assertIterableEquals(asList(1, 2, 3), stream(asList(0, 1, 4, 5, 6, 2, 3, null)).separate(asList(0, 4, 5, 6, null)));
+        assertIterableEquals(asList(1, 2, 3), stream(asList(0, 1, 4, 5, 6, 2, 3, null)).without(asList(0, 4, 5, 6, null)));
     }
 
     @Test
