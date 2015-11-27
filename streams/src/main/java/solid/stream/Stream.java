@@ -264,6 +264,7 @@ public abstract class Stream<T> implements Iterable<T> {
             @Override
             public Iterator<T> iterator() {
                 return new ReadOnlyIterator<T>() {
+
                     Iterator<? extends T> iterator = Stream.this.iterator();
                     T next;
                     boolean hasNext;
@@ -463,7 +464,7 @@ public abstract class Stream<T> implements Iterable<T> {
      * @param comparator a comparator to apply.
      * @return a new stream that contains all items of the current stream in sorted order.
      */
-    public Stream<T> sorted(final Comparator<T> comparator) {
+    public Stream<T> sort(final Comparator<T> comparator) {
         return new Stream<T>() {
             @Override
             public Iterator<T> iterator() {

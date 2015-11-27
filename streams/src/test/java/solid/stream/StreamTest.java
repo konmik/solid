@@ -247,19 +247,19 @@ public class StreamTest {
 
     @Test
     public void testSort() throws Exception {
-        assertIterableEquals(asList(1, 2, 3), stream(asList(3, 2, 1)).sorted(new Comparator<Integer>() {
+        assertIterableEquals(asList(1, 2, 3), stream(asList(3, 2, 1)).sort(new Comparator<Integer>() {
             @Override
             public int compare(Integer lhs, Integer rhs) {return lhs < rhs ? -1 : (lhs.equals(rhs) ? 0 : 1);}
         }));
-        assertIterableEquals(asList(1, 2, 3), of(3, 2, 1).sorted(new Comparator<Integer>() {
+        assertIterableEquals(asList(1, 2, 3), of(3, 2, 1).sort(new Comparator<Integer>() {
             @Override
             public int compare(Integer lhs, Integer rhs) {return lhs < rhs ? -1 : (lhs.equals(rhs) ? 0 : 1);}
         }));
-        assertIterableEquals(asList(null, null), of(null, null).sorted(new Comparator<Object>() {
+        assertIterableEquals(asList(null, null), of(null, null).sort(new Comparator<Object>() {
             @Override
             public int compare(Object lhs, Object rhs) {return 0;}
         }));
-        assertIterableEquals(emptyList(), of().sorted(new Comparator<Object>() {
+        assertIterableEquals(emptyList(), of().sort(new Comparator<Object>() {
             @Override
             public int compare(Object lhs, Object rhs) {return 0;}
         }));
