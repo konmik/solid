@@ -32,7 +32,18 @@ public class ToJoinedString {
     public static Func1<Iterable<String>, String> toJoinedString(final String delimiter) {
         return new Func1<Iterable<String>, String>() {
             @Override
-            public String call(Iterable<String> iterable) {return TextUtils.join(delimiter, iterable);}
+            public String call(Iterable<String> iterable) {
+                StringBuilder builder = new StringBuilder();
+                boolean first = true;
+                for (String string : iterable) {
+                    if (first)
+                        first = false;
+                    else
+                        builder.append(delimiter);
+                    builder.append(string);
+                }
+                return builder.toString();
+            }
         };
     }
 }

@@ -1,1 +1,1 @@
-include ':streams', ':collections'
+include ':streams', ':collections', ':retrolambdatest'

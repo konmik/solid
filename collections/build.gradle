@@ -22,7 +22,7 @@ repositories {
 }
 
 dependencies {
-    compile 'info.android15.solid:streams:2.0.0-SNAPSHOT'
+    compile "info.android15.solid:streams:$VERSION_NAME"
 
     androidTestCompile 'junit:junit:4.12'
     androidTestCompile 'com.android.support.test:runner:0.3'
@@ -30,11 +30,6 @@ dependencies {
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.0.12-beta'
-
-    testCompile "org.powermock:powermock-module-junit4:1.6.2"
-    testCompile "org.powermock:powermock-module-junit4-rule:1.6.2"
-    testCompile "org.powermock:powermock-api-mockito:1.6.2"
-    testCompile "org.powermock:powermock-classloading-xstream:1.6.2"
 }
 
 android.libraryVariants.all { variant ->

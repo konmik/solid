@@ -297,12 +297,12 @@ public abstract class Stream<T> implements Iterable<T> {
     }
 
     /**
-     * Returns a new stream that contains all items of the current stream except of a given item.
+     * Returns a new stream that contains all items of the current stream with addition of a given item.
      *
-     * @param value a value to filter out.
-     * @return a new stream that contains all items of the current stream except of a given item.
+     * @param value a value to add.
+     * @return a new stream that contains all items of the current stream with addition of a given item.
      */
-    public Stream<T> with(final T value) {
+    public Stream<T> merge(final T value) {
         return new Stream<T>() {
             @Override
             public Iterator<T> iterator() {
@@ -334,7 +334,7 @@ public abstract class Stream<T> implements Iterable<T> {
      * @param value a value to filter out.
      * @return a new stream that contains all items of the current stream except of a given item.
      */
-    public Stream<T> without(final T value) {
+    public Stream<T> separate(final T value) {
         return filter(new Func1<T, Boolean>() {
             @Override
             public Boolean call(T it) {
@@ -349,7 +349,7 @@ public abstract class Stream<T> implements Iterable<T> {
      * @param with an {@link Iterable} that should be used to emit items after items in the current stream ran out.
      * @return a new stream that contains items from both streams.
      */
-    public Stream<T> with(final Iterable<? extends T> with) {
+    public Stream<T> merge(final Iterable<? extends T> with) {
         return new Stream<T>() {
             @Override
             public Iterator<T> iterator() {
@@ -380,7 +380,7 @@ public abstract class Stream<T> implements Iterable<T> {
      * @return a stream that includes only that items of the current stream that do not
      * exist in a given stream.
      */
-    public Stream<T> without(Iterable<T> from) {
+    public Stream<T> separate(Iterable<T> from) {
         final ArrayList<T> list = ToArrayList.<T>toArrayList().call(from);
         return filter(new Func1<T, Boolean>() {
             @Override

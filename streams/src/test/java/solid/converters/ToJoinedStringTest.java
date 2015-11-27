@@ -1,36 +1,19 @@
 package solid.converters;
 
-import android.text.TextUtils;
-
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
-import solid.collectors.ToJoinedString;
 import solid.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.powermock.api.mockito.PowerMockito.when;
 import static solid.collectors.ToJoinedString.toJoinedString;
 import static solid.stream.Stream.of;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({TextUtils.class, ToJoinedString.class})
 public class ToJoinedStringTest {
-
-    public static final String RESULT_STRING = "result";
 
     @Test
     public void testToJoinedString() throws Exception {
-        PowerMockito.mockStatic(TextUtils.class);
-        when(TextUtils.join(anyString(), any(Iterable.class))).thenReturn(RESULT_STRING);
-
-        assertEquals(RESULT_STRING, of("1", "2", "3").collect(toJoinedString(",")));
-        assertEquals(RESULT_STRING, of("1", "2", "3").collect(toJoinedString()));
-        assertEquals(RESULT_STRING, Stream.<String>of().collect(toJoinedString()));
+        assertEquals("1,2,3", of("1", "2", "3").collect(toJoinedString(",")));
+        assertEquals("123", of("1", "2", "3").collect(toJoinedString()));
+        assertEquals("", Stream.<String>of().collect(toJoinedString()));
     }
 }
