@@ -3,23 +3,27 @@ package solid.stream;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import solid.collections.Grouped;
 import solid.collections.Indexed;
+import solid.collectors.ToArrayList;
+import solid.collectors.ToList;
+import solid.functions.Action1;
+import solid.functions.Func1;
+import solid.functions.Func2;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static solid.collectors.ToArrayList.toArrayList;
 import static solid.collectors.ToArrays.toBytes;
 import static solid.collectors.ToArrays.toDoubles;
 import static solid.collectors.ToArrays.toFloats;
 import static solid.collectors.ToArrays.toInts;
 import static solid.collectors.ToArrays.toLongs;
 import static solid.collectors.ToJoinedString.toJoinedString;
-import static solid.collectors.ToList.toList;
 import static test_utils.AssertIterableEquals.assertGroupedEquals;
 import static test_utils.AssertIterableEquals.assertIterableEquals;
 
@@ -83,14 +87,24 @@ public class StreamDemo {
 
         assertIterableEquals(asList(1, 2),
             Stream.of(1, 2, 3)
-                .filter(it -> it < 3));
+                .filter(new Func1<Integer, Boolean>() {
+                    @Override
+                    public Boolean call(Integer it) {
+                        return it < 3;
+                    }
+                }));
 
         // Stream.map
         // transforms each item
 
         assertIterableEquals(asList("1", "2", "3"),
             Stream.of(1, 2, 3)
-                .map(it -> it.toString()));
+                .map(new Func1<Integer, String>() {
+                    @Override
+                    public String call(Integer it) {
+                        return it.toString();
+                    }
+                }));
     }
 
     @Test
@@ -157,7 +171,12 @@ public class StreamDemo {
 
         assertIterableEquals(asList(1, 2, 3),
             Stream.of(2, 1, 3)
-                .sort(Integer::compareTo));
+                .sort(new Comparator<Integer>() {
+                    @Override
+                    public int compare(Integer lhs, Integer rhs) {
+                        return lhs.compareTo(rhs);
+                    }
+                }));
     }
 
     @Test
@@ -168,7 +187,12 @@ public class StreamDemo {
 
         assertEquals((Integer) 6,
             Stream.of(1, 2, 3)
-                .reduce((x, y) -> x + y)
+                .reduce(new Func2<Integer, Integer, Integer>() {
+                    @Override
+                    public Integer call(Integer x, Integer y) {
+                        return x + y;
+                    }
+                })
                 .get());
 
         // Stream.reduce(initial value, accumulator)
@@ -176,28 +200,53 @@ public class StreamDemo {
 
         assertEquals((Integer) 16,
             Stream.of(1, 2, 3)
-                .reduce(10, (x, y) -> x + y));
+                .reduce(10, new Func2<Integer, Integer, Integer>() {
+                    @Override
+                    public Integer call(Integer x, Integer y) {
+                        return x + y;
+                    }
+                }));
 
         // Stream.flatMap(stream generator)
         // replaces each item with set of items
 
         assertIterableEquals(asList(100, 1, 200, 2, 300, 3),
             Stream.of(1, 2, 3)
-                .flatMap(it -> Stream.of(it * 100, it)));
+                .flatMap(new Func1<Integer, Iterable<Integer>>() {
+                    @Override
+                    public Iterable<Integer> call(Integer it) {
+                        return Stream.of(it * 100, it);
+                    }
+                }));
 
         // Stream.groupBy(group selector)
         // groups items using a group selector
 
         assertGroupedEquals(asList(new Grouped<>(0, Stream.of(1, 3)), new Grouped<>(10, Stream.of(12, 13))),
             Stream.of(1, 12, 3, 13)
-                .groupBy(value -> value - value % 10));
+                .groupBy(new Func1<Integer, Integer>() {
+                    @Override
+                    public Integer call(Integer value) {
+                        return value - value % 10;
+                    }
+                }));
 
         // Stream.groupBy(group selector)
         // groups items using a group and a value selectors
 
         assertGroupedEquals(asList(new Grouped<>(0, Stream.of(1, 3)), new Grouped<>(10, Stream.of(2, 3))),
             Stream.of(1, 12, 3, 13)
-                .groupBy(value -> value - value % 10, value -> value % 10));
+                .groupBy(new Func1<Integer, Integer>() {
+                    @Override
+                    public Integer call(Integer value) {
+                        return value - value % 10;
+                    }
+                }, new Func1<Integer, Integer>() {
+                    @Override
+                    public Integer call(Integer value) {
+                        return value % 10;
+                    }
+                }));
     }
 
     @Test
@@ -213,21 +262,31 @@ public class StreamDemo {
 
     @Test
     public void side_effects() throws Exception {
-        ArrayList<Integer> out = new ArrayList<>();
-        ArrayList<Integer> out2 = new ArrayList<>();
+        final ArrayList<Integer> out = new ArrayList<>();
+        final ArrayList<Integer> out2 = new ArrayList<>();
 
         // Stream.forEach
         // feeds items to a consuming function
 
         Stream.of(1, 2, 3)
-            .forEach(it -> out.add(it));
+            .forEach(new Action1<Integer>() {
+                @Override
+                public void call(Integer it) {
+                    out.add(it);
+                }
+            });
         assertIterableEquals(asList(1, 2, 3), out);
 
         // Stream.onNext
         // feeds items to a consuming functions during lazy evaluation
 
         Stream.of(1, 2, 3, 4, 5)
-            .onNext(it -> out2.add(it))
+            .onNext(new Action1<Integer>() {
+                @Override
+                public void call(Integer it) {
+                    out2.add(it);
+                }
+            })
             .take(3)
             .last();
         assertIterableEquals(asList(1, 2, 3), out2);
@@ -239,11 +298,14 @@ public class StreamDemo {
         // Stream.collect(custom collector)
         // transforms into another data structure
 
-        assertEquals(asList(1, 2, 3), Stream.of(1, 2, 3).collect(it -> {
-            ArrayList<Integer> list = new ArrayList<>();
-            for (int i : it)
-                list.add(i);
-            return list;
+        assertEquals(asList(1, 2, 3), Stream.of(1, 2, 3).collect(new Func1<Iterable<Integer>, ArrayList<Integer>>() {
+            @Override
+            public ArrayList<Integer> call(Iterable<Integer> it) {
+                ArrayList<Integer> list = new ArrayList<>();
+                for (int i : it)
+                    list.add(i);
+                return list;
+            }
         }));
 
         // toList()
@@ -251,14 +313,14 @@ public class StreamDemo {
 
         assertEquals(asList(1, 2, 3),
             Stream.of(1, 2, 3)
-                .collect(toList()));
+                .collect(ToList.<Integer>toList()));
 
         // toArrayList()
         // collects into ArrayList
 
         assertEquals(asList(1, 2, 3),
             Stream.of(1, 2, 3)
-                .collect(toArrayList()));
+                .collect(ToArrayList.<Integer>toArrayList()));
 
         // toJoinedString()
         // joins strings

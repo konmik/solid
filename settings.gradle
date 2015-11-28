@@ -1,1 +1,1 @@
-include ':streams', ':collections', ':retrolambdatest'
+include ':streams', ':collections', ':retrolambdatest', ':java7test'
