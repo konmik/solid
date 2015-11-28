@@ -40,7 +40,7 @@ All Solid streams are sequential.
 ### How to use
 
 All examples here with Java 8 syntax on. I recommend using [Gradle Retrolambda Plugin](https://github.com/evant/gradle-retrolambda)
-to make your code shorter and to bring the functional power to your code.
+to make your code shorter.
 
 You can take any `Iterable` or an array and turn it into a set of chained methods:
 
@@ -112,7 +112,9 @@ byte[] array_1_3 = box(new byte[]{1, 2, 3})
 And so on. The amount of flexibility that iterable streams and converters provide is hard to get at the
 beginning but as long as you use them, more and more ideas come into mind.
 
-The full list of possible converters is here: [converters](https://github.com/konmik/solid/tree/master/solid/src/main/java/solid/converters)
+The full list of possible primitive converters is here:
+[ToArrays](https://github.com/konmik/solid/blob/master/streams/src/main/java/solid/collectors/ToArrays.java),
+[Primitives](https://github.com/konmik/solid/blob/master/streams/src/main/java/solid/stream/Primitives.java)
 
 # Solid collections
 
