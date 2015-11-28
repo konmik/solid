@@ -35,25 +35,25 @@ public class StreamDemo {
             Stream.of());
 
         // Stream.of(value)
-        // stream of one value
+        // a stream of one value
 
         assertIterableEquals(singletonList(1),
             Stream.of(1));
 
         // Stream.of(values)
-        // stream of given values
+        // a stream of given values
 
         assertIterableEquals(asList(1, 2, 3),
             Stream.of(1, 2, 3));
 
         // Stream.stream(array)
-        // stream of array values
+        // a stream of array values
 
         assertIterableEquals(asList(1, 2, 3),
             Stream.stream(new Integer[]{1, 2, 3}));
 
         // Stream.stream(iterable)
-        // stream of iterable values
+        // a stream of iterable values
 
         assertIterableEquals(asList(1, 2, 3),
             Stream.stream(asList(1, 2, 3)));
