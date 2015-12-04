@@ -66,7 +66,7 @@ Easy, isn't it? I believe you already know about the power of streaming operator
 so here is a very lightweight and convenient implementation, especially for needs of an Android developer.
 
 For a list of stream operators see:
-[StreamDemo.java](https://github.com/konmik/solid/blob/master/retrolambdatest/src/test/java/solid/stream/StreamDemo.java)
+[Solid streams by example](https://github.com/konmik/solid/wiki/Solid-streams-by-example)
 
 # Data converters and primitive arrays
 
