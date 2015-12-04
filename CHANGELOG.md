@@ -1,6 +1,6 @@
 # Changelog
 
-##### 2.0.0 version (?)
+##### 2.0.0 version (04.12.2015)
 
 * a complete library rework
 

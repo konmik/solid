@@ -23,7 +23,7 @@ of the application, while keeping the ability to transform data in a convenient 
 
 ``` groovy
 dependencies {
-    def solidVersion = '2.0.0-alpha2'
+    def solidVersion = '2.0.0'
     compile "info.android15.solid:streams:$solidVersion"
     compile "info.android15.solid:collections:$solidVersion"
 }
