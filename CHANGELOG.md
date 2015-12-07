@@ -1,5 +1,10 @@
 # Changelog
 
+##### 2.0.1 version (07.12.2015)
+
+* `Optional.map` operator.
+* `toArray()`` collector.
+
 ##### 2.0.0 version (04.12.2015)
 
 * a complete library rework
