@@ -48,7 +48,7 @@ You can take any `Iterable` or an array and turn it into a set of chained method
 stream(asList(1, 3, 2))                // Iterable<Integer>
     .filter(it -> it < 3)              // only 1 and 2 items are not filtered
     .map(it -> Integer.toString(it))   // convert Integer values to String values
-    .toList();
+    .collect(toList());
 ```
 
 This code will result in a `List<String>` which contains `"1"` and `"2"` values.
