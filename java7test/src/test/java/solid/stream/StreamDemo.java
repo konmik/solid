@@ -18,12 +18,14 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static solid.collectors.ToArray.toArray;
 import static solid.collectors.ToArrays.toBytes;
 import static solid.collectors.ToArrays.toDoubles;
 import static solid.collectors.ToArrays.toFloats;
 import static solid.collectors.ToArrays.toInts;
 import static solid.collectors.ToArrays.toLongs;
 import static solid.collectors.ToJoinedString.toJoinedString;
+import static solid.stream.Stream.of;
 import static test_utils.AssertIterableEquals.assertGroupedEquals;
 import static test_utils.AssertIterableEquals.assertIterableEquals;
 
@@ -321,6 +323,14 @@ public class StreamDemo {
         assertEquals(asList(1, 2, 3),
             Stream.of(1, 2, 3)
                 .collect(ToArrayList.<Integer>toArrayList()));
+
+
+        // toArray(Class)
+        // collects into an Array
+
+        assertArrayEquals(new Integer[]{1, 2, 3},
+            of(1, 2, 3)
+                .collect(toArray(Integer.class)));
 
         // toJoinedString()
         // joins strings

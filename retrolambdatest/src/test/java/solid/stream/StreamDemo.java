@@ -12,6 +12,7 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static solid.collectors.ToArray.toArray;
 import static solid.collectors.ToArrayList.toArrayList;
 import static solid.collectors.ToArrays.toBytes;
 import static solid.collectors.ToArrays.toDoubles;
@@ -262,8 +263,16 @@ public class StreamDemo {
             of(1, 2, 3)
                 .collect(toArrayList()));
 
+        // toArray(Class)
+        // collects into an Array
+
+        assertArrayEquals(new Integer[]{1, 2, 3},
+            of(1, 2, 3)
+                .collect(toArray(Integer.class)));
+
         // toJoinedString()
         // joins strings
+
         assertEquals("123",
             of("1", "2", "3")
                 .collect(toJoinedString()));
