@@ -1,9 +1,13 @@
 # Changelog
 
+##### 2.0.2 version (26.12.2015)
+
+* `SolidList.list`, `SolidMap.map`, `SolidSet.set` construction methods.
+
 ##### 2.0.1 version (07.12.2015)
 
 * `Optional.map` operator.
-* `toArray()`` collector.
+* `toArray()` collector.
 
 ##### 2.0.0 version (04.12.2015)
 

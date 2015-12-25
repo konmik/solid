@@ -65,6 +65,29 @@ public class SolidMap<K, V> extends Stream<Map.Entry<K, V>> implements Parcelabl
     }
 
     /**
+     * Creates a map using interleaving keys and values.
+     *
+     * Warning: this method does not provide type safety.
+     *
+     * @param key   first map key
+     * @param value first map value
+     * @param pairs items that will be transformed into value-map pairs. Warning: there is no
+     *              type safety here!
+     * @param <K>   type of map keys
+     * @param <V>   type of map values
+     * @return a SolidMap that was constructed from given keys and values
+     */
+    public static <K, V> SolidMap<K, V> map(K key, V value, Object... pairs) {
+        if (pairs.length % 2 != 0)
+            throw new IllegalArgumentException("SolidMap.map(...) takes even number of arguments");
+        LinkedHashMap<K, V> m = new LinkedHashMap<>();
+        m.put(key, value);
+        for (int i = 0; i < pairs.length; i += 2)
+            m.put((K) pairs[i], (V) pairs[i + 1]);
+        return new SolidMap<>(m);
+    }
+
+    /**
      * Returns an immutable {@link Map} interface.
      */
     public Map<K, V> asMap() {

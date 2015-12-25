@@ -17,6 +17,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
+import static solid.collections.SolidMap.map;
 
 @RunWith(AndroidJUnit4.class)
 public class SolidMapTest {
@@ -48,6 +49,17 @@ public class SolidMapTest {
     @Test
     public void testEmpty() throws Exception {
         assertEquals(0, SolidMap.empty().size());
+    }
+
+    @Test
+    public void testMap() throws Exception {
+        assertEquals(map(1, 2, 2, 3, 3, 4), new SolidMap<>(create123map234()));
+        assertEquals(map("1", 2), new SolidMap<>(new LinkedHashMap<String, Integer>() {{put("1", 2);}}));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testMapOdd() throws Exception {
+        map(1, 2, 3);
     }
 
     @Test

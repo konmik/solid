@@ -18,6 +18,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
+import static solid.collections.SolidSet.set;
 
 @RunWith(AndroidJUnit4.class)
 public class SolidSetTest {
@@ -40,6 +41,12 @@ public class SolidSetTest {
         assertEquals(1, new SolidSet<>(Collections.singletonList(1)).size());
         assertEquals(0, new SolidSet<>(Collections.emptyList()).size());
         assertTrue(new SolidSet<>(Collections.singletonList(null)).contains(null));
+    }
+
+    @Test
+    public void testSet() throws Exception {
+        assert123(set(1, 2, 3));
+        assertEquals(0, set().size());
     }
 
     @Test

@@ -4,7 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -12,6 +11,8 @@ import java.util.List;
 import java.util.ListIterator;
 
 import solid.stream.Stream;
+
+import static java.util.Arrays.asList;
 
 /**
  * Represents an immutable parcelable list.
@@ -31,7 +32,7 @@ public class SolidList<T> extends Stream<T> implements List<T>, Parcelable {
      * @param array a source of data for {@link SolidList}.
      */
     public SolidList(T[] array) {
-        this(Arrays.asList(array));
+        this(asList(array));
     }
 
     /**
@@ -75,6 +76,17 @@ public class SolidList<T> extends Stream<T> implements List<T>, Parcelable {
     public static <T> SolidList<T> empty() {
         //noinspection unchecked
         return (SolidList<T>) EMPTY;
+    }
+
+    /**
+     * Creates a {@link SolidList} from given arguments.
+     *
+     * @param items items to create list from.
+     * @param <T>   <T> a type of list items to return.
+     * @return a {@link SolidList} created from items.
+     */
+    public static <T> SolidList<T> list(T... items) {
+        return new SolidList<>(items);
     }
 
     @Deprecated

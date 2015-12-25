@@ -20,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
+import static solid.collections.SolidList.list;
 import static solid.stream.Stream.of;
 
 @RunWith(AndroidJUnit4.class)
@@ -45,6 +46,12 @@ public class SolidListTest {
         SolidList<Integer> list = SolidList.empty();
         assertEquals(0, list.size());
         assertTrue(list.isEmpty());
+    }
+
+    @Test
+    public void testList() throws Exception {
+        assert123(list(1, 2, 3));
+        assertEquals(0, list().size());
     }
 
     @Test

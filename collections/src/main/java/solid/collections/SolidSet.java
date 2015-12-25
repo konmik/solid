@@ -49,6 +49,17 @@ public class SolidSet<T> extends Stream<T> implements Set<T>, Parcelable {
         return (SolidSet<T>) EMPTY;
     }
 
+    /**
+     * Creates a SolidSet from given items.
+     *
+     * @param items items to create SolidSet from.
+     * @param <T>   a type if set items.
+     * @return a SolidSet from given items.
+     */
+    public static <T> SolidSet<T> set(T... items) {
+        return new SolidSet<>(items);
+    }
+
     @Override
     public boolean contains(Object object) {
         return set.contains(object);
