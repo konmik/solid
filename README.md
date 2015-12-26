@@ -23,7 +23,7 @@ of the application, while keeping the ability to transform data in a convenient 
 
 ``` groovy
 dependencies {
-    def solidVersion = '2.0.1'
+    def solidVersion = '2.0.2'
     compile "info.android15.solid:streams:$solidVersion"
     compile "info.android15.solid:collections:$solidVersion"
 }
@@ -136,7 +136,7 @@ and threads, and they can be automatically saved into an activity/fragment `Bund
 
 *Solid* collections are just a decorators around `ArrayList`, `LinkedHashMap` and `LinkedHashSet`,
 so I do not think that any docs are needed.
-`UnsupportedOperationException` become thrown on each method that tries to modify a *solid* collection.
+`UnsupportedOperationException` will be thrown on each method that tries to modify a *solid* collection.
 
 If you're familiar with Guava's immutable collections - there is a difference that is good to know. *Solid* collections do
 not have a support for *Builder* pattern - use `ArrayList`, `Stream`, `Map` and `Set` to prepare them.
