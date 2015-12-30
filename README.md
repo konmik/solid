@@ -11,7 +11,7 @@ It provides:
 
 * Primitive array / wrapped array **converters**.
 
-* `SolidList`, `SolidMap`, `SolidSet` - immutable, parcelable collections.
+* `SolidList`, `SolidMap`, `SolidSet` - immutable, parcelable **collections**.
 
 ### Philosophy
 
