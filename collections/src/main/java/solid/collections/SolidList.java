@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import solid.functions.Func1;
 import solid.stream.Stream;
 
 import static java.util.Arrays.asList;
@@ -260,5 +261,14 @@ public class SolidList<T> extends Stream<T> implements List<T>, Parcelable {
         return "SolidList{" +
             "list=" + list +
             '}';
+    }
+
+    @Override
+    public <R> SolidList<R> map(Func1<T, R> func) {
+        final List<R> result = new ArrayList<>(list.size());
+        for (T item : list) {
+            result.add(func.call(item));
+        }
+        return new SolidList<>(result);
     }
 }
