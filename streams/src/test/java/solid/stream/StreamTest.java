@@ -65,6 +65,11 @@ public class StreamTest {
         assertFalse(iterator.hasNext());
     }
 
+    @Test(expected = UnsupportedOperationException.class)
+    public void testEmptyThrows() throws Exception {
+        Stream.of().iterator().next();
+    }
+
     @Test
     public void testLift() throws Exception {
         assertIterableEquals(asList(1, 3, 6), stream(asList(1, 2, 3))
