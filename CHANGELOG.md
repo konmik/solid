@@ -1,5 +1,9 @@
 # Changelog
 
+##### 2.0.3 version (02.04.2016)
+
+* `Stream.every`, `Stream.any` operators.
+
 ##### 2.0.2 version (26.12.2015)
 
 * `SolidList.list`, `SolidMap.map`, `SolidSet.set` construction methods.

@@ -507,6 +507,34 @@ public abstract class Stream<T> implements Iterable<T> {
     }
 
     /**
+     * Returns true if all of stream items satisfy a given condition.
+     *
+     * @param predicate a condition to test.
+     * @return true if all of stream items satisfy a given condition.
+     */
+    public boolean every(Func1<T, Boolean> predicate) {
+        for (T item : this) {
+            if (!predicate.call(item))
+                return false;
+        }
+        return true;
+    }
+
+    /**
+     * Returns true if any of stream items satisfy a given condition.
+     *
+     * @param predicate a condition to test.
+     * @return true if any of stream items satisfy a given condition.
+     */
+    public boolean any(Func1<T, Boolean> predicate) {
+        for (T item : this) {
+            if (predicate.call(item))
+                return true;
+        }
+        return false;
+    }
+
+    /**
      * Returns a new stream of {@link Grouped} that is composed from keys and values that has been
      * extracted from each source stream item.
      *

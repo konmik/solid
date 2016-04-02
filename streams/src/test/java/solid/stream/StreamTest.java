@@ -357,6 +357,40 @@ public class StreamTest {
     }
 
     @Test
+    public void testEvery() {
+        assertTrue(Stream.of(1, 1, 1).every(new Func1<Integer, Boolean>() {
+            @Override
+            public Boolean call(Integer it) {
+                return it == 1;
+            }
+        }));
+        assertFalse(Stream.of(1, 2, 1).every(new Func1<Integer, Boolean>() {
+            @Override
+            public Boolean call(Integer it) {
+                return it == 1;
+            }
+        }));
+        assertTrue(Stream.of().every(null));
+    }
+
+    @Test
+    public void testAny() {
+        assertTrue(Stream.of(2, 7, 1).any(new Func1<Integer, Boolean>() {
+            @Override
+            public Boolean call(Integer it) {
+                return it == 1;
+            }
+        }));
+        assertFalse(Stream.of(4, 2, 2).any(new Func1<Integer, Boolean>() {
+            @Override
+            public Boolean call(Integer it) {
+                return it == 1;
+            }
+        }));
+        assertFalse(Stream.of().any(null));
+    }
+
+    @Test
     public void testGroupBy2() {
         assertGroupedEquals(of(new Grouped<>(0, of(1, 3)), new Grouped<>(10, of(2, 3))),
             of(1, 12, 3, 13)
