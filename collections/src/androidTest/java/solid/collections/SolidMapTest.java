@@ -180,7 +180,7 @@ public class SolidMapTest {
     }
 
     private <T> void assertSetEquals(Set<T> expected, Set<T> actual) {
-        assertArrayEquals(expected.toArray(), actual.toArray());
+        assertEquals(expected, actual);
     }
 
     private LinkedHashMap<Integer, Integer> create123map234() {
