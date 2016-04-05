@@ -1,7 +1,9 @@
 Solid
 =====
 
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Solid-green.svg?style=flat)](https://android-arsenal.com/details/1/1955) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/info.android15.solid/streams/badge.png)](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22info.android15.solid%22%20AND%20a%3A%22streams%22)
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Solid-green.svg?style=flat)](https://android-arsenal.com/details/1/1955)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/info.android15.solid/streams/badge.png)](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22info.android15.solid%22%20AND%20a%3A%22streams%22)
+[![Build Status](https://travis-ci.org/konmik/solid.svg?branch=master)](https://travis-ci.org/konmik/solid)
 
 Solid is an Android library for data handling.
 
@@ -23,7 +25,7 @@ of the application, while keeping the ability to transform data in a convenient 
 
 ``` groovy
 dependencies {
-    def solidVersion = '2.0.2'
+    def solidVersion = '2.0.3'
     compile "info.android15.solid:streams:$solidVersion"
     compile "info.android15.solid:collections:$solidVersion"
 }
