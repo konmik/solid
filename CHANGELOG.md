@@ -1,5 +1,9 @@
 # Changelog
 
+##### 3.0.0 version (18.05.2016)
+
+* More flexible template functions declarations.
+
 ##### 2.0.3 version (02.04.2016)
 
 * `Stream.every`, `Stream.any` operators.
