@@ -195,7 +195,7 @@ public abstract class Stream<T> implements Iterable<T> {
      * @param <R>  a type of items new stream returns.
      * @return a new stream that contains items that has been returned by a given function for each item in the current stream.
      */
-    public <R> Stream<R> map(final Func1<T, R> func) {
+    public <R> Stream<R> map(final Func1<? super T, ? extends R> func) {
         return new Stream<R>() {
             @Override
             public Iterator<R> iterator() {
@@ -226,14 +226,14 @@ public abstract class Stream<T> implements Iterable<T> {
      * @param <R>  a type of items new stream returns.
      * @return a new stream that contains items that has been returned by a given function for each item in the current stream.
      */
-    public <R> Stream<R> flatMap(final Func1<T, Iterable<R>> func) {
+    public <R> Stream<R> flatMap(final Func1<? super T, ? extends Iterable<? extends R>> func) {
         return new Stream<R>() {
             @Override
             public Iterator<R> iterator() {
                 return new ReadOnlyIterator<R>() {
 
                     Iterator<T> iterator = Stream.this.iterator();
-                    Iterator<R> next;
+                    Iterator<? extends R> next;
 
                     @Override
                     public boolean hasNext() {
@@ -259,7 +259,7 @@ public abstract class Stream<T> implements Iterable<T> {
      * @param func a function to call for each item.
      * @return a new stream that contains all items of the current stream for which a given function returned {@link Boolean#TRUE}.
      */
-    public Stream<T> filter(final Func1<T, Boolean> func) {
+    public Stream<T> filter(final Func1<? super T, Boolean> func) {
         return new Stream<T>() {
             @Override
             public Iterator<T> iterator() {
@@ -512,7 +512,7 @@ public abstract class Stream<T> implements Iterable<T> {
      * @param predicate a condition to test.
      * @return true if all of stream items satisfy a given condition.
      */
-    public boolean every(Func1<T, Boolean> predicate) {
+    public boolean every(Func1<? super T, Boolean> predicate) {
         for (T item : this) {
             if (!predicate.call(item))
                 return false;
@@ -526,7 +526,7 @@ public abstract class Stream<T> implements Iterable<T> {
      * @param predicate a condition to test.
      * @return true if any of stream items satisfy a given condition.
      */
-    public boolean any(Func1<T, Boolean> predicate) {
+    public boolean any(Func1<? super T, Boolean> predicate) {
         for (T item : this) {
             if (predicate.call(item))
                 return true;
@@ -543,7 +543,7 @@ public abstract class Stream<T> implements Iterable<T> {
      * @param <K>           a type of key value.
      * @return a new stream of {@link Grouped} that is grouped by a key extracted from each source stream item.
      */
-    public <K, V> Stream<Grouped<K, V>> groupBy(final Func1<T, K> groupSelector, final Func1<T, V> valueSelector) {
+    public <K, V> Stream<Grouped<K, V>> groupBy(final Func1<? super T, ? extends K> groupSelector, final Func1<? super T, ? extends V> valueSelector) {
         return new Stream<Grouped<K, V>>() {
             @Override
             public Iterator<Grouped<K, V>> iterator() {
@@ -578,7 +578,7 @@ public abstract class Stream<T> implements Iterable<T> {
      * @param <K>           a type of key value.
      * @return a new stream of {@link Grouped} that is grouped by a key extracted from each source stream item.
      */
-    public <K> Stream<Grouped<K, T>> groupBy(final Func1<T, K> groupSelector) {
+    public <K> Stream<Grouped<K, T>> groupBy(final Func1<? super T, ? extends K> groupSelector) {
         return groupBy(groupSelector, new Func1<T, T>() {
             @Override
             public T call(T value) {
@@ -609,7 +609,7 @@ public abstract class Stream<T> implements Iterable<T> {
      *
      * @param action an action to execute for each item in the stream.
      */
-    public void forEach(Action1<T> action) {
+    public void forEach(Action1<? super T> action) {
         for (T value : this)
             action.call(value);
     }
@@ -619,7 +619,7 @@ public abstract class Stream<T> implements Iterable<T> {
      *
      * @param action an action to execute for each item in the stream.
      */
-    public Stream<T> onNext(final Action1<T> action) {
+    public Stream<T> onNext(final Action1<? super T> action) {
         return new Stream<T>() {
             @Override
             public Iterator<T> iterator() {
