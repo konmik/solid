@@ -373,6 +373,41 @@ public abstract class Stream<T> implements Iterable<T> {
     }
 
     /**
+     * Returns a new stream that contains items that has been received by sequentially combining items of the streams into pairs
+     * and then applying given function to each pair of items.
+     *
+     * @param with a {@link Stream} to zip current stream with.
+     * @param func a function that takes an item of the current stream and an item of another stream
+     *             and returns a corresponding value for the new stream.
+     * @param <S>  a type of a stream to zip current stream with.
+     * @param <R>  a type of items new stream returns.
+     * @return a new stream that contains items that has been received by sequentially combining items of the streams into pairs
+     * and then applying given function to each pair of items.
+     */
+    public <S, R> Stream<R> zipWith(final Iterable<? extends S> with, final Func2<? super T, ? super S, ? extends R> func) {
+        return new Stream<R>() {
+            @Override
+            public Iterator<R> iterator() {
+                return new ReadOnlyIterator<R>() {
+
+                    Iterator<T> iterator = Stream.this.iterator();
+                    Iterator<? extends S> withIterator = with.iterator();
+
+                    @Override
+                    public boolean hasNext() {
+                        return iterator.hasNext() && withIterator.hasNext();
+                    }
+
+                    @Override
+                    public R next() {
+                        return func.call(iterator.next(), withIterator.next());
+                    }
+                };
+            }
+        };
+    }
+
+    /**
      * Returns a stream that includes only that items of the current stream that do not
      * exist in a given stream.
      *

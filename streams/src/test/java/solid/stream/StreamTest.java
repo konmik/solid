@@ -220,6 +220,18 @@ public class StreamTest {
     }
 
     @Test
+    public void testZipWith() throws Exception {
+        final Func2<Integer, Integer, Integer> add = new Func2<Integer, Integer, Integer>() {
+            @Override
+            public Integer call(Integer lhs, Integer rhs) {return lhs + rhs;}
+        };
+        assertIterableEquals(asList(2, 4, 6), of(1, 2, 3).zipWith(of(1, 2, 3), add));
+        assertIterableEquals(asList(7, 9), of(1, 2, 3, 4, 5).zipWith(of(6, 7), add));
+        assertIterableEquals(asList(7, 9), of(6, 7).zipWith(of(1, 2, 3, 4, 5), add));
+        assertIterableEquals(Collections.<Integer>emptyList(), Stream.<Integer>of().zipWith(of(1, 2, 3), add));
+    }
+
+    @Test
     public void testSeparate() throws Exception {
         assertIterableEquals(asList(1, 2, 3), stream(asList(0, 1, 4, 5, 6, 2, 3, null)).separate(asList(0, 4, 5, 6, null)));
     }
