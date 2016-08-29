@@ -218,7 +218,7 @@ public abstract class Stream<T> implements Iterable<T> {
     }
 
     /**
-     * Returns a new stream that contains items that has been returned a given function for each item in the current stream.
+     * Returns a new stream that contains items that has been returned by a given function for each item in the current stream.
      * The difference from {@link #map(Func1)} is that a given function can return more than one item for
      * each item of the current list.
      *
