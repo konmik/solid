@@ -384,7 +384,7 @@ public abstract class Stream<T> implements Iterable<T> {
      * @return a new stream that contains items that has been received by sequentially combining items of the streams into pairs
      * and then applying given function to each pair of items.
      */
-    public <S, R> Stream<R> zipWith(final Stream<? extends S> with, final Func2<? super T, ? super S, ? extends R> func) {
+    public <S, R> Stream<R> zipWith(final Iterable<? extends S> with, final Func2<? super T, ? super S, ? extends R> func) {
         return new Stream<R>() {
             @Override
             public Iterator<R> iterator() {
