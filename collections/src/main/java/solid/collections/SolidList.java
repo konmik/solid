@@ -246,7 +246,7 @@ public class SolidList<T> extends Stream<T> implements List<T>, Parcelable {
     @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     @Override
     public boolean equals(Object o) {
-        //noinspection EqualsBetweenInconvertibleTypes
+        if (this == o) return true;
         return list.equals(o);
     }
 

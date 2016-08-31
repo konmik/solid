@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.TreeSet;
 
 import testkit.ParcelFn;
 
@@ -145,12 +146,19 @@ public class SolidSetTest {
     public void testHashCode() throws Exception {
         assertEquals(new SolidSet<>(new Integer[]{1, 13, 3}).hashCode(), new SolidSet<>(new Integer[]{1, 13, 3}).hashCode());
         assertNotEquals(SolidSet.empty().hashCode(), new SolidSet<>(new Integer[]{1, 13, 3}).hashCode());
+
+        Set<Integer> treeSet = new TreeSet<>(SolidSet.set(1, 13, 3));
+        assertEquals(new SolidSet<>(new Integer[]{1, 13, 3}).hashCode(), treeSet.hashCode());
     }
 
     @Test
     public void testEquals() throws Exception {
         assertEquals(new SolidSet<>(new Integer[]{1, 13, 3}), new SolidSet<>(new Integer[]{1, 13, 3}));
         assertNotEquals(SolidSet.empty(), new SolidSet<>(new Integer[]{1, 13, 3}));
+
+        Set<Integer> treeSet = new TreeSet<>(SolidSet.set(1, 13, 3));
+        assertEquals(new SolidSet<>(new Integer[]{1, 13, 3}), treeSet);
+        assertEquals(treeSet, new SolidSet<>(new Integer[]{1, 13, 3}));
     }
 
     private void assert123(Set<Integer> set) throws Exception {

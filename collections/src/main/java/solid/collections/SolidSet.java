@@ -159,11 +159,11 @@ public class SolidSet<T> extends Stream<T> implements Set<T>, Parcelable {
         }
     };
 
+    @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        return set.equals(((SolidSet<?>) o).set);
+        return set.equals(o);
     }
 
     @Override
