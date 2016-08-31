@@ -157,12 +157,15 @@ public class SolidMap<K, V> extends Stream<Map.Entry<K, V>> implements Parcelabl
         }
     };
 
+    @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        SolidMap<?, ?> solidMap = (SolidMap<?, ?>) o;
-        return map.equals(solidMap.map);
+        if (o instanceof Map)
+            return map.equals(o);
+        else if (o instanceof SolidMap)
+            return map.equals(((SolidMap) o).map);
+        else
+            return false;
     }
 
     @Override

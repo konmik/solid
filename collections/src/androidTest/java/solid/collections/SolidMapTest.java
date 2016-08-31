@@ -146,6 +146,7 @@ public class SolidMapTest {
         map234null.put(null, null);
         assertTrue(new SolidMap<>(map234null).equals(new SolidMap<>(map234null)));
         assertFalse(new SolidMap<>(create123map234()).equals(new SolidMap<>(map234null)));
+        assertTrue(new SolidMap<>(map234null).equals(map234null));
 
         HashMap<Integer, Integer> map234null_ = create123map234();
         map234null_.put(3, null);
