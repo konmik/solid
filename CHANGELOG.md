@@ -1,5 +1,10 @@
 # Changelog
 
+##### 3.0.1. version (31.08.2016)
+
+* SolidSet, SolidMap equals improvement.
+* Stream.zipWith operator.
+
 ##### 3.0.0 version (18.05.2016)
 
 * More flexible template functions declarations.
