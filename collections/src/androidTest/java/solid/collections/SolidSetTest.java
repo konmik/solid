@@ -158,6 +158,7 @@ public class SolidSetTest {
 
         Set<Integer> treeSet = new TreeSet<>(SolidSet.set(1, 13, 3));
         assertEquals(new SolidSet<>(new Integer[]{1, 13, 3}), treeSet);
+        assertEquals(treeSet, new SolidSet<>(new Integer[]{1, 13, 3}));
     }
 
     private void assert123(Set<Integer> set) throws Exception {

@@ -141,6 +141,7 @@ public class SolidListTest {
 
         List<Integer> arrayList = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 1, 2, 3, 0));
         assertTrue(list1.equals(arrayList));
+        assertTrue(arrayList.equals(list1));
         assertEquals(list1.hashCode(), arrayList.hashCode());
 
         //noinspection EqualsWithItself
