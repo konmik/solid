@@ -9,8 +9,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
+import solid.functions.Func1;
 import solid.stream.Stream;
 
 /**
@@ -176,5 +178,14 @@ public class SolidSet<T> extends Stream<T> implements Set<T>, Parcelable {
         return "SolidSet{" +
             "set=" + set +
             '}';
+    }
+
+    @Override
+    public <R> SolidSet<R> map(Func1<T, R> func) {
+        final List<R> result = new ArrayList<>(set.size());
+        for (T item : set) {
+            result.add(func.call(item));
+        }
+        return new SolidSet<>(result);
     }
 }
