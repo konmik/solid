@@ -3,6 +3,7 @@ package solid.optional;
 import solid.functions.Action1;
 import solid.functions.Func0;
 import solid.functions.Func1;
+import solid.stream.Stream;
 
 /**
  * Optional is a wrapper around a value that can be empty (null).
@@ -82,6 +83,24 @@ public class Optional<T> {
      */
     public <R> Optional<R> map(Func1<T, R> func1) {
         return value == null ? Optional.<R>empty() : Optional.of(func1.call(value));
+    }
+
+    /**
+     * If a value is present return a sequential {@link Stream} containing only
+     * that value, otherwise return an empty {@code Stream}.
+     *
+     * @return the optional value as a {@code Stream}
+     */
+    public Stream<T> stream() {
+        if (!isPresent()) {
+            return Stream.of();
+        } else {
+            if (value instanceof Iterable) {
+                return Stream.stream((Iterable<T>) value);
+            } else {
+                return Stream.of(value);
+            }
+        }
     }
 
     @Override
