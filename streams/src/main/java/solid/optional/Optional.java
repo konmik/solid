@@ -92,15 +92,7 @@ public class Optional<T> {
      * @return the optional value as a {@code Stream}
      */
     public Stream<T> stream() {
-        if (!isPresent()) {
-            return Stream.of();
-        } else {
-            if (value instanceof Iterable) {
-                return Stream.stream((Iterable<T>) value);
-            } else {
-                return Stream.of(value);
-            }
-        }
+        return value == null ? Stream.<T>of() : Stream.of(value);
     }
 
     @Override
